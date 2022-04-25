@@ -1,0 +1,184 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkedIncognito</title>
+    <link rel="stylesheet" href="{% static 'app/css/company_and_login.css' %}">
+</head>
+<body>
+    <nav>
+        <div class="nav-left">
+            <img src="{% static 'app/images/Linkedin-Logo.png' %}" class="logo" alt="LinkedIncognito Logo">
+        </div>
+    </nav>
+
+    <div class="box">
+        <div class="loginbox">
+           <div class = "button-box">
+            <div id="btn"></div>
+            <!--<button type="button" class="toggle-btn" onclick="login()">Login</button>
+            <button type="button" class="toggle-btn" onclick="register()">Register</button>-->
+            <button type="button" class="toggle-btn" onclick="login()"> <a href="{% url 'login' %}">Login</a></button>
+            <button type="button" class="toggle-btn" onclick="register()"> <a href="{% url 'register' %}">Register</a></button>
+            
+		<!-- not working -->
+            {% if register %}
+                <script>
+                    loginVar.style.left = "-400px";
+                    loginVar.style.right = "400px";
+                    regVar.style.left = "40px";
+                    regVar.style.right = "40px";
+                    btnVar.style.left = "138px";
+                </script>
+            {% endif %}
+           </div>
+            
+
+
+            <form id ="login" class ="input-group">
+                <p>Email Address</p>
+                <input type="text" name="" placeholder="Enter Email Address" class='form-control' required>
+
+                <p>Password</p>
+                <input type="password" name="" placeholder="Enter Password" class='form-control' required>
+
+                <input type="submit" name="" value ="Login">
+                <a href="#">Forget your password?</a><br>
+        
+            </form>
+
+            <form id ="register" method='POST' class ="input-group">
+                {% csrf_token %}
+
+                {% if form.errors %}
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <div class="alert alert-danger">
+                                <strong>{{ error|escape }}</strong>
+<!--                                <strong>{{ field|escape }}</strong>-->
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <div class="names">
+                    <div class="fn">
+                        {{form.first_name}}
+                        {% if form.first_name.errors %}
+                            {% for error in form.first_name.errors %}
+                            <div class="alert alert-danger">
+                                <strong>{{ error|escape }}</strong>
+                            </div>
+                            {% endfor %}
+                        {% endif %}                          
+                    </div>
+                    <div class="ln">
+                        {{form.last_name}}
+                        {% if form.last_name.errors %}
+                            {% for error in form.last_name.errors %}
+                            <div class="alert alert-danger">
+                                <strong>{{ error|escape }}</strong>
+                            </div>
+                            {% endfor %}
+                        {% endif %}                           
+                    </div>                  
+               
+                </div>
+
+                <!--<p>Name</p>-->
+                <!--{{form.name}}-->
+                <!--<input type="text" name="" placeholder="Enter Name" class='form-control' required>-->
+
+                {{form.email}}
+                <!--<input type="text" name="" placeholder="Enter Email Address" class='form-control' required>-->
+                {% if form.email.errors %}
+                    {% for error in form.email.errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+		
+		{{form.username}}
+		{% if form.username.errors %}
+		    {% for error in form.username.errors %}
+			<div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    	</div>	
+		    {% endfor %}
+		{% endif %}
+
+                {{form.password1}}
+                <!--<input type="password" name="" placeholder="Enter Password" class='form-control' required>-->
+                {% if form.password1.errors %}
+                    {% for error in form.password1.errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+
+
+                {{form.password2}}
+                <!--<input type="password" name="" placeholder="Enter Password" class='form-control' required>-->
+                {% if form.password2.errors %}
+                    {% for error in form.password2.errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+
+                <p>Are you an employer or an applicant?</p>
+                <div class="radioBtns">
+                    <input type="radio" id="employer" name="radioQ" value="employer">
+                    <label for="employer">Employer</label><br>
+
+                    <input type="radio" id="applicant" name="radioQ" value="applicant">
+                    <label for="applicant">Applicant</label><br>
+                </div>
+
+                <input type="submit" name="" value ="Register">
+        
+            </form>
+
+        </div>
+    </div>
+
+    <script>
+        var loginVar = document.getElementById("login");
+        var regVar = document.getElementById("register");
+        var btnVar = document.getElementById("btn");
+
+        function register() {
+            loginVar.style.left = "-400px";
+            loginVar.style.right = "400px";
+            regVar.style.left = "40px";
+            regVar.style.right = "40px";
+            btnVar.style.left = "138px";
+        }
+
+        function login() {
+            loginVar.style.left = "40px";
+            loginVar.style.right = "40px";
+            regVar.style.left = "400px";
+            regVar.style.right = "-400px";
+            btnVar.style.left = "0px";
+        }
+
+
+    </script>
+
+
+
+</body>
+</html>

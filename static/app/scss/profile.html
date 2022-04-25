@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Profile Page - LinkedIncognito - Profile</title>
+        <link rel="stylesheet" href="{% static 'app/css/profile.css' %}">
+    </head>
+    <body>
+
+        <nav>
+            <!--Top Bar-->
+            <div class="nav-left">
+                <!---Corner Logo-->
+                <a href="home.html"> <img src="{% static 'app/images/Linkedin-Logo.png' %}" class="logo"></a>
+                <!--Icons-->
+                <ul>
+                    <li><img src="{% static 'app/images/notification.png' %}"></li>
+                    <li> <a href="messenger.html"> <img src="{% static 'app/images/inbox.png' %}"></a> </li>
+                    <li><a href="calendar.html"><img src="{% static 'app/images/calendar.png' %}"></a></li>                                    
+                </ul>
+            </div>
+            <div class="nav-right">
+                <div class="search-box">
+                    <img src="{% static 'app/images/search.png' %}">
+                    <input type="text" placeholder="Search">
+                </div>
+
+                <div class="nav-user-icon online" onclick="settingsMenuToggle()">
+                    <img src="{% static 'app/images/profile-pic.png' %}">
+                </div>
+            </div>
+
+            <!--Dropdown settings Menu from pfp-->
+            <div class="settings-menu">
+                <!--Toggle light and dark mode-->
+                <div id="dark-btn">
+                    <span></span>
+                </div>
+                <div class="settings-menu-inner">
+                    <!--Entry 1-->
+                    <div class="user-profile">
+                        <img src="{% static 'app/images/profile-pic.png' %}">
+                        <div>
+                            <p>John Nicholson</p>
+                            <a href="profile.html">See your profile</a>
+                        </div>
+                    </div>   
+                    <hr>
+                    <!--Entry 2-->
+                    <div class="user-profile">
+                        <img src="{% static 'app/images/feedback.png' %}">
+                        <div>
+                            <p>Give Feedback</p>
+                            <a href="#">Help us to improve the new design</a>
+                        </div>
+                    </div>   
+                    <hr>
+                    <!--Entry 3-->
+                    <div class="setting-links">
+                        <img src="{% static 'app/images/setting.png' %}" class="settings-icon">
+                        <a href="#">Settings & Privacy <img src="{% static 'app/images/arrow.png' %}" width="10px"></a>
+                    </div>
+                    <!-- Entry 4-->
+                    <div class="setting-links">
+                        <img src="{% static 'app/images/help.png' %}" class="settings-icon">
+                        <a href="#">Help & Support <img src="{% static 'app/images/arrow.png' %}" width="10px"></a>
+                    </div>
+                    <!-- Entry 5-->
+                    <div class="setting-links">
+                        <img src="{% static 'app/images/display.png' %}" class="settings-icon">
+                        <a href="#">Display & Accessibility <img src="{% static 'app/images/arrow.png' %}" width="10px"></a>
+                    </div>  
+                    <!-- Entry 6-->
+                    <div class="setting-links">
+                        <img src="{% static 'app/images/logout.png' %}" class="settings-icon">
+                        <a href="#">Logout <img src="{% static 'app/images/arrow.png' %}" width="10px"></a>
+                    </div>                                                              
+                </div>
+            </div>
+        </nav>
+
+        <!--Profile Page-->
+        <div class="profile-container">
+            <!--Cover Image-->
+            <img src="{% static 'app/images/cover.png' %}" class="cover-img">
+            <!--Profile Details-->
+            <div class="profile-details">
+                <!--PFP and name-->
+                <div class="pd-left">
+                    <div class="pd-row">
+                        <img src="{% static 'app/images/profile-pic.png' %}" class="pd-image">
+                        <div>
+                            <h3>Jack Nicholson</h3>
+                            <p>120 Friends - 20 mutual</p>
+                            <img src="{% static 'app/images/member-1.png' %}">
+                            <img src="{% static 'app/images/member-2.png' %}">                        
+                            <img src="{% static 'app/images/member-3.png' %}">
+                            <img src="{% static 'app/images/member-4.png' %}">
+                        </div>
+                    </div>
+                </div>
+                <!--Action buttons-->
+                <div class="pd-right">
+                    <button type="button"> <img src="{% static 'app/images/add-friends.png' %}"> Friend</button>
+                    <button type="button"> <img src="{% static 'app/images/message.png' %}"> Message</button>
+                    <br>
+                    <a href="#"><img src="{% static 'app/images/more.png' %}"></a>
+                </div>
+            </div>
+
+            <div class="profile-info">
+                <div class="info-col">
+                    <!--Intro: Bio, location, etc.-->
+                    <div class="profile-intro">
+                        <h3>Intro</h3>
+                        <p class="intro-text">Believe in yourself and you can do anything. <img src="{% static 'app/images/feeling.png' %}"></p>
+                        <hr>
+                        <ul>
+                            <li> <img src="{% static 'app/images/profile-job.png' %}"> Director at 99media Ltd.</li>
+                            <li> <img src="{% static 'app/images/profile-study.png' %}"> Studied at Amity University</li>
+                            <li> <img src="{% static 'app/images/profile-study.png' %}"> Went to DPS Delhi</li>
+                            <li> <img src="{% static 'app/images/profile-home.png' %}"> Lives in Bangalore, India</li>
+                            <li> <img src="{% static 'app/images/profile-location.png' %}"> From Bangalore, India</li>
+                        </ul>
+                    </div>
+
+                    <!--Photos grid-->
+                    <div class="profile-intro">
+                        <div class="title-box">
+                            <h3>Photos</h3>
+                            <a href="#">All Photos</a>                            
+                        </div>
+                        <div class="photo-box">
+                            <div><img src="{% static 'app/images/photo1.png' %}"></div>
+                            <div><img src="{% static 'app/images/photo2.png' %}"></div>
+                            <div><img src="{% static 'app/images/photo3.png' %}"></div>
+                            <div><img src="{% static 'app/images/photo4.png' %}"></div>
+                            <div><img src="{% static 'app/images/photo5.png' %}"></div>
+                            <div><img src="{% static 'app/images/photo6.png' %}"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-intro">
+                        <div class="title-box">
+                            <h3>Friends</h3>
+                            <a href="#">All Friends</a>                            
+                        </div>
+                        <p>120 (10 mutual)</p>
+                        <div class="friends-box">
+                            <div><img src="{% static 'app/images/member-1.png' %}">
+                            <p>Joseph N</p>
+                            </div>
+                            <div><img src="{% static 'app/images/member-2.png' %}">
+                                <p>Nathan N</p>
+                            </div>
+                            <div><img src="{% static 'app/images/member-3.png' %}">
+                                <p>George D</p>
+                            </div>
+                            <div><img src="{% static 'app/images/member-4.png' %}">
+                                <p>Francis L</p>
+                            </div>
+                            <div><img src="{% static 'app/images/member-5.png' %}">
+                                <p>Anthony E</p>
+                            </div>
+                            <div><img src="{% static 'app/images/member-6.png' %}">
+                                <p>Michael A </p>
+                            </div>
+                            <div><img src="{% static 'app/images/member-7.png' %}">
+                                <p>Edward M</p>
+                            </div>                            
+                            <div><img src="{% static 'app/images/member-8.png' %}">
+                                <p>Brandon C</p>
+                            </div>                            
+                            <div><img src="{% static 'app/images/member-9.png' %}">
+                                <p>James D</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="post-col">
+                    <!--New Post-->
+                    <div class="write-post-container">
+                        <div class="user-profile">
+                            <img src="{% static 'app/images/profile-pic.png' %}">
+                            <div>
+                                <p>John Nicholson</p>
+                                <small>Public</small>
+                            </div>
+                        </div>
+    
+                        <div class="post-input-container">
+                            <textarea rows="3" placeholder="What's on your mind, John"></textarea>
+                            <div class="add-post-links">
+                                <a href="#"><img src="{% static 'app/images/live-video.png' %}">Live Video</a>
+                                <a href="#"><img src="{% static 'app/images/photo.png' %}">Photo/Video</a>
+                                <a href="#"><img src="{% static 'app/images/feeling.png' %}">Feeling/Activity</a>
+                            </div>
+                        </div>
+                    </div>
+                        <!--Post 1-->
+                    <div class="post-container">
+                        <div class="user-profile">
+                            <img src="{% static 'app/images/profile-pic.png' %}">
+                            <div>
+                                <p>John Nicholson</p>
+                                <span>June 24 2022, 13:40 pm</span>
+                            </div>
+                        </div>     
+                        <p class="post-text">Subscribe <span>@Easy Tutorials </span>Youtube Channel to watch more videos pn website development and UI designs. <a href="#">#EasyTutorials </a><a href="#">#YouTubeChannel</a></p>               
+                        <img src="{% static 'app/images/feed-image-1.png' %}" class="post-img">
+
+                        <div class="post-row">
+                            <div class="activity-icons">
+                                <div><img src="{% static 'app/images/like-blue.png' %}"> 120</div>
+                                <div><img src="{% static 'app/images/comments.png' %}"> 45</div>
+                                <div><img src="{% static 'app/images/share.png' %}"> 20</div>
+                            </div>
+                            <div class="post-profile-icon">
+                                <img src="{% static 'app/images/profile-pic.png' %}">
+                            </div>
+                        </div>
+                    </div>
+                    <!--Post 2-->
+                    <div class="post-container">
+                        <div class="user-profile">
+                            <img src="{% static 'app/images/profile-pic.png' %}">
+                            <div>
+                                <p>John Nicholson</p>
+                                <span>June 24 2022, 13:40 pm</span>
+                            </div>
+                        </div>     
+                        <p class="post-text">Like and share this videow tih friends, tag <span>@Easy Tutorials </span> facebook page on your post. Ask your doubts in the comments. <a href="#">#EasyTutorials </a><a href="#">#YouTubeChannel</a></p>               
+                        <img src="{% static 'app/images/feed-image-2.png' %}" class="post-img">
+
+                        <div class="post-row">
+                            <div class="activity-icons">
+                                <div><img src="{% static 'app/images/like.png' %}"> 120</div>
+                                <div><img src="{% static 'app/images/comments.png' %}""> 45</div>
+                                <div><img src="{% static 'app/images/share.png' %}"> 20</div>
+                            </div>
+                            <div class="post-profile-icon">
+                                <img src="{% static 'app/images/profile-picpng' %}">
+                            </div>
+                        </div>
+                    </div>
+                    <!--Post 3-->
+                    <div class="post-container">
+                        <div class="user-profile">
+                            <img src="{% static 'app/images/profile-pic.png' %}">
+                            <div>
+                                <p>John Nicholson</p>
+                                <span>June 24 2022, 13:40 pm</span>
+                            </div>
+                        </div>     
+                        <p class="post-text">Subscribe <span>@Easy Tutorials </span>Youtube Channel to watch more videos pn website development and UI designs. <a href="#">#EasyTutorials </a><a href="#">#YouTubeChannel</a></p>               
+                        <img src="{% static 'app/images/feed-image-3.png' %}" class="post-img">
+
+                        <div class="post-row">
+                            <div class="activity-icons">
+                                <div><img src="{% static 'app/images/like.png' %}"> 120</div>
+                                <div><img src="{% static 'app/images/comments.png' %}"> 45</div>
+                                <div><img src="{% static 'app/images/share.png' %}"> 20</div>
+                            </div>
+                            <div class="post-profile-icon">
+                                <img src="{% static 'app/images/profile-pic.png' %}">
+                            </div>
+                        </div>
+                    </div>
+                    <!--Post 4-->
+                    <div class="post-container">
+                        <div class="user-profile">
+                            <img src="{% static 'app/images/profile-pic.png' %}">
+                            <div>
+                                <p>John Nicholson</p>
+                                <span>June 24 2022, 13:40 pm</span>
+                            </div>
+                        </div>     
+                        <p class="post-text">Subscribe <span>@Easy Tutorials </span>Youtube Channel to watch more videos pn website development and UI designs. <a href="#">#EasyTutorials </a><a href="#">#YouTubeChannel</a></p>               
+                        <img src="{% static 'app/images/feed-image-4.png' %}" class="post-img">
+
+                        <div class="post-row">
+                            <div class="activity-icons">
+                                <div><img src="{% static 'app/images/like.png' %}"> 120</div>
+                                <div><img src="{% static 'app/images/comments.png' %}"> 45</div>
+                                <div><img src="{% static 'app/images/share.png' %}"> 20</div>
+                            </div>
+                            <div class="post-profile-icon">
+                                <img src="{% static 'app/images/profile-pic.png' %}">
+                            </div>
+                        </div>
+                    </div>
+                    <!--Post 5-->
+                    <div class="post-container">
+                        <div class="user-profile">
+                            <img src="{% static 'app/images/profile-pic.png' %}">
+                            <div>
+                                <p>John Nicholson</p>
+                                <span>June 24 2022, 13:40 pm</span>
+                            </div>
+                        </div>     
+                        <p class="post-text">Subscribe <span>@Easy Tutorials </span>Youtube Channel to watch more videos pn website development and UI designs. <a href="#">#EasyTutorials </a><a href="#">#YouTubeChannel</a></p>               
+                        <img src="{% static 'app/images/feed-image-5.png' %}" class="post-img">
+
+                        <div class="post-row">
+                            <div class="activity-icons">
+                                <div><img src="{% static 'app/images/like.png' %}"> 120</div>
+                                <div><img src="{% static 'app/images/comments.png' %}"> 45</div>
+                                <div><img src="{% static 'app/images/share.png' %}"> 20</div>
+                            </div>
+                            <div class="post-profile-icon">
+                                <img src="{% static 'app/images/profile-pic].png' %}">
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Copyright bottom text-->
+        <div class="footer">
+            <p>Copyright 2022 - LinkedIncognito</p>
+        </div>
+    <script src="{% static 'app/js/profile.js' %}"></script>
+    </body>
+</html>

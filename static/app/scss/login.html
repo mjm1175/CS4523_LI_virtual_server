@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkedIncognito</title>
+    <link rel="stylesheet" href="{% static 'app/css/company_and_login.css' %}">
+</head>
+<body>
+    <nav>
+        <div class="nav-left">
+            <img src="{% static 'app/images/Linkedin-Logo.png' %}" class="logo" alt="LinkedIncognito Logo">
+        </div>
+    </nav>
+
+    <div class="box">
+        <div class="loginbox">
+           <div class = "button-box">
+            <div id="btn"></div>
+            <button type="button" class="toggle-btn" onclick="login()">Login</button>
+            <button type="button" class="toggle-btn" onclick="register()">Register</button>
+           </div>
+            
+            <form id ="login" class ="input-group">
+                <p>Email Address</p>
+                <input type="text" name="" placeholder="Enter Email Address" required>
+
+                <p>Password</p>
+                <input type="password" name="" placeholder="Enter Password" required>
+
+                <input type="submit" name="" value ="Login">
+                <a href="#">Forget your password?</a><br>
+        
+            </form>
+
+            <form id ="register" class ="input-group">
+                <p>Name</p>
+                <input type="text" name="" placeholder="Enter Name" required>
+
+                <p>Email Address</p>
+                <input type="text" name="" placeholder="Enter Email Address" required>
+
+                <p>Password</p>
+                <input type="password" name="" placeholder="Enter Password" required>
+
+                <input type="submit" name="" value ="Register">
+        
+            </form>
+
+        </div>
+    </div>
+
+    <script>
+        var loginVar = document.getElementById("login");
+        var regVar = document.getElementById("register");
+        var btnVar = document.getElementById("btn");
+
+        function register() {
+            loginVar.style.left = "-400px";
+            loginVar.style.right = "400px";
+            regVar.style.left = "40px";
+            regVar.style.right = "40px";
+            btnVar.style.left = "138px";
+        }
+
+        function login() {
+            loginVar.style.left = "40px";
+            loginVar.style.right = "40px";
+            regVar.style.left = "400px";
+            regVar.style.right = "-400px";
+            btnVar.style.left = "0px";
+        }
+
+
+    </script>
+
+
+
+</body>
+</html>

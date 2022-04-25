@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Profile - LinkedIncognito</title>
+    
+    <link rel="stylesheet" href="{% static 'app/css/job_post_creation.css' %}">
+</head>
+
+<body>
+ <!--------------------------------------Navigation Bar --------------------------------------->
+    <nav>
+        <div class="nav-left">
+            <a href="home.html"> <img src="{% static 'app/images/Linkedin-Logo.png' %}" class="logo"></a>
+            <ul>
+                <li><img src="{% static 'app/images/notification.png' %}"></li>
+                <li> <a href="messenger.html"> <img src="{% static 'app/images/inbox.png' %}"></a> </li>
+                <li><a href="calendar.html"><img src="{% static 'app/images/calendar.png' %}"></a></li>
+            </ul>
+        </div>
+
+        <div class="nav-right">
+
+            <div class="search-box">
+                <img src="{% static 'app/images/search.png' %}">
+                <input type="text" placeholder="Search">
+            </div>
+            <div class="nav-user-icon online" onclick="settingsMenuToggle()">
+                <img src="{% static 'app/images/profile-pic.png' %}">
+            </div> 
+            
+        </div>
+
+        <div class="settings-menu">
+
+            <div class="settings-menu-inner">
+
+                <div id="dark-btn">
+                    <span></span>
+                </div>
+
+                <div class="user-profile">
+                    <img src="{% static 'app/images/profile-pic.png' %}">
+                    <div>
+                        <p>Company Name</p>
+                        <a href = "companyprofileAdmin.html">See your profile</a>
+                    </div>
+                </div>
+                <hr>
+                <div class="user-profile">
+                    <img src="{% static 'app/images/feedback.png' %}">
+                    <div>
+                        <p>Give Feedback</p>
+                        <a href = "#">Help us improve our website design!</a>
+                    </div>
+                </div>
+                <hr>
+                <div class="settings-links">
+                    <img src="{% static 'app/images/setting.png' %}" class="settings-icons">
+                    <a href="#"> Settings & Privacy <img src="{% static 'app/images/arrow.png' %}" width="10px"></a>
+                </div>
+                <div class="settings-links">
+                    <img src="{% static 'app/images/help.png' %}" class="settings-icons">
+                    <a href="#"> Help & Support <img src="{% static 'app/images/arrow.png' %}" width="10px"></a>
+                </div>
+                <div class="settings-links">
+                    <img src="{% static 'app/images/display.png' %}" class="settings-icons">
+                    <a href="#"> Display & Accessibility <img src="{% static 'app/images/arrow.png' %}" width="10px"></a>
+                </div>
+                <div class="settings-links">
+                    <img src="{% static 'app/images/logout.png' %}" class="settings-icons">
+                    <a href="#"> Logout <img src="{% static 'app/images/arrow.png' %}" width="10px"></a>
+                </div>
+
+            </div>
+
+        </div>
+    </nav>
+
+    <div class="posting">
+    <form action="/">
+        
+        <div class="form-inner">
+          <h1>Create Your Job Posting</h1>
+          <input type="text" placeholder="Job Title">
+          <input type="text" placeholder="Location">
+          <input type="text" placeholder="Full-Time or Part-Time">
+          <input type="text" placeholder="Short Summary of Job Description" rows="2">
+          <textarea placeholder="Job Description" rows="10"></textarea>
+          <button type="submit" href="/">Post</button>
+        </div>
+      </form>
+    </div>
+
+    <script src="{% static 'app/js/script.js' %}"></script>
+
+</body>
+</html>

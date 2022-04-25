@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Profile - LinkedIncognito</title>
+    <link rel="stylesheet" href="{% static 'app/css/company_and_login.css' %}">
+</head>
+
+<body>
+
+ <!--------------------------------------Navigation Page --------------------------------------->
+    <nav>
+        <div class="nav-left">
+            <a href="home.html"> <img src="{% static 'app/images/Linkedin-Logo.png' %}" class="logo"></a>
+            <ul>
+                <li><img src="{% static 'app/images/notification.png' %}"></li>
+                <li> <a href="messenger.html"> <img src="{% static 'app/images/inbox.png' %}"></a> </li>
+                <li><a href="calendar.html"><img src="{% static 'app/images/calendar.png' %}"></a></li>
+            </ul>
+        </div>
+
+        <div class="nav-right">
+
+            <div class="search-box">
+                <img src="{% static 'app/images/search.png' %}">
+                <input type="text" placeholder="Search">
+            </div>
+            <div class="nav-user-icon online" onclick="settingsMenuToggle()">
+                <img src="{% static 'app/images/profile-pic.png' %}">
+            </div> 
+            
+        </div>
+
+        <div class="settings-menu">
+
+            <div class="settings-menu-inner">
+
+                <div id="dark-btn">
+                    <span></span>
+                </div>
+
+                <div class="user-profile">
+                    <img src="{% static 'app/images/profile-pic.png' %}">
+                    <div>
+                        <p>Company Name</p>
+                        <a href = "profile.html">See your profile</a>
+                    </div>
+                </div>
+                <hr>
+                <div class="user-profile">
+                    <img src="{% static 'app/images/feedback.png' %}">
+                    <div>
+                        <p>Give Feedback</p>
+                        <a href = "#">Help us improve our website design!</a>
+                    </div>
+                </div>
+                <hr>
+                <div class="settings-links">
+                    <img src="{% static 'app/images/setting.png' %}" class="settings-icons">
+                    <a href="#"> Settings & Privacy <img src="{% static 'app/images/arrow.png' %}" width="10px"></a>
+                </div>
+                <div class="settings-links">
+                    <img src="{% static 'app/images/help.png' %}" class="settings-icons">
+                    <a href="#"> Help & Support <img src="{% static 'app/images/arrow.png' %}" width="10px"></a>
+                </div>
+                <div class="settings-links">
+                    <img src="{% static 'app/images/display.png' %}" class="settings-icons">
+                    <a href="#"> Display & Accessibility <img src="{% static 'app/images/arrow.png' %}" width="10px"></a>
+                </div>
+                <div class="settings-links">
+                    <img src="{% static 'app/images/logout.png' %}" class="settings-icons">
+                    <a href="#"> Logout <img src="{% static 'app/images/arrow.png' %}" width="10px"></a>
+                </div>
+
+            </div>
+
+
+        </div>
+    </nav>
+
+ <!--------------------------------------Profile page --------------------------------------->
+
+    <div class="profile-container">
+        <img src="{% static 'app/images/cover.png' %}" class="cover-img">
+
+        <div class="profile-details">
+            <div class="pd-left">
+                <div class="pd-row">
+                    <img src="{% static 'app/images/profile.png' %}" class="pd-image">
+                    <div>
+                        <h3>Company Name</h3>
+                        <p>X Job Postings</p>
+                    </div>
+                </div>
+            </div>
+            <div class="pd-right">
+                <button type="button"> <img src ="{% static 'app/images/message.png' %}">Message</button>
+            </div>
+        </div>
+
+        <div class="profile-info">
+
+            <div class="info-col">
+
+                <div class="profile-intro">
+                    <h3>Who We Are</h3>
+                    <p class="intro-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ex diam, finibus aliquet viverra id, sagittis lobortis erat. 
+                        Nam maximus est eget ultricies convallis. Suspendisse dictum porttitor lacus. In porta tortor id maximus elementum. 
+                        Quisque ex velit, fringilla nec lorem a, gravida tristique dolor. Pellentesque rutrum est auctor suscipit iaculis. 
+                        Praesent molestie, nunc vel molestie tristique, quam mi bibendum est, pretium dapibus libero justo at erat.
+                    </p>
+                    <hr>
+                    <ul>
+                        <li><img src="{% static 'app/images/location.png' %}"> Brooklyn, New York</li>
+                        <li><img src="{% static 'app/images/group.png' %}"> Less Than 1,000 Employees </li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="post-col">
+                <div class="post-container">
+                    <div class="user-profile">
+                        <img src="{% static 'app/images/profile-pic.png' %}">
+                        <div>
+                            <p>Employer Name</p>
+                        </div>
+                    </div>
+                    <br>
+                    <p clas = "post-text">Implicit Bias Test Type: Gender - Science IAT</p>
+                    <br>
+                    <img src="{% static 'app/images/results.png' %}" class="post-img">
+                </div>
+
+                <div class="post-container">
+                    <div class="user-profile">
+                        <img src="{% static 'app/images/profile-pic.png' %}">
+                        <div>
+                            <p>Employer Name</p>
+                        </div>
+                    </div>
+                    <br>
+                    <p clas = "post-text">Implicit Bias Test Type: Gender - Science IAT</p>
+                    <br>
+                    <img src="{% static 'app/images/results.png' %}" class="post-img">
+                    
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+
+    <script src="{% static 'app/js/script.js' %}"></script>
+
+</body>
+</html>

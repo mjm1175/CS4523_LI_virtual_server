@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE-edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkedIncognito</title>
+    <link rel="stylesheet" href="{% static 'app/css/calendar_and_home.css' %}">
+    <script src="https://kit.fontawesome.com/98fd1b3455.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <nav>
+        <!--------------NAVIGATION BAR--------------->
+        <div class="nav-left">
+            <a href="home.html"> <img src="{% static 'app/images/Linkedin-Logo.png' %}" class="logo"></a>
+            <ul>
+                <li><img src="{% static 'app/images/notification.png' %}"></li>
+                <li> <a href="messenger.html"> <img src="{% static 'app/images/inbox.png' %}"></a> </li>
+                <li><a href="calendar.html"><img src="{% static 'app/images/calendar.png' %}"></a></li>
+            </ul>
+        </div>
+        <div class="nav-right">
+            <!--------------SEARCH BAR--------------->
+            <div class="search-box">
+                <img src="{% static 'app/images/search.png' %}">
+                <input type="text" placeholder="Search Jobs">
+            </div>
+            <!--------------USER PROFILE--------------->
+            <div class="nav-user-icon online" onclick="settingsMenuToggle()">
+                <img src="{% static 'app/images/profile.png' %}">
+            </div>
+        </div>
+        <div class="settings-menu">
+
+            <div class="settings-menu-inner">
+
+                <div id="dark-btn">
+                    <span></span>
+                </div>
+
+                <div class="user-profile">
+                    <img src="{% static 'app/images/profile.png' %}">
+                    <div>
+                        <p>Company Name</p>
+                        <a href = "companyprofileAdmin.html">See your profile</a>
+                    </div>
+                </div>
+                <hr>
+                <div class="user-profile">
+                    <img src="{% static 'app/images/feedback.png' %}">
+                    <div>
+                        <p>Give Feedback</p>
+                        <a href = "#">Help us improve our website design!</a>
+                    </div>
+                </div>
+                <hr>
+                <div class="settings-links">
+                    <img src="{% static 'app/images/setting.png' %}" class="settings-icons">
+                    <a href="#"> Settings & Privacy <img src="{% static 'app/images/arrow.png' %}" width="10px"></a>
+                </div>
+                <div class="settings-links">
+                    <img src="{% static 'app/images/help.png' %}" class="settings-icons">
+                    <a href="#"> Help & Support <img src="{% static 'app/images/arrow.png' %}" width="10px"></a>
+                </div>
+                <div class="settings-links">
+                    <img src="{% static 'app/images/display.png' %}" class="settings-icons">
+                    <a href="#"> Display & Accessibility <img src="{% static 'app/images/arrow.png' %}" width="10px"></a>
+                </div>
+                <div class="settings-links">
+                    <img src="{% static 'app/images/logout.png' %}" class="settings-icons">
+                    <a href="#"> Logout <img src="{% static 'app/images/arrow.png' %}" width="10px"></a>
+                </div>
+
+            </div>
+
+
+        </div>
+    </nav>
+
+    <div class="container">
+        <!--------------LEFT SIDEBAR--------------->
+        <div class="left-sidebar">
+            <div class="imp-links">
+                <a href="#"><img src="{% static 'app/images/news.png' %}"> Latest Jobs </a>
+                <a href="#"><img src="{% static 'app/images/friends.png' %}"> Connections </a>
+            </div>
+        </div>
+        <!--------------MAIN CONTENT--------------->
+        <div class="main-content">
+            <div class="write-post-container">
+                <div class="user-profile">
+                    <img src="{% static 'app/images/profile.jpg' %}">
+                    <div>
+                        <p>@user1</p>
+                        <small>Public</small>
+                    </div>
+                </div>
+                <div class="post-input-container">
+                    <textarea rows="3" placeholder="Enter post here"></textarea>
+                    <div class="add-post-links">
+                        <a href="#"><img src="{% static 'app/images/live-video.png' %}">Live Video</a>
+                        <a href="#"><img src="{% static 'app/images/photo.png' %}">Photo/Video</a>
+                        <a href="#"><img src="{% static 'app/images/feeling.png' %}">Status</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="post-container">
+                <div class="user-profile">
+                    <a href="companyprofile.html"><img src="{% static 'app/images/profile.jpg' %}"></a>
+                    <div>
+                        <p>Google</p>
+                        <span>April 10 2022, 11:21PM</span>
+                    </div>
+                </div>
+                <p class="post-text">Web Developer</p>
+                <div class="job-preview">
+                    <div class="job-preview-elem">
+                        <p>New York, NY</p>
+                    </div>
+                    <div class="job-preview-elem">
+                        <P>Full-Time</P>
+                    </div>
+                </div>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum
+                    interdum, nisi lorem egestas vitae scel.</p>
+                <br>
+                <a href="job_post.html" class="viewMore">View More</a>
+                
+            </div>
+
+            <div class="post-container">
+                <div class="user-profile">
+                    <a href="companyprofile.html"><img src="{% static 'app/images/profile.jpg' %}"></a>
+                    <div>
+                        <p>Apple</p>
+                        <span>April 10 2022, 11:21PM</span>
+                    </div>
+                </div>
+                <p class="post-text">Product Tester</p>
+                <div class="job-preview">
+                    <div class="job-preview-elem">
+                        <p>Cupertino, CA</p>
+                    </div>
+                    <div class="job-preview-elem">
+                        <P>Part-Time</P>
+                    </div>
+                </div>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum
+                    interdum, nisi lorem egestas vitae scel.</p>
+                <br>
+                <a href="job_post.html" class="viewMore">View More</a>
+            </div>
+        </div>
+
+        <!--------------RIGHT SIDEBAR--------------->
+        <div class="right-sidebar">
+            <div class="sidebar-title">
+                <h4>Upcoming Meetings</h4>
+                <a href="#">See All</a>
+            </div>
+            <div class="event">
+                <div class="left-event">
+                    <h3>18</h3>
+                    <span>March</span>
+                </div>
+                <div class="right-event">
+                    <h4>Social Media</h4>
+                    <p><i class="fa-solid fa-location-arrow"></i> Willson Tech Park</p>
+                    <a href="#">More Info</a>
+                </div>
+            </div>
+            <div class="event">
+                <div class="left-event">
+                    <h3>22</h3>
+                    <span>June</span>
+                </div>
+                <div class="right-event">
+                    <h4>Mobile Marketing</h4>
+                    <p><i class="fa-solid fa-location-arrow"></i> Willson Tech Park</p>
+                    <a href="#">More Info</a>
+                </div>
+            </div>
+            <div class="sidebar-title">
+                <h4>Advertisement</h4>
+                <a href="#">Close</a>
+            </div>
+            <img src="{% static 'app/images/advertisement.png' %}" class="sidebar-ads">
+            <div class="sidebar-title">
+                <h4>Conversation</h4>
+                <a href="#">Hide Chat</a>
+            </div>
+            <div class="online-list">
+                <div class="online">
+                    <img src="{% static 'app/images/profile2.jpg' %}">
+                </div>
+                <p>@a.osborn</p>
+            </div>
+            <div class="online-list">
+                <div class="online">
+                    <img src="{% static 'app/images/profile3.jpg' %}">
+                </div>
+                <p>@m.morejon</p>
+            </div>
+            <div class="online-list">
+                <div class="online">
+                    <img src="{% static 'app/images/profile4.jpg' %}">
+                </div>
+                <p>@t.trusty</p>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'app/js/script.js' %}"></script>
+</body>
+
+</html>
