@@ -90,6 +90,23 @@
 
         </div>
     </nav>
+	
+	<!--displaying messages from views if theyre there-->
+        {% if messages %}
+        {% for message in messages %}
+
+        {% if message.tags == 'error' %}
+        <div class="alert alert-danger">
+            {{message}}
+        </div>
+        {% else %}
+        <div class="alert alert-{{message.tags}}">
+            {{message}}
+        </div>
+        {% endif %}
+
+        {% endfor %}
+        {% endif %}
 
     <div class="container">
         <!--------------LEFT SIDEBAR--------------->

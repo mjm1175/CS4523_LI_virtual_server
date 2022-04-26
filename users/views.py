@@ -1,7 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .forms import RegisterForm
+from .forms import *
+from .models import *
 from django.contrib.auth.decorators import login_required
+from django.views.generic import DetailView
+from datetime import datetime
 
 # Create your views here.
 
@@ -31,3 +34,36 @@ def register(request):
 @login_required
 def profile(request):
 	return render(request, 'profile.html', {})
+
+
+@login_required
+def create_resume(request):
+	if request.method == 'POST':
+		# request.FILES bc files upload option in form
+		form = ResumeForm(request.POST, request.FILES)
+		if form.is_valid():
+			obj = form.save(commit=False)
+
+			# setting 1:1 attribute
+			obj.user = request.user
+
+			obj.save()
+
+			messages.success(request, 'Resume created successfully.')
+			return redirect('profile')
+		else:
+			messages.error(request, 'Error processing your request')
+			context = {'form': form}
+			return render(request, 'create-resume.html', context)
+
+	if request.method == 'GET':
+		form = ResumeForm()
+		context = {'form': form}
+		return render(request, 'create-resume.html', context)
+
+	return render(request, 'create-resume.html', {})
+
+
+class ResumeDetailView(DetailView):
+	model=Resume
+	template_name = 'resume-detail.html'

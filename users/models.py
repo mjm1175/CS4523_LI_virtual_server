@@ -220,7 +220,6 @@ class Education(models.Model):
         (LEVEL8, "Doctorate's Degree (PHD)"),
     ]
 
-
     institution = models.CharField(null=True, max_length=200)
     qualification = models.CharField(null=True, max_length=200)
     level = models.CharField(choices=LEVEL_CHOICES, default=LEVEL5A, max_length=200)
