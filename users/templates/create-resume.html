@@ -120,7 +120,7 @@
                 {% endfor %}            
             {% endif %}
 
-          <h2>General Information:</h2>
+          <h3>General Information:</h3>
           <div class="col-md-12">
                 <div class="form-group app-label">
                     <label class="text-muted">Profile Image:</label><br>
@@ -134,52 +134,14 @@
                     {% endfor %}
                 {% endif %}
           </div>
-          <div class="col-md-6">
-              <div class="form-group app-label">
-                  <label class="text-muted">Date of Birth <span class="text-danger">*</span> :</label><br>
-                  {{form.date_birth}}
-              </div>
-              {% if form.date_birth.errors %}
-                {% for error in form.date_birth.errors %}
-                    <div class="alert alert-danger">
-                        <strong>{{ error|escape }}</strong>
-                    </div>
-                {% endfor %}
-             {% endif %}              
-          </div>
-          <div class="col-md-6">
-            <div class="form-group app-label">
-                <label class="text-muted">Sex <span class="text-danger">*</span> :</label><br>
-                {{form.sex}}
-            </div>
-            {% if form.sex.errors %}
-              {% for error in form.sex.errors %}
-                  <div class="alert alert-danger">
-                      <strong>{{ error|escape }}</strong>
-                  </div>
-              {% endfor %}
-           {% endif %}              
-        </div>
-        <div class="col-md-6">
-            <div class="form-group app-label">
-                <label class="text-muted">Marital Status <span class="text-danger">*</span> :</label><br>
-                {{form.marital_status}}
-            </div>
-            {% if form.marital_status.errors %}
-              {% for error in form.marital_status.errors %}
-                  <div class="alert alert-danger">
-                      <strong>{{ error|escape }}</strong>
-                  </div>
-              {% endfor %}
-           {% endif %}              
-        </div>
 
-	<h2>Address: </h2>
-
+        <h3>Address:</h3>
         <div class="col-md-6">
             <div class="form-group app-label">
                 <label class="text-muted">Address Line 1 <span class="text-danger">*</span> :</label><br>
-                {{form.address_line1}}
+                <div class = "fill-in">
+                    {{form.address_line1}}
+                     </div>
             </div>
             {% if form.address_line1.errors %}
               {% for error in form.address_line1.errors %}
@@ -189,10 +151,13 @@
               {% endfor %}
            {% endif %}              
         </div>
+
         <div class="col-md-6">
             <div class="form-group app-label">
                 <label class="text-muted">Address Line 2 :</label><br>
-                {{form.address_line2}}
+                <div class = "fill-in">
+                    {{form.address_line2}}
+                </div>
             </div>
             {% if form.address_line2.errors %}
               {% for error in form.address_line2.errors %}
@@ -202,10 +167,13 @@
               {% endfor %}
            {% endif %}              
         </div>
+
         <div class="col-md-6">
             <div class="form-group app-label">
                 <label class="text-muted">City <span class="text-danger">*</span> :</label><br>
-                {{form.city}}
+                <div class = "fill-in">
+                    {{form.city}}
+                </div>
             </div>
             {% if form.city.errors %}
               {% for error in form.city.errors %}
@@ -215,6 +183,7 @@
               {% endfor %}
            {% endif %}              
         </div>
+
         <div class="col-md-6">
             <div class="form-group app-label">
                 <label class="text-muted">State <span class="text-danger">*</span> :</label><br>
@@ -228,19 +197,8 @@
               {% endfor %}
            {% endif %}              
         </div>
-        <div class="col-md-6">
-            <div class="form-group app-label">
-                <label class="text-muted">Phone Number <span class="text-danger">*</span> :</label><br>
-                {{form.phone_number}}
-            </div>
-            {% if form.phone_number.errors %}
-              {% for error in form.phone_number.errors %}
-                  <div class="alert alert-danger">
-                      <strong>{{ error|escape }}</strong>
-                  </div>
-              {% endfor %}
-           {% endif %}              
-        </div>
+        
+        <h3>Attach a Cover Letter:</h3>
         <div class="col-md-6">
             <div class="form-group app-label">
                 <label class="text-muted">Cover Letter :</label><br>
@@ -254,6 +212,8 @@
               {% endfor %}
            {% endif %}              
         </div>
+
+        <h3>Attach Your Resume:</h3>
         <div class="col-md-6">
             <div class="form-group app-label">
                 <label class="text-muted">CV :</label><br>
@@ -276,4 +236,3 @@
 
 </body>
 </html>
-

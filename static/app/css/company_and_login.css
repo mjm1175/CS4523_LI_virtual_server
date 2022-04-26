@@ -226,60 +226,26 @@ nav {
 }
 
 .loginbox {
-    width : 320px;
-   /* height: 460px;*/
+    width: 30%;
     background: var(--dark-accent);
     color: #fff;
-    top: 50%;
-    left: 50%;
-    margin: 6% auto;
+    margin: 50px 35%;
+    padding-top: 20px;
     position: absolute;
-    transform: translate(-50%,-70%);
     box-sizing: border-box;
-    padding: 20px;
-    border-radius: 20px; 
+    border-radius: 20px;
 }
 
 .input-group {
-    position: absolute;
-    transition: .5s;
+    position: relative;
+    padding: 20px;
 }
 
 h1 {
     margin: 0;
-    padding: 0 0 20px;
+    padding: 0 0 10px;
     text-align: center;
     font-size: 22px;
-}
-
-.button-box {
-    margin: 35px auto;
-    position: relative;
-    border-style: solid;
-    border-color: #ffffff;
-    display: flex;
-    justify-content: space-around;
-    border-radius: 20px;
-}
-
-.toggle-btn {
-    padding: 10px 10px;
-    cursor: pointer;
-    background: transparent;
-    border: 0;
-    outline: none;
-    position: relative;
-}
-
-#btn {
-    top: 0;
-    left:0;
-    position: absolute;
-    width: 50%;
-    height: 100%;
-    background-color: var(--light-accent);
-    border-radius: 30px;
-    transition: .5s;
 }
 
 .loginbox p {
@@ -328,7 +294,7 @@ h1 {
     text-decoration: none;
     font-size: 12px;
     line-height: 20px;
-    color: darkgrey;
+    color: #fff;
 }
 
 .loginbox a:hover {
@@ -336,54 +302,17 @@ h1 {
     
 }
 
-#login {
-    left: 40px;
-    right: 40px;
-}
-
-#register {
-    left: 450px;
-    top: 120px;
-    display: flex;
-    flex-direction: column;
-   
-}
-
-#register button {
-    border: none;
-    outline: none;
-    height: 40px;
-    background: var(--light-accent);
-    color: #fff;
-    font-size: 18px;
-    border-radius: 20px;
-    margin-top: 50px;
-}
-
-#register button:hover {
-    cursor: pointed;
-    background: #d573c0;
-    color: #000;
-}
-
-#register a {
-    color: #000;
-    font-size: 14px;
-}
-
 .names {
     display: flex;
+    justify-content: space-between;
 }
 
 .fn, .ln {
     display: flex;
     flex-direction: column;
-    justify-content: left;
+    width: 45%;
 }
 
-.fn {
-    margin-right: 10px;
-}
 
 .radioBtns {
     display: flex;

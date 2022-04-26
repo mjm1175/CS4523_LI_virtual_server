@@ -158,16 +158,10 @@ class Resume(models.Model):
     # maybe remove upload_to??
     image = models.ImageField(default='default.png', upload_to='profile_images')
     email_confirmed = models.BooleanField(default=False)
-    # rm?
-    date_birth = models.DateField(blank=True, null=True)
-    # rm?
-    sex = models.CharField(max_length=100, choices=SEX_CHOICES, default=OTHER)
-    marital_status = models.CharField(max_length=100, choices=MARITAL_CHOICES, default=SINGLE)
     address_line1 = models.CharField(max_length=100, null=True, blank=True)
     address_line2 = models.CharField(max_length=100, null=True, blank=True)
     city = models.CharField(max_length=100, null=True, blank=True)
     state = models.CharField(max_length=100, choices=STATE_CHOICES, default=NY)
-    phone_number = models.CharField(max_length=12, null=True, blank=True)
     slug = models.SlugField(max_length=500, unique=True, blank=True, null=True)
     date_created = models.DateTimeField(default=timezone.now)
     last_updated = models.DateTimeField(null=True, blank=True)

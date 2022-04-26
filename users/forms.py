@@ -202,21 +202,6 @@ class ResumeForm(forms.ModelForm):
                     widget=forms.FileInput(attrs={'class':'form-control'}),
                     )
 
-    date_birth = forms.DateField(
-                    required=True,
-                    widget=DateInput(attrs={'class':'form-control', 'placeholder':'Enter a date: '})
-                    )
-
-    sex = forms.ChoiceField(
-                    choices = SEX_CHOICES,
-                    widget=forms.Select(attrs={'class':'nice-select rounded'})
-                    )
-
-    marital_status = forms.ChoiceField(
-                    choices=MARITAL_CHOICES,
-                    widget=forms.Select(attrs={'class':'nice-select rounded'})
-                    )
-
     address_line1 = forms.CharField(
                     required=True,
                     widget=forms.TextInput(attrs={'class':'form-control resume', 'placeholder':'Enter Address Line 1'}),
@@ -236,11 +221,6 @@ class ResumeForm(forms.ModelForm):
                     choices = STATE_CHOICES,
                     widget=forms.Select(attrs={'class': 'nice-select round'})
                     )
-
-    phone_number = forms.CharField(
-                    required=True,
-                    widget=forms.TextInput(attrs={'class': 'form-control resume', 'placeholder': 'Enter Phone Number'})
-                    )
     
     cover_letter = forms.FileField(
                     required=False,
@@ -255,6 +235,6 @@ class ResumeForm(forms.ModelForm):
     class Meta:
         model = Resume
         fields = [
-            'image', 'date_birth', 'sex', 'marital_status', 'address_line1', 'address_line2',
-            'city', 'state', 'phone_number', 'cover_letter', 'cv',
+            'image', 'address_line1', 'address_line2',
+            'city', 'state', 'cover_letter', 'cv',
         ]

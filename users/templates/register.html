@@ -35,28 +35,7 @@
 
     <div class="box">
         <div class="loginbox">
-           <div class = "button-box">
-            <div id="btn"></div>
-            <!--<button type="button" class="toggle-btn" onclick="login()">Login</button>
-            <button type="button" class="toggle-btn" onclick="register()">Register</button>-->
-            <button type="button" class="toggle-btn" onclick="login()"> <a href="{% url 'login' %}">Login</a></button>
-            <button type="button" class="toggle-btn" onclick="register()"> <a href="{% url 'register' %}">Register</a></button>
-           </div>
-            
-
-
-            <form id ="login" class ="input-group">
-                <p>Email Address</p>
-                <input type="text" name="" placeholder="Enter Email Address" class='form-control' required>
-
-                <p>Password</p>
-                <input type="password" name="" placeholder="Enter Password" class='form-control' required>
-
-                <input type="submit" name="" value ="Login">
-                <a href="#">Forget your password?</a><br>
-        
-            </form>
-
+ 	    <h1> Register Here! </h1>
             <form id ="register" method='POST' class ="input-group">
                 {% csrf_token %}
 
@@ -100,12 +79,7 @@
                
                 </div>
 
-                <!--<p>Name</p>-->
-                <!--{{form.name}}-->
-                <!--<input type="text" name="" placeholder="Enter Name" class='form-control' required>-->
-
                 {{form.email}}
-                <!--<input type="text" name="" placeholder="Enter Email Address" class='form-control' required>-->
                 {% if form.email.errors %}
                     {% for error in form.email.errors %}
                     <div class="alert alert-danger">
@@ -124,7 +98,6 @@
 		{% endif %}
 
                 {{form.password1}}
-                <!--<input type="password" name="" placeholder="Enter Password" class='form-control' required>-->
                 {% if form.password1.errors %}
                     {% for error in form.password1.errors %}
                     <div class="alert alert-danger">
@@ -135,7 +108,6 @@
 
 
                 {{form.password2}}
-                <!--<input type="password" name="" placeholder="Enter Password" class='form-control' required>-->
                 {% if form.password2.errors %}
                     {% for error in form.password2.errors %}
                     <div class="alert alert-danger">
@@ -154,37 +126,12 @@
                 </div>
 
                 <input type="submit" name="" value ="Register">
-        
+        	<a href="{% url 'login' %}">Already Have An Account? Login Here!</a><br>
+
             </form>
 
         </div>
     </div>
-
-    <script>
-        var loginVar = document.getElementById("login");
-        var regVar = document.getElementById("register");
-        var btnVar = document.getElementById("btn");
-
-        function register() {
-            loginVar.style.left = "-400px";
-            loginVar.style.right = "400px";
-            regVar.style.left = "40px";
-            regVar.style.right = "40px";
-            btnVar.style.left = "138px";
-        }
-
-        function login() {
-            loginVar.style.left = "40px";
-            loginVar.style.right = "40px";
-            regVar.style.left = "400px";
-            regVar.style.right = "-400px";
-            btnVar.style.left = "0px";
-        }
-
-
-    </script>
-
-
 
 </body>
 </html>
