@@ -227,7 +227,7 @@ nav {
 
 .loginbox {
     width : 320px;
-    height: 460px;
+   /* height: 460px;*/
     background: var(--dark-accent);
     color: #fff;
     top: 50%;
@@ -237,8 +237,7 @@ nav {
     transform: translate(-50%,-70%);
     box-sizing: border-box;
     padding: 20px;
-    border-radius: 20px;
-    overflow: hidden; 
+    border-radius: 20px; 
 }
 
 .input-group {

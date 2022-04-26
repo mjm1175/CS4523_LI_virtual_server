@@ -24,16 +24,7 @@
             <button type="button" class="toggle-btn" onclick="register()">Register</button>-->
             <button type="button" class="toggle-btn" onclick="login()"> <a href="{% url 'login' %}">Login</a></button>
             <button type="button" class="toggle-btn" onclick="register()"> <a href="{% url 'register' %}">Register</a></button>
-            <!-- not working -->
-            {% if register %}
-            <script>
-                loginVar.style.left = "-400px";
-                loginVar.style.right = "400px";
-                regVar.style.left = "40px";
-                regVar.style.right = "40px";
-                btnVar.style.left = "138px";
-            </script>
-        {% endif %}
+           
        </div>
 
 
