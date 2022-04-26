@@ -232,7 +232,7 @@ class ResumeForm(forms.ModelForm):
                     widget=forms.TextInput(attrs={'class':'form-control resume','placeholder':'Enter City'})
                     )
     
-    state = forms.CharField(
+    state = forms.ChoiceField(
                     choices = STATE_CHOICES,
                     widget=forms.Select(attrs={'class': 'nice-select round'})
                     )

@@ -80,7 +80,7 @@
                     <!-- Entry 6-->
                     <div class="setting-links">
                         <img src="{% static 'app/images/logout.png' %}" class="settings-icon">
-                        <a href="{% url 'login' %}">Logout <img src="{% static 'app/images/arrow.png' %}" width="10px"></a>
+                        <a href="{% url 'logout' %}">Logout <img src="{% static 'app/images/arrow.png' %}" width="10px"></a>
                     </div>                                                              
                 </div>
             </div>
@@ -128,7 +128,11 @@
                     <button type="button"> <img src="{% static 'app/images/add-friends.png' %}"> Friend</button>
                     <button type="button"> <img src="{% static 'app/images/message.png' %}"> Message</button>
                     <br>
-                    <a href="#"><img src="{% static 'app/images/setting2.png' %}"></a>
+		    {% if user.resume %}
+	                    <a href="{% url 'resume-detail' user.resume.slug %}"><img src="{% static 'app/images/setting2.png' %}"></a>
+		    {% else %}
+	                    <a href="{% url 'create_resume' %}"><img src="{% static 'app/images/setting2.png' %}"></a>
+		    {% endif %}
                 </div>
             </div>
 

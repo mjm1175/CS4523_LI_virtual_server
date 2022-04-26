@@ -35,7 +35,6 @@ def register(request):
 def profile(request):
 	return render(request, 'profile.html', {})
 
-
 @login_required
 def create_resume(request):
 	if request.method == 'POST':

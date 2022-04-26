@@ -1,0 +1,279 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Profile - LinkedIncognito</title>
+    
+    <link rel="stylesheet" href="{% static 'app/css/job_post_creation.css' %}">
+</head>
+
+<body>
+ <!--------------------------------------Navigation Bar --------------------------------------->
+    <nav>
+        <div class="nav-left">
+            <a href="{% url 'home_page' %}"> <img src="{% static 'app/images/Linkedin-Logo.png' %}" class="logo"></a>
+            <ul>
+                <li><img src="{% static 'app/images/notification.png' %}"></li>
+                <li> <a href="messenger.html"> <img src="{% static 'app/images/inbox.png' %}"></a> </li>
+                <li><a href="calendar.html"><img src="{% static 'app/images/calendar.png' %}"></a></li>
+            </ul>
+        </div>
+
+        <div class="nav-right">
+
+            <div class="search-box">
+                <img src="{% static 'app/images/search.png' %}">
+                <input type="text" placeholder="Search">
+            </div>
+            <div class="nav-user-icon online" onclick="settingsMenuToggle()">
+                <img src="{% static 'app/images/profile-pic.png' %}">
+            </div> 
+            
+        </div>
+
+        <div class="settings-menu">
+
+            <div class="settings-menu-inner">
+
+                <div id="dark-btn">
+                    <span></span>
+                </div>
+
+                <div class="user-profile">
+                    <img src="{% static 'app/images/profile-pic.png' %}">
+                    <div>
+                        <p>{{user.first_name}} {{user.last_name}}</p>
+                        <a href="{% url 'profile' %}">See your profile</a>
+                    </div>
+                </div>   
+                <hr>
+                <div class="user-profile">
+                    <img src="{% static 'app/images/feedback.png' %}">
+                    <div>
+                        <p>Give Feedback</p>
+                        <a href = "#">Help us improve our website design!</a>
+                    </div>
+                </div>
+                <hr>
+                <div class="settings-links">
+                    <img src="{% static 'app/images/setting.png' %}" class="settings-icons">
+                    <a href="#"> Settings & Privacy <img src="{% static 'app/images/arrow.png' %}" width="10px"></a>
+                </div>
+                <div class="settings-links">
+                    <img src="{% static 'app/images/help.png' %}" class="settings-icons">
+                    <a href="#"> Help & Support <img src="{% static 'app/images/arrow.png' %}" width="10px"></a>
+                </div>
+                <div class="settings-links">
+                    <img src="{% static 'app/images/display.png' %}" class="settings-icons">
+                    <a href="#"> Display & Accessibility <img src="{% static 'app/images/arrow.png' %}" width="10px"></a>
+                </div>
+                <div class="settings-links">
+                    <img src="{% static 'app/images/logout.png' %}" class="settings-icons">
+                    <a href="{% url 'logout' %}"> Logout <img src="{% static 'app/images/arrow.png' %}" width="10px"></a>
+                </div>
+
+            </div>
+
+        </div>
+    </nav>
+
+    <!--displaying messages from views if theyre there-->
+    {% if messages %}
+    {% for message in messages %}
+
+    {% if message.tags == 'error' %}
+    <div class="alert alert-danger">
+        {{message}}
+    </div>
+    {% else %}
+    <div class="alert alert-{{message.tags}}">
+        {{message}}
+    </div>
+    {% endif %}
+
+    {% endfor %}
+    {% endif %}
+
+    <div class="posting">
+    <form method="POST" enctype="multipart/form-data">
+        
+        {% csrf_token %}
+        <div class="form-inner">
+          <h1>Update Profile</h1>
+          
+            {% if form.errors %}
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error|escape }}</strong>
+                        </div>           
+                    {% endfor %} 
+                {% endfor %}            
+            {% endif %}
+
+          <h2>General Information:</h2>
+          <div class="col-md-12">
+                <div class="form-group app-label">
+                    <label class="text-muted">Profile Image:</label><br>
+                    {{form.image}}
+                </div>
+                {% if form.image.errors %}
+                    {% for error in form.image.errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+          </div>
+          <div class="col-md-6">
+              <div class="form-group app-label">
+                  <label class="text-muted">Date of Birth <span class="text-danger">*</span> :</label><br>
+                  {{form.date_birth}}
+              </div>
+              {% if form.date_birth.errors %}
+                {% for error in form.date_birth.errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+             {% endif %}              
+          </div>
+          <div class="col-md-6">
+            <div class="form-group app-label">
+                <label class="text-muted">Sex <span class="text-danger">*</span> :</label><br>
+                {{form.sex}}
+            </div>
+            {% if form.sex.errors %}
+              {% for error in form.sex.errors %}
+                  <div class="alert alert-danger">
+                      <strong>{{ error|escape }}</strong>
+                  </div>
+              {% endfor %}
+           {% endif %}              
+        </div>
+        <div class="col-md-6">
+            <div class="form-group app-label">
+                <label class="text-muted">Marital Status <span class="text-danger">*</span> :</label><br>
+                {{form.marital_status}}
+            </div>
+            {% if form.marital_status.errors %}
+              {% for error in form.marital_status.errors %}
+                  <div class="alert alert-danger">
+                      <strong>{{ error|escape }}</strong>
+                  </div>
+              {% endfor %}
+           {% endif %}              
+        </div>
+
+	<h2>Address: </h2>
+
+        <div class="col-md-6">
+            <div class="form-group app-label">
+                <label class="text-muted">Address Line 1 <span class="text-danger">*</span> :</label><br>
+                {{form.address_line1}}
+            </div>
+            {% if form.address_line1.errors %}
+              {% for error in form.address_line1.errors %}
+                  <div class="alert alert-danger">
+                      <strong>{{ error|escape }}</strong>
+                  </div>
+              {% endfor %}
+           {% endif %}              
+        </div>
+        <div class="col-md-6">
+            <div class="form-group app-label">
+                <label class="text-muted">Address Line 2 :</label><br>
+                {{form.address_line2}}
+            </div>
+            {% if form.address_line2.errors %}
+              {% for error in form.address_line2.errors %}
+                  <div class="alert alert-danger">
+                      <strong>{{ error|escape }}</strong>
+                  </div>
+              {% endfor %}
+           {% endif %}              
+        </div>
+        <div class="col-md-6">
+            <div class="form-group app-label">
+                <label class="text-muted">City <span class="text-danger">*</span> :</label><br>
+                {{form.city}}
+            </div>
+            {% if form.city.errors %}
+              {% for error in form.city.errors %}
+                  <div class="alert alert-danger">
+                      <strong>{{ error|escape }}</strong>
+                  </div>
+              {% endfor %}
+           {% endif %}              
+        </div>
+        <div class="col-md-6">
+            <div class="form-group app-label">
+                <label class="text-muted">State <span class="text-danger">*</span> :</label><br>
+                {{form.state}}
+            </div>
+            {% if form.state.errors %}
+              {% for error in form.state.errors %}
+                  <div class="alert alert-danger">
+                      <strong>{{ error|escape }}</strong>
+                  </div>
+              {% endfor %}
+           {% endif %}              
+        </div>
+        <div class="col-md-6">
+            <div class="form-group app-label">
+                <label class="text-muted">Phone Number <span class="text-danger">*</span> :</label><br>
+                {{form.phone_number}}
+            </div>
+            {% if form.phone_number.errors %}
+              {% for error in form.phone_number.errors %}
+                  <div class="alert alert-danger">
+                      <strong>{{ error|escape }}</strong>
+                  </div>
+              {% endfor %}
+           {% endif %}              
+        </div>
+        <div class="col-md-6">
+            <div class="form-group app-label">
+                <label class="text-muted">Cover Letter :</label><br>
+                {{form.cover_letter}}
+            </div>
+            {% if form.cover_letter.errors %}
+              {% for error in form.cover_letter.errors %}
+                  <div class="alert alert-danger">
+                      <strong>{{ error|escape }}</strong>
+                  </div>
+              {% endfor %}
+           {% endif %}              
+        </div>
+        <div class="col-md-6">
+            <div class="form-group app-label">
+                <label class="text-muted">CV :</label><br>
+                {{form.cv}}
+            </div>
+            {% if form.cv.errors %}
+              {% for error in form.cv.errors %}
+                  <div class="alert alert-danger">
+                      <strong>{{ error|escape }}</strong>
+                  </div>
+              {% endfor %}
+           {% endif %}              
+        </div>
+          <button type="submit" class="submitBtn btn btn-primary" value="Save Changes">Save Changes</button>
+        </div>
+      </form>
+    </div>
+
+    <script src="{% static 'app/js/script.js' %}"></script>
+
+</body>
+</html>
+
