@@ -30,7 +30,7 @@
                 <input type="text" placeholder="Search">
             </div>
             <div class="nav-user-icon online" onclick="settingsMenuToggle()">
-                <img src="{% static 'app/images/profile-pic.png' %}">
+                <img src="{{object.image.url}}">
             </div> 
             
         </div>
@@ -44,7 +44,7 @@
                 </div>
 
                 <div class="user-profile">
-                    <img src="{% static 'app/images/profile-pic.png' %}">
+                    <img src="{{object.image.url}}">
                     <div>
                         <p>{{user.first_name}} {{user.last_name}}</p>
                         <a href="{% url 'profile' %}">See your profile</a>
@@ -121,7 +121,7 @@
                     <div class="col-lg-16 col-md-6 mt-4 pt-5">
                         <div class="component-wrapper rounded shadow">
                             <div class="p-4 border-bottom bg-light">
-                                <h4 class="text-dark">General Information:</h4>
+                                <h3 class="text-dark">General Information:</h3>
                             </div>
 
                             <div class="p-4">
@@ -163,12 +163,59 @@
                         </div>
                     </div>
                 </div>
-
+                <br>
+                <br>
+                
+                <!--tried to make this a modal (popup), not working though-->
                 <div class="row">
                     <div class="col-lg-12 mt-4 pt-2">
-                        <h4 class="text-dark">Education: <button type="button" class="btn btn-secondary-outline" data-toggle="modal" data-target="#addEducation"><span class="mdi mdi-plus mdi-24px"></span>Add Education</button></h4>
+                        <h3 class="text-dark">Education: <!--<button type="button" class="btn btn-secondary-outline" data-toggle="modal" data-target="#addEducation"><span class="mdi mdi-plus mdi-24px"></span>Add Education</button>--></h3>
                     </div>
                 </div>
+                    {% if educations %}
+                        {% for education in educations %}
+                            <div class="row">
+                            <div class="col-lg-12 mt-4 pt-2">
+                                <div class="component-wrapper rounded shadow">
+                                    <div class="p-4 border-bottom bg-light">
+                                        <h4 class="title mb-0">{{education.institution}}</h4>
+                                    </div>
+
+                                    <div class="p-4">
+                                        <div class="row">
+                                            <div class="col">
+                                                <p><strong>Qualification: </strong> {{education.qualification}}</p>
+                                            </div>
+                                            <div class="col">
+                                                <p><strong>Level of Qualification: </strong> {{education.level}}</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col">
+                                                <p><strong>Start Date: </strong> {{education.start_date}}</p>
+                                            </div>
+                                            <div class="col">
+                                                <p><strong>Graduated: </strong> {{education.graduated}}</p>
+                                            </div>                                                                                        
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col">
+                                                <p><strong>Major: </strong> {{education.major_subject}}</p>
+                                            </div>
+                                            <div class="col">
+                                                <button class="btn btn-danger">Delete Qualification</button>
+                                            </div>                                                                                        
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                            <br>
+                            <br>                            
+                        {% endfor %}
+                    {% endif %}
 
                 <div class="modal fade" id="addEducation" tabindex="-1" role="dialog" aria-labelledby="addEducationLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
@@ -177,9 +224,9 @@
                                 {% csrf_token %}
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="exampleModalLabel">Add New Education Record</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
-                                    </button>
+                                    </button>-->
                                 </div>
                                 <div class="modal-body">
                                 
@@ -197,10 +244,11 @@
                                                 {% endfor %}
                                             {% endif %}
                                         </div>
-
+                                    </div>
+                                    <div class="row">
                                         <div class="col-lg-12">
                                             <div class="form-group position-relative">
-                                                <label>Qualification <span class="text-danger">*</span></label>
+                                                <label>Degree Title <span class="text-danger">*</span></label>
                                                 {{edu_form.qualification}}
                                             </div>
                                             {% if edu_form.qualification.errors %}
@@ -211,7 +259,8 @@
                                                 {% endfor %}
                                             {% endif %}
                                         </div>  
-                                        
+                                    </div>
+                                    <div class="row">
                                         <div class="col-lg-12">
                                             <div class="form-group position-relative">
                                                 <label>Level <span class="text-danger">*</span></label>
@@ -225,7 +274,8 @@
                                                 {% endfor %}
                                             {% endif %}
                                         </div>
-
+                                    </div>
+                                    <div class="row">
                                         <div class="col-lg-12">
                                             <div class="form-group position-relative">
                                                 <label>Start Date <span class="text-danger">*</span></label>
@@ -239,7 +289,8 @@
                                                 {% endfor %}
                                             {% endif %}
                                         </div>
-
+                                    </div>
+                                    <div class="row">
                                         <div class="col-lg-12">
                                             <div class="form-group position-relative">
                                                 <label>Graduation Date <span class="text-danger">*</span></label>
@@ -253,7 +304,8 @@
                                                 {% endfor %}
                                             {% endif %}
                                         </div>            
-                                        
+                                    </div>
+                                    <div class="row">  
                                         <div class="col-lg-12">
                                             <div class="form-group position-relative">
                                                 <label>Major Subject</label>
@@ -268,22 +320,22 @@
                                             {% endif %}
                                         </div>
                                     </div>
-
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <!--<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
                                     <button type="submit" class="btn btn-primary">Save changes</button>
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
-
+                <br>
+                <br>
                 <div class="row">
                     <div class="col-lg-16 col-md-6 mt-4 pt-5">
                         <div class="component-wrapper rounded shadow">
                             <div class="p-4 border-bottom bg-light">
-                                <h4 class="text-dark">Experience:</h4>
+                                <h3 class="text-dark">Experience:</h3>
                             </div>
                         </div>
                     </div>

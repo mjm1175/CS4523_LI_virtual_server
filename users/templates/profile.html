@@ -32,8 +32,11 @@
                 </div>
 
                 <div class="nav-user-icon online" onclick="settingsMenuToggle()">
-                    <!--make this update to real profile pic-->
-                    <img src="{% static 'app/images/profile-pic.png' %}">
+		    {% if user.resume %}		
+	                    <img src="{{user.resume.image.url}}">
+		    {% else %}
+	                    <img src="{% static 'app/images/profile3.jpg' %}">
+		    {% endif %}
                 </div>
             </div>
 
@@ -46,7 +49,11 @@
                 <div class="settings-menu-inner">
                     <!--Entry 1-->
                     <div class="user-profile">
-                        <img src="{% static 'app/images/profile-pic.png' %}">
+			    {% if user.resume %}		
+		                    <img src="{{user.resume.image.url}}">
+			    {% else %}
+		                    <img src="{% static 'app/images/profile3.jpg' %}">
+			    {% endif %}
                         <div>
                             <p>{{user.first_name}} {{user.last_name}}</p>
                             <a href="{% url 'profile' %}">See your profile</a>
@@ -112,7 +119,11 @@
                 <!--PFP and name-->
                 <div class="pd-left">
                     <div class="pd-row">
-                        <img src="{% static 'app/images/profile-pic.png' %}" class="pd-image">
+			    {% if user.resume %}		
+		                    <img src="{{user.resume.image.url}}">
+			    {% else %}
+		                    <img src="{% static 'app/images/profile3.jpg' %}">
+			    {% endif %}
                         <div>
                             <h3>{{user.first_name}} {{user.last_name}}</h3>
                             <p>Contact: {{user.email}}</p>
@@ -229,7 +240,11 @@
                         <!--Post 1-->
                     <div class="post-container">
                         <div class="user-profile">
-                            <img src="{% static 'app/images/profile-pic.png' %}">
+			    {% if user.resume %}		
+		                    <img src="{{user.resume.image.url}}">
+			    {% else %}
+		                    <img src="{% static 'app/images/profile3.jpg' %}">
+			    {% endif %}
                             <div>
                                 <p>{{user.first_name}} {{user.last_name}}</p>
                                 <span>June 24 2022, 13:40 pm</span>
@@ -245,14 +260,22 @@
                                 <div><img src="{% static 'app/images/share.png' %}"> 20</div>
                             </div>
                             <div class="post-profile-icon">
-                                <img src="{% static 'app/images/profile-pic.png' %}">
+			    {% if user.resume %}		
+		                    <img src="{{user.resume.image.url}}">
+			    {% else %}
+		                    <img src="{% static 'app/images/profile3.jpg' %}">
+			    {% endif %}
                             </div>
                         </div>
                     </div>
                     <!--Post 2-->
                     <div class="post-container">
                         <div class="user-profile">
-                            <img src="{% static 'app/images/profile-pic.png' %}">
+			    {% if user.resume %}		
+		                    <img src="{{user.resume.image.url}}">
+			    {% else %}
+		                    <img src="{% static 'app/images/profile3.jpg' %}">
+			    {% endif %}
                             <div>
                                 <p>{{user.first_name}} {{user.last_name}}</p>
                                 <span>June 24 2022, 13:40 pm</span>
@@ -268,14 +291,22 @@
                                 <div><img src="{% static 'app/images/share.png' %}"> 20</div>
                             </div>
                             <div class="post-profile-icon">
-                                <img src="{% static 'app/images/profile-picpng' %}">
+			    {% if user.resume %}		
+		                    <img src="{{user.resume.image.url}}">
+			    {% else %}
+		                    <img src="{% static 'app/images/profile3.jpg' %}">
+			    {% endif %}
                             </div>
                         </div>
                     </div>
                     <!--Post 3-->
                     <div class="post-container">
                         <div class="user-profile">
-                            <img src="{% static 'app/images/profile-pic.png' %}">
+			    {% if user.resume %}		
+		                    <img src="{{user.resume.image.url}}">
+			    {% else %}
+		                    <img src="{% static 'app/images/profile3.jpg' %}">
+			    {% endif %}
                             <div>
                                 <p>{{user.first_name}} {{user.last_name}}</p>
                                 <span>June 24 2022, 13:40 pm</span>
@@ -291,14 +322,22 @@
                                 <div><img src="{% static 'app/images/share.png' %}"> 20</div>
                             </div>
                             <div class="post-profile-icon">
-                                <img src="{% static 'app/images/profile-pic.png' %}">
+			    {% if user.resume %}		
+		                    <img src="{{user.resume.image.url}}">
+			    {% else %}
+		                    <img src="{% static 'app/images/profile3.jpg' %}">
+			    {% endif %}
                             </div>
                         </div>
                     </div>
                     <!--Post 4-->
                     <div class="post-container">
                         <div class="user-profile">
-                            <img src="{% static 'app/images/profile-pic.png' %}">
+			    {% if user.resume %}		
+		                    <img src="{{user.resume.image.url}}">
+			    {% else %}
+		                    <img src="{% static 'app/images/profile3.jpg' %}">
+			    {% endif %}
                             <div>
                                 <p>{{user.first_name}} {{user.last_name}}</p>
                                 <span>June 24 2022, 13:40 pm</span>
@@ -314,14 +353,22 @@
                                 <div><img src="{% static 'app/images/share.png' %}"> 20</div>
                             </div>
                             <div class="post-profile-icon">
-                                <img src="{% static 'app/images/profile-pic.png' %}">
+			    {% if user.resume %}		
+		                    <img src="{{user.resume.image.url}}">
+			    {% else %}
+		                    <img src="{% static 'app/images/profile3.jpg' %}">
+			    {% endif %}
                             </div>
                         </div>
                     </div>
                     <!--Post 5-->
                     <div class="post-container">
                         <div class="user-profile">
-                            <img src="{% static 'app/images/profile-pic.png' %}">
+			    {% if user.resume %}		
+		                    <img src="{{user.resume.image.url}}">
+			    {% else %}
+		                    <img src="{% static 'app/images/profile3.jpg' %}">
+			    {% endif %}
                             <div>
                                 <p>{{user.first_name}} {{user.last_name}}</p>
                                 <span>June 24 2022, 13:40 pm</span>
@@ -337,7 +384,11 @@
                                 <div><img src="{% static 'app/images/share.png' %}"> 20</div>
                             </div>
                             <div class="post-profile-icon">
-                                <img src="{% static 'app/images/profile-pic].png' %}">
+			    {% if user.resume %}		
+		                    <img src="{{user.resume.image.url}}">
+			    {% else %}
+		                    <img src="{% static 'app/images/profile3.jpg' %}">
+			    {% endif %}
                             </div>
                         </div>
                     </div>

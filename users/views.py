@@ -71,8 +71,12 @@ class ResumeDetailView(DetailView):
 
 def resume_detail(request, slug):
 	obj = Resume.objects.get(slug=slug)
+
+	# get all Educations with the same resume attached
+	educations = Education.objects.filter(resume=obj)
 	context = {}
 	context['object'] = obj
+	context['educations'] = educations
 
 	if request.method == 'POST':
 		edu_form = EducationForm(request.POST)
