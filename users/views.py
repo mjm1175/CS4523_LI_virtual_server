@@ -74,28 +74,42 @@ def resume_detail(request, slug):
 
 	# get all Educations with the same resume attached
 	educations = Education.objects.filter(resume=obj)
+	experiences = Experience.objects.filter(resume=obj)
 	context = {}
 	context['object'] = obj
 	context['educations'] = educations
+	context['experiences'] = experiences
 
 	if request.method == 'POST':
 		edu_form = EducationForm(request.POST)
+		exp_form = ExperienceForm(request.POST)
 		if edu_form.is_valid():
 			o = edu_form.save(commit=False)
 
 			o.resume = obj
 			o.save()
 
-			messages.success(request, 'Resume updated successfully')
+			messages.success(request, 'Resume (education) updated successfully')
+			return redirect('resume_detail', slug=slug)
+		elif exp_form.is_valid():
+			o = exp_form.save(commit=False)
+
+			o.resume = obj
+			o.save()
+
+			messages.success(request, 'Resume (experience) updated successfully')
 			return redirect('resume_detail', slug=slug)
 		else:
 			messages.error(request, 'Error processing your request')
 			context['edu_form'] = edu_form
+			context['exp_form'] = exp_form
 			return render(request, 'resume-detail.html', context)
 
 	if request.method == 'GET':
 		edu_form = EducationForm()
+		exp_form = ExperienceForm()
 		context['edu_form'] = edu_form
+		context['exp_form'] = exp_form
 		return render(request, 'resume-detail.html', context)
 
 	return render(request, 'resume-detail.html', context)
