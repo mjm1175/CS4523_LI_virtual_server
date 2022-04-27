@@ -3,6 +3,7 @@ from django.contrib import messages
 from .forms import *
 from .models import *
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_protect
 from django.views.generic import DetailView
 from datetime import datetime
 
@@ -68,11 +69,11 @@ class ResumeDetailView(DetailView):
 	model=Resume
 	template_name = 'resume-detail.html'
 
-
+@csrf_protect
 def resume_detail(request, slug):
 	obj = Resume.objects.get(slug=slug)
 
-	# get all Educations with the same resume attached
+	# get all Educations & Experiences with the same resume attached
 	educations = Education.objects.filter(resume=obj)
 	experiences = Experience.objects.filter(resume=obj)
 	context = {}
@@ -100,6 +101,8 @@ def resume_detail(request, slug):
 			messages.success(request, 'Resume (experience) updated successfully')
 			return redirect('resume_detail', slug=slug)
 		else:
+			print(exp_form.errors)
+			print(exp_form.skills)
 			messages.error(request, 'Error processing your request')
 			context['edu_form'] = edu_form
 			context['exp_form'] = exp_form

@@ -335,7 +335,7 @@ class ExperienceForm(forms.ModelForm):
     #                #widget=forms.TextInput(attrs={'class':'form-control resume', 'placeholder':'Enter skills separated by commas'})
     #                )
 
-    skill = SimpleArrayField(forms.CharField(max_length=100))
+    skills = SimpleArrayField(forms.CharField(max_length=100, required=False))
 
     class Meta:
         model=Experience
