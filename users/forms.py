@@ -238,3 +238,103 @@ class ResumeForm(forms.ModelForm):
             'image', 'address_line1', 'address_line2',
             'city', 'state', 'cover_letter', 'cv',
         ]
+
+
+
+
+class EducationForm(forms.ModelForm):
+    LEVEL5A = 'Some High School Education'
+    LEVEL5B = 'High School Certificate (G.E.D.)'
+    LEVEL5C = 'High School Diploma'
+    LEVEL6A = 'Some College Education'
+    LEVEL6B = "Associate's Degree (AS/AA)"
+    LEVEL6C = "Bachelor's Degree (BS/BA)"
+    LEVEL7A = 'Some Postgraduate School'
+    LEVEL7B = 'Professional School Graduate'
+    LEVEL7C = "Master's Degree (MS/MA)"
+    LEVEL8 = "Doctorate's Degree (PHD)"
+
+    LEVEL_CHOICES = [
+        (LEVEL5A, 'Some High School Education'),
+        (LEVEL5B, 'High School Certificate (G.E.D.)'),
+        (LEVEL5C, 'High School Diploma'),
+        (LEVEL6A, 'Some College Education'),
+        (LEVEL6B, "Associate's Degree (AS/AA)"),
+        (LEVEL6C, "Bachelor's Degree (BS/BA)"),
+        (LEVEL7A, 'Some Postgraduate School'),
+        (LEVEL7B, 'Professional School Graduate'),
+        (LEVEL7C, "Master's Degree (MS/MA)"),
+        (LEVEL8, "Doctorate Degree (PHD)"),
+    ]
+
+    institution = forms.CharField(
+                    required=True,
+                    widget=forms.TextInput(attrs={'class':'form-control resume', 'placeholder':'Name of Institution'})
+                    )
+    qualification = forms.CharField(
+                    required=True,
+                    widget=forms.TextInput(attrs={'class':'form-control resume', 'placeholder':'Name of Qualification'})
+                    )
+    level = forms.ChoiceField(
+                    choices=LEVEL_CHOICES,
+                    widget=forms.Select(attrs={'class':'nice-select rounded'})
+                    )   
+    start_date = forms.DateField(
+                    required=True,
+                    widget=DateInput(attrs={'class':'form-control', 'placeholder':'Enter a date: '})
+                    )
+    graduated = forms.DateField(
+                    required=True,
+                    widget=DateInput(attrs={'class':'form-control', 'placeholder':'Enter a date: '})
+                    )
+    major_subject = forms.CharField(
+                    required=False,
+                    widget=forms.TextInput(attrs={'class':'form-control resume', 'placeholder':'Major Subjects'})
+                    )
+
+    class Meta:
+        model=Education
+        fields = [
+            'institution', 'qualification', 'level', 'start_date', 'graduated', 'major_subject'
+        ]
+
+
+
+
+
+class ExperienceForm(forms.ModelForm):
+    company = forms.CharField(
+                    required=True,
+                    widget=forms.TextInput(attrs={'class':'form-control resume', 'placeholder':'Company Worked For'})
+                    )
+    
+    position = forms.CharField(
+                    required=True,
+                    widget=forms.TextInput(attrs={'class':'form-control resume', 'placeholder':'Position/Role'})
+                    )
+
+    start_date = forms.DateField(
+                    required=True,
+                    widget=DateInput(attrs={'class':'form-control', 'placeholder':'Enter a date: '})
+                    )                    
+
+    end_date = forms.DateField(
+                    required=True,
+                    widget=DateInput(attrs={'class':'form-control', 'placeholder':'Enter a date: '})
+                    )
+
+    experience = forms.CharField(
+                    required=True,
+                    widget=forms.Textarea(attrs={'class':'form-control', 'placeholder':'Enter experience'})
+                    )
+
+    skills = forms.CharField(
+                    required=False,
+                    widget=forms.TextInput(attrs={'class':'form-control resume', 'placeholder':'Enter skills separated by commas'})
+                    )                    
+
+    class Meta:
+        model=Experience
+        fields = [
+            'company', 'position', 'start_date', 'end_date', 'experience', 'skills'
+        ]

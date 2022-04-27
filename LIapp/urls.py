@@ -28,9 +28,10 @@ urlpatterns = [
     path('register/', users_views.register, name='register'),
     path('profile/', users_views.profile, name='profile'),
     path('users/create/', users_views.create_resume, name='create_resume'),
-    path('users/view/<slug:slug>/', users_views.ResumeDetailView.as_view(), name='resume_detail'),
+    path('users/view/<slug:slug>/', users_views.resume_detail, name='resume_detail'),
     path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
     path('logout/', auth_views.logout_then_login, name='logout'),
+    path('download/<str:foldername>/<str:filename>/', users_views.download, name='download'),
 ]
 
 if settings.DEBUG:

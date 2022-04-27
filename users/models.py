@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.postgres.fields import ArrayField
 from django.template.defaultfilters import slugify
 from django.utils import timezone
 from uuid import uuid4
@@ -179,7 +180,7 @@ class Resume(models.Model):
         if self.uniqueId is None:
             self.uniqueId = str(uuid4()).split('-')[0]
         
-        self.slug = slugify('{} {} {}'.format(self.user.first_name, self.user.last_name, self.user.uniqueId))
+        self.slug = slugify('{} {} {}'.format(self.user.first_name, self.user.last_name, self.uniqueId))
 
         # assign a default profile image
         if self.image is None:
@@ -187,7 +188,6 @@ class Resume(models.Model):
 
         super(Resume, self).save(*args, **kwargs)
     
-
 class Education(models.Model):
     # theres more
     LEVEL5A = 'Some High School Education'
@@ -211,27 +211,29 @@ class Education(models.Model):
         (LEVEL7A, 'Some Postgraduate School'),
         (LEVEL7B, 'Professional School Graduate'),
         (LEVEL7C, "Master's Degree (MS/MA)"),
-        (LEVEL8, "Doctorate's Degree (PHD)"),
+        (LEVEL8, "Doctorate Degree (PHD)"),
     ]
 
-    institution = models.CharField(null=True, max_length=200)
-    qualification = models.CharField(null=True, max_length=200)
+
+    institution = models.CharField(null=True, blank=True, max_length=200)
+    qualification = models.CharField(null=True, blank=True, max_length=200)
     level = models.CharField(choices=LEVEL_CHOICES, default=LEVEL5A, max_length=200)
-    start_date = models.DateField()
-    graduated = models.DateField()
-    major_subject = models.CharField(null=True, max_length=200)
+    start_date = models.DateField(null=True, blank=True)
+    graduated = models.DateField(blank=True, null=True)
+    major_subject = models.CharField(null=True, blank=True, max_length=200)
+    date_created = models.DateTimeField(default=timezone.now)
     resume = models.ForeignKey(Resume, on_delete=models.CASCADE)
     def __str__(self):
         return '{} for {} {}'.format(self.qualification, self.resume.user.first_name, self.resume.user.last_name)
-    
-
+       
 class Experience(models.Model):
-    company = models.CharField(null=True, max_length=200)
-    position = models.CharField(null=True, max_length=200)
-    start_date = models.DateField()
-    end_date = models.DateField()
-    experience = models.TextField()
-    skills = models.TextField()
+    company = models.CharField(null=True, blank=True, max_length=200)
+    position = models.CharField(null=True, blank=True, max_length=200)
+    start_date = models.DateField(null=True, blank=True)
+    end_date = models.DateField(null=True, blank=True)
+    experience = models.TextField(null=True, blank=True)
+    skills = ArrayField(models.CharField(max_length=100, null=True, blank=True))
+    date_created = models.DateTimeField(default=timezone.now)
     resume = models.ForeignKey(Resume, on_delete=models.CASCADE)
 
     def __str__(self):

@@ -63,6 +63,39 @@ def create_resume(request):
 	return render(request, 'create-resume.html', {})
 
 
+# not used anymore
 class ResumeDetailView(DetailView):
 	model=Resume
 	template_name = 'resume-detail.html'
+
+
+def resume_detail(request, slug):
+	obj = Resume.objects.get(slug=slug)
+	context = {}
+	context['object'] = obj
+
+	if request.method == 'POST':
+		edu_form = EducationForm(request.POST)
+		if edu_form.is_valid():
+			o = edu_form.save(commit=False)
+
+			o.resume = obj
+			o.save()
+
+			messages.success(request, 'Resume updated successfully')
+			return redirect('resume_detail', slug=slug)
+		else:
+			messages.error(request, 'Error processing your request')
+			context['edu_form'] = edu_form
+			return render(request, 'resume-detail.html', context)
+
+	if request.method == 'GET':
+		edu_form = EducationForm()
+		context['edu_form'] = edu_form
+		return render(request, 'resume-detail.html', context)
+
+	return render(request, 'resume-detail.html', context)
+
+
+def download(request, foldername, filename):
+	file_path = settings.MEDIA_ROOT + '/'+foldername+'/'+filename
