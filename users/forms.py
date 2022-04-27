@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.postgres.forms import SimpleArrayField
 
 from .models import Resume, Education, Experience
 
@@ -324,14 +325,17 @@ class ExperienceForm(forms.ModelForm):
                     )
 
     experience = forms.CharField(
-                    required=True,
+                    required=False,
                     widget=forms.Textarea(attrs={'class':'form-control', 'placeholder':'Enter experience'})
                     )
 
-    skills = forms.CharField(
-                    required=False,
-                    widget=forms.TextInput(attrs={'class':'form-control resume', 'placeholder':'Enter skills separated by commas'})
-                    )                    
+    #skills = forms.CharField(
+    #                required=False,
+    #                widget=forms.TextInput(attrs={'class':'form-control resume', 'placeholder':'Enter skills'})
+    #                #widget=forms.TextInput(attrs={'class':'form-control resume', 'placeholder':'Enter skills separated by commas'})
+    #                )
+
+    skill = SimpleArrayField(forms.CharField(max_length=100))
 
     class Meta:
         model=Experience

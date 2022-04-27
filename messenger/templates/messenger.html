@@ -1,0 +1,337 @@
+{% extends "layout1.html" %}
+{% load static %}
+
+
+{% block title %}Messenger{% endblock %}
+
+{% block head %}
+        <link rel="stylesheet" href="{% static 'app/css/messenger.css' %}">
+{% endblock %}
+
+{% block body %}
+<!--Messenger Page-->
+<div class="msg-container">
+
+    <div class="messenger-left">
+        <div class="messenger-left-top-nav">
+
+            <div class="messenger-top-nav-image">
+                <div class="messenger-nav-image">
+                    {% if user.resume %}		
+                    <img src="{{user.resume.image.url}}">
+                    {% else %}
+                    <img src="{% static 'app/images/profile3.jpg' %}">
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="messenger-top-nav-name">
+                <a href="#"> <b>Chats</b></a>
+            </div>
+
+            <div class="messenger-top-nav-icon">
+                <div class="nav-icon-round">
+                    <div class="nav-icon-image" onclick="messengerMenuToggle()">
+                        <img src="{% static 'app/images/setting2.png' %}">
+                        <div class="messenger-setting">
+                            <div class="messenger-setting-text">
+                                <a href="#">Settings</a>
+                            </div>
+                            <div class="messenger-setting-contact">
+                                <a href="#">Active Contacts</a>
+                                <a href="#">Message Requests</a>
+                                <a href="#">Hidden Chats</a>
+                                <a href="#">Unread Chats</a>
+                            </div>
+                            <div class="messenger-setting-about">
+                                <a href="#">About</a>
+                                <a href="#">Terms</a>
+                                <a href="#">Privacy Policy</a>
+                                <a href="#">Cookie Policy</a>
+                            </div>
+                            <div class="messenger-setting-help">
+                                <a href="#">Help</a>
+                                <a href="#">Report a problem</a>
+                            </div>
+                            <div class="messenger-setting-logout">
+                                <a href="{% url 'logout' %}">Log Out</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="nav-icon-round">
+                    <div class="nav-icon-image">
+                        <img src="{% static 'app/images/add-photo.png' %}">
+                    </div>
+                </div>
+                <div class="nav-icon-round">
+                    <div class="nav-icon-image">
+                        <img src="{% static 'app/images/edit2.png' %}">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="messenger-search-container">
+            <div class="messenger-search-icon">
+                <div class="meaaenger-search-image">
+                    <img src="{% static 'app/images/search.png' %}">
+                </div>
+            </div>
+            <div class="messenger-search-input">
+                <div class="messenger-search-input-inside">
+                    <input type="text" placeholder="Search Messages">
+                </div>
+            </div>
+        </div>
+
+        <div class="messenger-user-search-container">
+            <div class="messenger-user-search-icon">
+                <div class="messenger-user-search-image">
+                    {% if user.resume %}		
+                    <img src="{{user.resume.image.url}}">
+                    {% else %}
+                    <img src="{% static 'app/images/profile3.jpg' %}">
+                    {% endif %}
+                </div>
+            </div>
+            <div class="messenger-user-search-name">
+                <div class="messenger-user-search-name-inside">
+                    <!--CHANGE TO RECIPIENT USERNAME && PROFILE-->
+                    <a href="{% url 'profile' %}"> <b>@{{user.username}}</b> </a>
+                </div>
+                <div class="messenger-user-last-seen">
+                    <div class="messenger-last-seen-message">
+                        <a href="#">Last Seen Message</a>
+                    </div>
+                    <div class="messenger-last-seen-date">
+                        <a href="#">date</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="messenger-right">
+        
+        <!--RHS Navigation bar-->
+        <div class="messenger-right-top-nav">
+            <!--Info-->
+            <div class="messenger-right-top-nav-profile">
+                <div class="messenger-right-top-nav-image">
+                    {% if user.resume %}		
+                    <img src="{{user.resume.image.url}}">
+                    {% else %}
+                    <img src="{% static 'app/images/profile3.jpg' %}">
+                    {% endif %}
+                </div>
+            </div>
+            <div class="messenger-right-top-nav-name">
+                <div class="messenger-right-top-nav-user-name">
+                    <!--CHANGE TO RECIPIENT USERNAME && PROFILE-->
+                    <a href="{% url 'profile' %}"> <b>@{{user.username}}</b> </a>
+                </div>
+                <div class="messenger-right-top-nav-user-status">
+                    <a href="#"> Status </a>
+                </div>                        
+            </div>
+
+            <!--Icons-->
+            <div class="messenger-right-top-nav-icon">
+                <div class="messenger-right-top-nav-icon-image">
+                    <img src="{% static 'app/images/call.png' %}">
+                </div>
+            </div>
+            <div class="messenger-right-top-nav-icon">
+                <div class="messenger-right-top-nav-icon-image">
+                    <img src="{% static 'app/images/video_call.png' %}">
+                </div>
+            </div>     
+            <div class="messenger-right-top-nav-icon">
+                <div class="messenger-right-top-nav-icon-image">
+                    <img src="{% static 'app/images/information.png' %}">
+                </div>
+            </div>                                   
+        </div>
+
+
+        <!--Actual Messages-->
+        <div class="messenger-message-container">
+            <div class="messenger-message-left">
+                <div class="messenger-chat-container">
+                    <div class="messenger-chat-box">
+                        <div class="messenger-chat-box-right">
+                            <div class="messenger-chat-right">
+                                <div class="messenger-chat-right-inside">
+                                    <div class="messenger-chat-right-inside-text">
+                                        <div class="messenger-chat-right-text-display">
+                                            <p>Hi</p>
+                                        </div>
+                                    </div>
+                                    <div class="messenger-chat-right-icon">
+                                        <div class="messenger-chat-right-icon-image">
+                                            <img src="{% static 'app/images/check.png' %}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="messenger-chat-box-left">
+                            <div class="messenger-chat-left">
+                                <div class="messenger-chat-left-inside">
+                                    <div class="messenger-chat-left-icon">
+                                        <div class="messenger-chat-left-icon-image">
+                                            <img src="{% static 'app/images/profile2.jpg' %}">
+                                        </div>
+                                    </div>                                            
+                                    <div class="messenger-chat-left-inside-text">
+                                        <div class="messenger-chat-left-text-display">
+                                            <p>Hello</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="messenger-chat-bottom">
+                    <div class="messenger-chat-bottom-icon">
+                        <div class="messenger-chat-bottom-icon-inside">
+                            <img src="{% static 'app/images/add.png' %}">
+                        </div>
+                        <div class="messenger-chat-bottom-icon-inside">
+                            <img src="{% static 'app/images/gif.png' %}">
+                        </div>
+                        <div class="messenger-chat-bottom-icon-inside">
+                            <img src="{% static 'app/images/sticker.png' %}">
+                        </div>
+                        <div class="messenger-chat-bottom-icon-inside">
+                            <img src="{% static 'app/images/file.png' %}">
+                        </div>                                                                                                                                
+                    </div>
+                    <div class="messenger-chat-bottom-input">
+                        <div class="messenger-chat-bottom-input-inside">
+                            <div class="messenger-chat-bottom-input-type">
+                                <input type="text" placeholder="Type a message...">
+                            </div>
+                            <div class="messenger-chat-bottom-input-emoji">
+                                <div class="messenger-chat-bottom-input-emoji-image">
+                                    <img src="{% static 'app/images/smile.png' %}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="messenger-chat-bottom-send">
+                        <div class="messenger-chat-bottom-send-inside">
+                            <img src="{% static 'app/images/like.png' %}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="messenger-message-right">
+                <div class="messenger-right-user-profile">
+                    <div class="messenger-right-user-image">
+                        {% if user.resume %}		
+                        <img src="{{user.resume.image.url}}">
+                        {% else %}
+                        <img src="{% static 'app/images/profile3.jpg' %}">
+                        {% endif %}
+                    </div>
+                    <div class="messenger-right-user-name">
+                        <!--CHANGE TO RECIPIENT USERNAME && PROFILE-->
+                        <a href="{% url 'profile' %}"> <b>@{{user.username}}</b> </a>
+                    </div>
+                    <div class="messenger-right-user-status">
+                        <a href="#">Status</a>
+                    </div>
+                </div>
+
+                <!--Actions Menu-->
+                <div class="messenger-setting-action">
+                    <div class="messenger-action">
+                        <div class="messenger-action-text">
+                            <div class="messenger-action-text-inside">
+                                <a href="#">MORE ACTIONS</a>
+                            </div>
+                        </div>
+                        <div class="messenger-action-image">
+                            <div class="messenger-action-image-inside">
+                                <img src="{% static 'app/images/arrow_down.png' %}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="messenger-action">
+                        <div class="messenger-action-text">
+                            <div class="messenger-action-text-inside">
+                                <a href="#" style="color:black; font-size:17px;">Search in Conversation</a>
+                            </div>
+                        </div>
+                        <div class="messenger-action-image">
+                            <div class="messenger-action-image-inside">
+                                <img src="{% static 'app/images/search.png' %}">
+                            </div>
+                        </div>
+                    </div>  
+                    <div class="messenger-action">
+                        <div class="messenger-action-text">
+                            <div class="messenger-action-text-inside">
+                                <a href="#" style="color:black; font-size:17px;">Edit Nicknames</a>
+                            </div>
+                        </div>
+                        <div class="messenger-action-image">
+                            <div class="messenger-action-image-inside">
+                                <img src="{% static 'app/images/edit2.png' %}">
+                            </div>
+                        </div>
+                    </div>                                                       
+                    <div class="messenger-action">
+                        <div class="messenger-action-text">
+                            <div class="messenger-action-text-inside">
+                                <a href="#" style="color:black; font-size:17px;">Change Theme</a>
+                            </div>
+                        </div>
+                        <div class="messenger-action-image">
+                            <div class="messenger-action-image-inside">
+                                <img src="{% static 'app/images/color.png' %}">
+                            </div>
+                        </div>
+                    </div>                        
+                    <div class="messenger-action">
+                        <div class="messenger-action-text">
+                            <div class="messenger-action-text-inside">
+                                <a href="#" style="color:black; font-size:17px;">Change Emoji</a>
+                            </div>
+                        </div>
+                        <div class="messenger-action-image">
+                            <div class="messenger-action-image-inside">
+                                <img src="{% static 'app/images/like.png' %}">
+                            </div>
+                        </div>
+                    </div>                                  
+                </div>
+                <div class="messenger-post-action">
+                    <div class="messenger-action">
+                        <div class="messenger-action-text">
+                            <div class="messenger-action-text-inside">
+                                <a href="#">SHARED PHOTOS</a>
+                            </div>
+                        </div>
+                        <div class="messenger-action-image">
+                            <div class="messenger-action-image-inside">
+                                <img src="{% static 'app/images/arrow_down.png' %}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>       
+{% endblock %}     
+
+{% block source %}
+    <script src="{% static 'app/js/messenger.js' %}"></script>
+{% endblock %}

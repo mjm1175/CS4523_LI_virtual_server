@@ -232,7 +232,8 @@ class Experience(models.Model):
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
     experience = models.TextField(null=True, blank=True)
-    skills = ArrayField(models.CharField(max_length=100, null=True, blank=True))
+    #skills = models.CharField(max_length=100, null=True, blank=True)
+    skills = ArrayField(models.CharField(max_length=100, null=True, blank=True), default=list)
     date_created = models.DateTimeField(default=timezone.now)
     resume = models.ForeignKey(Resume, on_delete=models.CASCADE)
 
