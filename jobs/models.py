@@ -1,37 +1,7 @@
 from email.policy import default
 from django.db import models
 from django.utils import timezone
-from django.contrib.auth.models import User
-
-# Create your models here.
-class Applicants(models.Model):
-    Username = models.AutoField(primary_key=True)
-    Password = models.CharField(max_length=100)
-    Email = models.CharField(max_length=50)
-    FirstName = models.CharField(max_length=25)
-    LastName = models.CharField(max_length=25)
-    Degree = models.CharField(max_length=30)
-
-class Employers(models.Model):
-    Username = models.AutoField(primary_key=True)
-    Password = models.CharField(max_length=100)
-    Email = models.CharField(max_length=50)
-    FirstName = models.CharField(max_length=25)
-    LastName = models.CharField(max_length=25)
-    CompanyName = models.CharField(max_length=50)
-    ImplicitBiasFile = models.CharField(max_length=500)
-
-class JobPosting(models.Model):
-    Title = models.AutoField(primary_key=True)
-    JobType = models.CharField(max_length=20)
-    Description = models.CharField(max_length=1000)
-
-# class Interview(models.Model):
-#     Employer = models.ForeignKey(Employers.Username)
-#     Applicant = models.ForeignKey(Applicants.Username)
-#     Date = models.Date()
-#     Time = models.Time()
-
+from users.models import Account
 
 # Example model
 class Job(models.Model):
@@ -70,7 +40,7 @@ class Job(models.Model):
     requirements = models.TextField()
     logo = models.ImageField(default='default-job.png', upload_to='upload_images')
     date_created = models.DateTimeField(default=timezone.now)
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    owner = models.ForeignKey(Account, on_delete=models.CASCADE)
     # might should change User to Company?
     # models.CASCADE means that if user gets deleted, the job will be deleted with them
 

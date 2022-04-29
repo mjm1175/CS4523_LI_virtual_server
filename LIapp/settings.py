@@ -71,6 +71,8 @@ TEMPLATES = [
     },
 ]
 
+
+AUTH_USER_MODEL = 'users.Account'
 WSGI_APPLICATION = 'LIapp.wsgi.application'
 
 
