@@ -18,14 +18,14 @@ from django.urls import path, reverse_lazy
 from jobs import views as jobs_views
 #from users import views as users_views
 #from users import forms as user_forms
-from messenger import views as msg_views
+#from messenger import views as msg_views
 from django.contrib.auth import views as auth_views
 
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-#    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls),
 #    path('', jobs_views.home, name='home_page'),
     #path('register/', users_views.register, name='register'),
     #path('profile/', users_views.profile, name='profile'),

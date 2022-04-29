@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'jobs',
     'user',
-    'messenger',
+#    'messenger',
 ]
 
 MIDDLEWARE = [
