@@ -12,7 +12,7 @@ from datetime import datetime
 def register(request):
 	if request.method == 'GET':
 		form = RegisterForm()
-		context = {'form' : form, 'register': True}
+		context = {'form' : form}
 		return render(request, 'register.html', context)
 	
 	if request.method == 'POST':
@@ -27,7 +27,7 @@ def register(request):
 			print('no')
 			print(form.errors)
 			messages.error(request, 'Error processing your request')
-			context = {'form': form, 'register': True}
+			context = {'form': form}
 			return render(request, 'register.html', context)
 
 	return render(request, 'register.html', {})
@@ -116,6 +116,12 @@ def resume_detail(request, slug):
 		return render(request, 'resume-detail.html', context)
 
 	return render(request, 'resume-detail.html', context)
+
+
+def home_profiles(request):
+	#	can change to filter for search
+	users_list = User.objects.all()
+	return render(request, 'home_profiles.html', {'users' : users_list})
 
 
 def download(request, foldername, filename):
