@@ -117,12 +117,15 @@
                 {% endif %}
 
                 <p>Are you an employer or an applicant?</p>
-                <div class="radioBtns">
-                    <input type="radio" id="employer" name="radioQ" value="employer">
-                    <label for="employer">Employer</label><br>
-
-                    <input type="radio" id="applicant" name="radioQ" value="applicant">
-                    <label for="applicant">Applicant</label><br>
+                <div class="nice-select rounded">
+                    {{form.role}}
+                    {% if form.role.errors %}
+                        {% for error in form.role.errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                        {% endfor %}
+                    {% endif %}                
                 </div>
 
                 <input type="submit" name="" value ="Register">

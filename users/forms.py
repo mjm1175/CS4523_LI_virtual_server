@@ -3,9 +3,18 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.postgres.forms import SimpleArrayField
 
-from .models import Resume, Education, Experience
+from .models import Resume, Education, Experience, Account
 
 class RegisterForm(UserCreationForm):
+
+    EMPLOYER = 'Employer'
+    APPLICANT = 'Applicant'
+
+    ROLE_CHOICES = [
+        (EMPLOYER, 'Employer'),
+        (APPLICANT, 'Applicant')
+    ]
+
     email = forms.EmailField(
                     max_length=100,
                     required=True,
@@ -45,6 +54,11 @@ class RegisterForm(UserCreationForm):
                     widget=forms.PasswordInput(attrs={'class':'form-control', 'placeholder':'Repeat Password'}),
                     )
 
+    role = forms.ChoiceField(
+                    choices=ROLE_CHOICES,
+                    widget=forms.Select(attrs={'class':'nice-select rounded'})
+                    )
+
     #check = forms.BooleanField(
     #                #required=True
     #                )
@@ -55,10 +69,10 @@ class RegisterForm(UserCreationForm):
     #    super(Member, self).save(*args, **kwargs)
 
     class Meta:
-        model = User
+        model = Account
 
         fields = [
-            'username', 'email', 'first_name', 'last_name', 'password1', 'password2'
+            'username', 'email', 'first_name', 'last_name', 'password1', 'password2', 'role'
         ]
 
 

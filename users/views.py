@@ -120,7 +120,7 @@ def resume_detail(request, slug):
 
 def home_profiles(request):
 	#	can change to filter for search
-	users_list = User.objects.all()
+	users_list = Account.objects.all()
 	return render(request, 'home_profiles.html', {'users' : users_list})
 
 
