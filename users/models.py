@@ -38,6 +38,7 @@ class MyAccountManager(BaseUserManager):
         user.save(using=self._db)
         return user  
 
+
 class Account(AbstractBaseUser):
 
     EMPLOYER = 'Employer'
@@ -70,7 +71,7 @@ class Account(AbstractBaseUser):
     REQUIRED_FIELDS = ['username']
 
 
-    object = MyAccountManager()
+    objects = MyAccountManager()
 
     def __str__(self):
         #return '{} {} {}'.format(self.first_name, self.last_name, self.uniqueId)
