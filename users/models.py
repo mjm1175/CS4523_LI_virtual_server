@@ -11,46 +11,32 @@ import random
 
 # override user class
 class MyAccountManager(BaseUserManager):
-    def create_user(self, email, username, role, first_name, last_name, password):
+    def create_user(self, email, username, password=None):
         if not email:
             raise ValueError("Users must have email address.")
         if not username:
             raise ValueError("Users must have username.")
-        if not role:
-            raise ValueError("Users must have role.")
-        if not first_name:
-            raise ValueError("Users must have first name.")
-        if not last_name:
-            raise ValueError("Users must have last name.")
-
 
         user = self.model(
             email = self.normalize_email(email),
             username = username,
-            password = password,
-            role = role,
-            first_name = first_name,
-            last_name = last_name
         )
 
         user.set_password(password)
         user.save(using=self._db)
-        return user
-    
-    def create_superuse(self, email, username, role, first_name, last_name, password):
+        return user    
+
+    def create_superuser(self, email, username, password):
         user = self.model(
             email = self.normalize_email(email),
             password=password,
-            username = username,
-            role = role,
-            first_name = first_name,
-            last_name = last_name            
+            username = username,         
         )
         user.is_admin=True
         user.is_staff=True
         user.is_superuser=True
         user.save(using=self._db)
-        return user
+        return user  
 
 class Account(AbstractBaseUser):
 
@@ -72,21 +58,23 @@ class Account(AbstractBaseUser):
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     # end required
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
-    slug = models.SlugField(max_length=500, unique=True, blank=True, null=True)
-    uniqueId = models.CharField(max_length=100, null=True, blank=True)
-    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default=APPLICANT)
-    #user = models.ForeignKey(User, on_delete=models.CASCADE)
+    #first_name = models.CharField(max_length=100)
+    #last_name = models.CharField(max_length=100)
+    #slug = models.SlugField(max_length=500, unique=True, blank=True, null=True)
+    #uniqueId = models.CharField(max_length=100, null=True, blank=True)
+    #role = models.CharField(max_length=10, choices=ROLE_CHOICES, default=APPLICANT)
 
     # allowing users to login using email
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username', 'role', 'first_name', 'last_name']
+    #REQUIRED_FIELDS = ['username', 'role', 'first_name', 'last_name']
+    REQUIRED_FIELDS = ['username']
+
 
     object = MyAccountManager()
 
     def __str__(self):
-        return '{} {} {}'.format(self.first_name, self.last_name, self.uniqueId)
+        #return '{} {} {}'.format(self.first_name, self.last_name, self.uniqueId)
+        return self.email
 
     # begin required
     def has_perm(self, perm, obj=None):
@@ -96,18 +84,17 @@ class Account(AbstractBaseUser):
         return True
     # end required
 
-    def get_absolute_url(self):
-        return reverse('public_profile', kwargs={'slug': self.slug})
+    #def get_absolute_url(self):
+    #    return reverse('public_profile', kwargs={'slug': self.slug})
     
-    def save(self, *args, **kwargs):
+    #def save(self, *args, **kwargs):
         # Creating a unique Identifier for the resume (useful for other things in the future) && a SlugField for the url
-        if self.uniqueId is None:
-            self.uniqueId = str(uuid4()).split('-')[0]
+    #    if self.uniqueId is None:
+    #        self.uniqueId = str(uuid4()).split('-')[0]
         
-        self.slug = slugify('{} {} {}'.format(self.first_name, self.last_name, self.uniqueId))
+    #    self.slug = slugify('{} {} {}'.format(self.first_name, self.last_name, self.uniqueId))
 
-        super(Resume, self).save(*args, **kwargs)
-
+    #    super(Resume, self).save(*args, **kwargs)
 
 class Resume(models.Model):
     # seems like we wont be using these LMFAO

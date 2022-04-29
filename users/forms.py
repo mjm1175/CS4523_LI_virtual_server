@@ -1,11 +1,9 @@
 from django import forms
-from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.postgres.forms import SimpleArrayField
 
 from .models import Resume, Education, Experience, Account
 
-class RegisterForm(UserCreationForm):
+class RegisterForm(forms.ModelForm):
 
     EMPLOYER = 'Employer'
     APPLICANT = 'Applicant'
