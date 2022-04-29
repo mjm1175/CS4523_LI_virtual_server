@@ -1,7 +1,7 @@
 from email.policy import default
 from django.db import models
 from django.utils import timezone
-from users.models import Account
+#from users.models import Account
 
 # Example model
 class Job(models.Model):
@@ -40,7 +40,7 @@ class Job(models.Model):
     requirements = models.TextField()
     logo = models.ImageField(default='default-job.png', upload_to='upload_images')
     date_created = models.DateTimeField(default=timezone.now)
-    owner = models.ForeignKey(Account, on_delete=models.CASCADE)
+    #owner = models.ForeignKey(Account, on_delete=models.CASCADE)
     # might should change User to Company?
     # models.CASCADE means that if user gets deleted, the job will be deleted with them
 

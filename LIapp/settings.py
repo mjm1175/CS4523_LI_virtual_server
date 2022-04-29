@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'jobs',
-    'users',
+    'user',
     'messenger',
 ]
 
@@ -72,7 +72,7 @@ TEMPLATES = [
 ]
 
 
-AUTH_USER_MODEL = 'users.Account'
+AUTH_USER_MODEL = 'user.Account'
 WSGI_APPLICATION = 'LIapp.wsgi.application'
 
 
@@ -142,6 +142,6 @@ MEDIA_URL = '/uploads/'
 
 # Login and Login Redirect URL
 
-LOGIN_REDIRECT_URL = 'profile'		# change to home_page if you would rather redirect there
-LOGIN_URL = 'login'
-LOGOUT_REDIRECT_URL = 'login'
+#LOGIN_REDIRECT_URL = 'profile'		# change to home_page if you would rather redirect there
+#LOGIN_URL = 'login'
+#LOGOUT_REDIRECT_URL = 'login'
