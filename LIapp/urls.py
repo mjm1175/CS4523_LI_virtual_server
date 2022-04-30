@@ -16,9 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, reverse_lazy
 from jobs import views as jobs_views
-#from users import views as users_views
-#from users import forms as user_forms
-#from messenger import views as msg_views
+from user import views as users_views
+from user import forms as user_forms
+from messenger import views as msg_views
 from django.contrib.auth import views as auth_views
 
 from django.conf import settings
@@ -26,16 +26,16 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-#    path('', jobs_views.home, name='home_page'),
-    #path('register/', users_views.register, name='register'),
-    #path('profile/', users_views.profile, name='profile'),
-    #path('users/create/', users_views.create_resume, name='create_resume'),
-    #path('users/view/<slug:slug>/', users_views.resume_detail, name='resume_detail'),
-    #path('all-users/', users_views.home_profiles, name='all_users'),
-    #path('login/', auth_views.LoginView.as_view(template_name='login.html', authentication_form=user_forms.RegisterForm), name='login'),
-    #path('logout/', auth_views.logout_then_login, name='logout'),
-    #path('download/<str:foldername>/<str:filename>/', users_views.download, name='download'),
-#    path('messenger/', msg_views.messenger, name='messenger'),
+    path('', jobs_views.home, name='home_page'),
+    path('register/', users_views.register, name='register'),
+    path('profile/', users_views.profile, name='profile'),
+    path('users/create/', users_views.create_resume, name='create_resume'),
+    path('users/view/<slug:slug>/', users_views.resume_detail, name='resume_detail'),
+    path('all-users/', users_views.home_profiles, name='all_users'),
+    path('login/', auth_views.LoginView.as_view(template_name='login.html', authentication_form=user_forms.RegisterForm), name='login'),
+    path('logout/', auth_views.logout_then_login, name='logout'),
+    path('download/<str:foldername>/<str:filename>/', users_views.download, name='download'),
+    path('messenger/', msg_views.messenger, name='messenger'),
 ]
 
 if settings.DEBUG:

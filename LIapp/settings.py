@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'jobs',
     'user',
-#    'messenger',
+    'messenger',
 ]
 
 MIDDLEWARE = [
@@ -142,6 +142,6 @@ MEDIA_URL = '/uploads/'
 
 # Login and Login Redirect URL
 
-#LOGIN_REDIRECT_URL = 'profile'		# change to home_page if you would rather redirect there
-#LOGIN_URL = 'login'
-#LOGOUT_REDIRECT_URL = 'login'
+LOGIN_REDIRECT_URL = 'profile'		# change to home_page if you would rather redirect there
+LOGIN_URL = 'login'
+LOGOUT_REDIRECT_URL = 'login'
