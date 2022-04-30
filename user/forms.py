@@ -1,12 +1,11 @@
 from django import forms
-from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.postgres.forms import SimpleArrayField
 
 from .models import *
 
 
-class RegisterForm(forms.ModelForm):
+class RegisterForm(UserCreationForm):
 
     EMPLOYER = 'Employer'
     APPLICANT = 'Applicant'
@@ -47,6 +46,7 @@ class RegisterForm(forms.ModelForm):
     password1 = forms.CharField(
                     help_text='Enter Password',
                     required=True,
+                    widget=forms.PasswordInput(attrs={'class':'form-control', 'placeholder':'Enter Password'}),
                     )
 
     password2 = forms.CharField(
@@ -56,6 +56,7 @@ class RegisterForm(forms.ModelForm):
                     )
 
     role = forms.ChoiceField(
+		    required=True,
                     choices=ROLE_CHOICES,
                     widget=forms.Select(attrs={'class':'nice-select rounded'})
                     )

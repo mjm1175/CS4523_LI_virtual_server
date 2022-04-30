@@ -1,7 +1,7 @@
 from email.policy import default
 from django.db import models
 from django.utils import timezone
-#from users.models import Account
+from user.models import Account
 
 # Example model
 class Job(models.Model):

@@ -38,11 +38,44 @@
             <h1>Log in Here!</h1>
             <form id ="login" method="POST" class ="input-group">
                 {% csrf_token %}
-                <p>Username</p>
+
+                {% if form.errors %}
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <div class="alert alert-danger">
+                                <strong>{{ error|escape }}</strong>
+<!--                                <strong>{{ field|escape }}</strong>-->
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <p>Email</p>
                 {{form.username}}
+
+                {% if form.username.errors %}
+                    {% for error in form.username.errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                    {% endfor %}
+                {% endif %}   
 
                 <p>Password</p>
                 {{form.password}}
+
+                {% if form.password.errors %}
+                    {% for error in form.password.errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                    {% endfor %}
+                {% endif %}                  
 
                 <input type="submit" name="" value ="Login">
                 <a href="{% url 'register' %}">New to LinkedIncognito? Sign Up Here!</a><br>

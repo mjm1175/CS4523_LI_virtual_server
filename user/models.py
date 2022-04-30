@@ -98,17 +98,18 @@ class Account(AbstractBaseUser):
         return True
     # end required
 
-    #def get_absolute_url(self):
-    #    return reverse('public_profile', kwargs={'slug': self.slug})
+    def get_absolute_url(self):
+        return reverse('public_profile', kwargs={'slug': self.slug})
     
-    #def save(self, *args, **kwargs):
-        # Creating a unique Identifier for the resume (useful for other things in the future) && a SlugField for the url
-    #    if self.uniqueId is None:
-    #        self.uniqueId = str(uuid4()).split('-')[0]
+    def save(self, *args, **kwargs):
+        # Creating a unique Identifier for the user (useful for other things in the future) && a SlugField for the url
+        if self.uniqueId is None:
+            self.uniqueId = str(uuid4()).split('-')[0]
         
-    #    self.slug = slugify('{} {} {}'.format(self.first_name, self.last_name, self.uniqueId))
+        self.slug = slugify('{} {} {}'.format(self.first_name, self.last_name, self.uniqueId))
 
-    #    super(Resume, self).save(*args, **kwargs)
+        super(Account, self).save(*args, **kwargs)
+
 
 
 class Resume(models.Model):
