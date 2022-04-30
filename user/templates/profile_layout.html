@@ -1,0 +1,116 @@
+{% extends "layout1.html" %}
+{% load static %}
+
+{% block title %}
+Profile
+{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'app/css/profile.css' %}">
+{% endblock %}
+        
+
+{% block body %}
+<!--Profile Page-->
+<div class="profile-container">
+    <!--Cover Image-->
+    <img src="{% static 'app/images/cover.png' %}" class="cover-img">
+    <!--Profile Details-->
+    <div class="profile-details">
+        <!--PFP and name-->
+        <div class="pd-left">
+            <div class="pd-row">
+                {% if object.username %}		
+                    <img src="{{object.resume.image.url}}">
+                {% else %}
+                    <img src="{% static 'app/images/profile3.jpg' %}">
+                {% endif %}
+                <div>
+                    <h3>{{object.first_name}} {{object.last_name}}</h3>
+                    <p>Contact: {{object.email}}</p>
+                </div>
+            </div>
+        </div>        
+        {% block profhead %}
+        {% endblock %}
+
+    </div>
+
+    <div class="profile-info">
+        <div class="info-col">
+            <!--Intro: Bio, location, etc.-->
+            <div class="profile-intro">
+                <h3>Intro</h3>
+                <p class="intro-text">Believe in yourself and you can do anything. <img src="{% static 'app/images/feeling.png' %}"></p>
+                <hr>
+                <ul>
+                    <li> <img src="{% static 'app/images/profile-job.png' %}"> Director at 99media Ltd.</li>
+                    <li> <img src="{% static 'app/images/profile-study.png' %}"> Studied at Amity University</li>
+                    <li> <img src="{% static 'app/images/profile-study.png' %}"> Went to DPS Delhi</li>
+                    <li> <img src="{% static 'app/images/profile-home.png' %}"> Lives in Bangalore, India</li>
+                    <li> <img src="{% static 'app/images/profile-location.png' %}"> From Bangalore, India</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="post-col">
+            {% if experiences %}
+                {% for experience in experiences %}
+                <div class="post-container">
+                    <div class="user-profile">
+                    {% if object.resume %}		
+                        <img src="{{object.resume.image.url}}">
+                    {% else %}
+                        <img src="{% static 'app/images/profile3.jpg' %}">
+                    {% endif %}
+                        <div>
+                            <p>{{experience.position}}</p>
+                            <span>At {{experience.company}}</span>
+                            <span>From {{experience.start_date}} to {{experience.end_date}}</span>                            
+                        </div>
+                    </div>     
+                    <div>
+                        {% if experience.skills %}
+                            <p>Relevant Skills:</p>
+                            {% for skill in experience.skills %}
+                            <div>
+                                {{skill}}
+                            </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <br>
+                    {% if experience.experience %}
+                    <p class="post-text">Experience: </p>
+                    <p class="post-text">{{experience.experience}}</p>
+                    {% endif %}    
+                </div>
+                {% endfor %}
+            {% endif %}
+        
+            {% if educations %}
+                {% for education in educations %}
+                <div class="post-container">
+                    <div class="user-profile">
+                    {% if object.resume %}		
+                        <img src="{{object.resume.image.url}}">
+                    {% else %}
+                        <img src="{% static 'app/images/profile3.jpg' %}">
+                    {% endif %}
+                        <div>
+                            <p>{{education.level}} in {{education.major_subject}}</p>
+                            <span>From {{education.institution}}</span>
+                            <span>Graduated {{education.graduated}}</span>                            
+                        </div>
+                    </div>     
+                </div>                
+                {% endfor %}
+            {% endif %}
+        </div>
+</div>
+
+{% endblock %}
+
+{% block source %}
+<script src="{% static 'app/js/profile.js' %}"></script>
+{% endblock %}

@@ -40,7 +40,22 @@ def register(request):
 
 @login_required
 def profile(request):
-	return render(request, 'profile.html', {})
+	usr = request.user
+
+	context = {}
+	context['object'] = request.user
+
+	try:
+		if usr.resume:
+			educations = Education.objects.filter(resume=usr.resume)
+			experiences = Experience.objects.filter(resume=usr.resume)
+			context['educations'] = educations
+			context['experiences'] = experiences
+	except Account.resume.RelatedObjectDoesNotExist:
+		context = {}
+
+	return render(request, 'profile.html', context)
+
 
 @login_required
 def create_resume(request):
@@ -131,11 +146,25 @@ def home_profiles(request):
 
 @csrf_protect
 def public_profile(request, slug):
-    obj = Account.objects.get(slug=slug)
-    context = {}
-    context['object'] = obj
+	obj = Account.objects.get(slug=slug)
 
-    return render(request, 'public_profile.html', context)
+	context = {}
+
+	try:
+		if obj.resume:
+			educations = Education.objects.filter(resume=obj.resume)
+			experiences = Experience.objects.filter(resume=obj.resume)
+
+			context['educations'] = educations
+			context['experiences'] = experiences    
+	except Account.resume.RelatedObjectDoesNotExist:
+		context = {}
+
+
+	context['object'] = obj
+
+	return render(request, 'public_profile.html', context)
+
 
 # not working/finished
 def download(request, foldername, filename):

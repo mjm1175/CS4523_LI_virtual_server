@@ -55,11 +55,13 @@ Home
         <div class="post-container">
             <div class="user-profile">
                 <!-- LINK TO that user's profile PAGE (does that still exist) -->
+
                 {% if user.resume %}		
-                <a href="companyprofile.html"><img src="{{user.resume.image.url}}"></a>
+                <a href="{% url 'public_profile' user.slug %}"><img src="{{user.resume.image.url}}"></a>
                 {% else %}
-                <a href="companyprofile.html"><img src="{% static 'app/images/profile3.jpg' %}"></a>
-                {% endif %}   
+                <a href="{% url 'public_profile' user.slug %}"><img src="{% static 'app/images/profile3.jpg' %}"></a>
+                {% endif %}                
+                
                 <div>
                     <p>{{user.first_name}} {{user.last_name}}</p>
                     <span>@{{user.username}}</span>
