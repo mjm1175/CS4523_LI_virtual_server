@@ -18,35 +18,13 @@ Home
             <a href="#"><img src="{% static 'app/images/news.png' %}"> Latest Jobs </a>
             <a href="#"><img src="{% static 'app/images/friends.png' %}"> Connections </a>
         </div>
+        <div class="imp-links">
+            <a href="{% url 'job_post_creation' %}"><button>Add New Job Posting</button></a>
+        </div>        
     </div>
     <!--------------MAIN CONTENT--------------->
     <div class="main-content">
-        <!--<div class="write-post-container">
-            <div class="user-profile">
-                {% if user.resume %}		
-                    <img src="{{user.resume.image.url}}">
-                {% else %}
-                    <img src="{% static 'app/images/profile3.jpg' %}">
-                {% endif %}
-                <div>
-                {% if user.is_authenticated %}
-                    <p>@{{user.username}}</p>
-                {% else %}
-                                <p>@user1</p>
-                {% endif %}
-                    <small>Public</small>
-                </div>
-            </div>
-            <div class="post-input-container">
-                <textarea rows="3" placeholder="Enter post here"></textarea>
-                <div class="add-post-links">
-                    <a href="#"><img src="{% static 'app/images/live-video.png' %}">Live Video</a>
-                    <a href="#"><img src="{% static 'app/images/photo.png' %}">Photo/Video</a>
-                    <a href="#"><img src="{% static 'app/images/feeling.png' %}">Status</a>
-                </div>
-            </div>
-        </div>-->
-
+        
         <!-- Populating from database information -->
 
         <!-- This means we must send variable 'jobs' from backend -->
@@ -54,8 +32,7 @@ Home
 
         <div class="post-container">
             <div class="user-profile">
-                <!-- LINK TO COMPANY PAGE (does that still exist) -->
-                <a href="companyprofile.html"><img src="{{job.logo.url}}"></a>
+                <a href="{% url 'job_post' job.slug %}"><img src="{{job.logo.url}}"></a>
                 <div>
                     <p>{{job.company}}</p>
                     <span>{{job.date_created}}</span>

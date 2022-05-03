@@ -2,6 +2,8 @@ from email.policy import default
 from django.db import models
 from django.utils import timezone
 from user.models import Account
+from uuid import uuid4
+from django.template.defaultfilters import slugify
 
 # Example model
 class Job(models.Model):
@@ -60,4 +62,4 @@ class Job(models.Model):
         
         self.slug = slugify('{} {} {}'.format(self.title, self.company, self.uniqueId))
 
-        super(Account, self).save(*args, **kwargs)
+        super(Job, self).save(*args, **kwargs)
