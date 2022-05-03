@@ -1,0 +1,25 @@
+from django.contrib.auth.decorators import login_required
+from email import message
+from multiprocessing import context
+from webbrowser import get
+from django.shortcuts import render, redirect
+
+from django.views import View
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.models import User
+from rest_framework.parsers import JSONParser
+from django.http.response import JsonResponse
+
+from UserApp.forms import ThreadForm
+from UserApp.models import ThreadModel
+
+from user.models import Account
+from models import  ThreadModel, Messages
+from forms import ThreadForm, MessageForm
+
+from django.core.files.storage import default_storage
+from django.db.models import Q
+# Create your views here.
+@login_required
+def messenger(request):
+	return render(request, 'messenger.html', {})

@@ -40,9 +40,24 @@ class Job(models.Model):
     requirements = models.TextField()
     logo = models.ImageField(default='default-job.png', upload_to='upload_images')
     date_created = models.DateTimeField(default=timezone.now)
+    slug = models.SlugField(max_length=500, unique=True, blank=True, null=True)
+    uniqueId = models.CharField(max_length=100, null=True, blank=True)    # might should change User to Company?
+
     #owner = models.ForeignKey(Account, on_delete=models.CASCADE)
     # might should change User to Company?
     # models.CASCADE means that if user gets deleted, the job will be deleted with them
 
     def __str__(self):
         return '{} looking for {}'.format(self.company, self.title)
+
+    def get_absolute_url(self):
+        return reverse('job_post', kwargs={'slug': self.slug})
+    
+    def save(self, *args, **kwargs):
+        # Creating a unique Identifier for the user (useful for other things in the future) && a SlugField for the url
+        if self.uniqueId is None:
+            self.uniqueId = str(uuid4()).split('-')[0]
+        
+        self.slug = slugify('{} {} {}'.format(self.title, self.company, self.uniqueId))
+
+        super(Account, self).save(*args, **kwargs)

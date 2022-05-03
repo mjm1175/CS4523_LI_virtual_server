@@ -27,17 +27,23 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', jobs_views.home, name='home_page'),
+    path('job-post/<slug:slug>/', jobs_views.job_post, name='job_post'),
     path('register/', users_views.register, name='register'),
     path('profile/', users_views.profile, name='profile'),
     path('users/create/', users_views.create_resume, name='create_resume'),
     path('users/view/<slug:slug>/', users_views.resume_detail, name='resume_detail'),
     path('users/public-profile/<slug:slug>/', users_views.public_profile, name='public_profile'),
     path('all-users/', users_views.home_profiles, name='all_users'),
-    #path('login/', auth_views.LoginView.as_view(template_name='login.html', authentication_form=user_forms.RegisterForm), name='login'),
     path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
     path('logout/', auth_views.logout_then_login, name='logout'),
     path('download/<str:foldername>/<str:filename>/', users_views.download, name='download'),
+    # this one might be redundant
     path('messenger/', msg_views.messenger, name='messenger'),
+    path('inbox/', msg_views.ListThreads.as_view(), name='inbox'),
+    path('inbox/create-thread', msg_views.CreateThread.as_view(), name='create-thread'),
+    path('inbox/<int:pk>/', msg_views.ThreadView.as_view(), name='thread'),
+
+    path('inbox/<int:pk>/create-message', msg_views.CreateMessage.as_view(), name='create-message'),
 ]
 
 if settings.DEBUG:
