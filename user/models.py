@@ -8,13 +8,14 @@ import random
 from jobs.models import Company
 
 class MyAccountManager(BaseUserManager):
-    def create_user(self, email, username, role, first_name, last_name, password):
+#    def create_user(self, email, username, role, first_name, last_name, password):
+    def create_user(self, email, username, first_name, last_name, password):
         if not email:
             raise ValueError("Users must have email address.")
         if not username:
             raise ValueError("Users must have username.")
-        if not role:
-            raise ValueError("Users must have role.")
+        #if not role:
+        #    raise ValueError("Users must have role.")
         if not first_name:
             raise ValueError("Users must enter first name.")
         if not last_name:
@@ -26,7 +27,7 @@ class MyAccountManager(BaseUserManager):
             email = self.normalize_email(email),
             password=password,
             username = username,  
-            role = role,
+#            role = role,
             first_name = first_name,
             last_name = last_name
         )
@@ -35,12 +36,13 @@ class MyAccountManager(BaseUserManager):
         user.save(using=self._db)
         return user    
 
-    def create_superuser(self, email, username, role, first_name, last_name, password):
+ #   def create_superuser(self, email, username, role, first_name, last_name, password):
+    def create_superuser(self, email, username, first_name, last_name, password):
         user = self.create_user(
             email = self.normalize_email(email),
             password=password,
             username = username,  
-            role = role,
+#            role = role,
             first_name = first_name,
             last_name = last_name       
         )
@@ -76,7 +78,7 @@ class Account(AbstractBaseUser):
     last_name = models.CharField(max_length=100, default = "Owner")
     slug = models.SlugField(max_length=500, unique=True, blank=True, null=True)
     uniqueId = models.CharField(max_length=100, null=True, blank=True)
-    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default=APPLICANT)
+    #role = models.CharField(max_length=10, choices=ROLE_CHOICES, default=APPLICANT)
     # Applicants will never have a chance to add a company
 #    company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True, blank=True)
 

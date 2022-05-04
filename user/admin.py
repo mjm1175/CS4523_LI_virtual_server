@@ -6,7 +6,8 @@ from .models import *
 
 # not required, just to display/search/edit
 class AccountAdmin(UserAdmin):
-	list_display = ('email', 'username', 'role', 'date_joined', 'last_login', 'is_admin', 'is_staff')
+#	list_display = ('email', 'username', 'role', 'date_joined', 'last_login', 'is_admin', 'is_staff')
+	list_display = ('email', 'username', 'date_joined', 'last_login', 'is_admin', 'is_staff')
 	search_fields = ('email', 'username')
 	read_only = ('date_joined', 'last_login', 'slug', 'uniqueId')
 
