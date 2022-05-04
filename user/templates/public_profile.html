@@ -5,7 +5,11 @@
     <!--Action buttons-->
     <div class="pd-right">
         <button type="button"> <img src="{% static 'app/images/add-friends.png' %}"> Friend</button>
-        <button type="button"><a href="{% url 'inbox' %}"><img src="{% static 'app/images/message.png' %}"> Message </a></button>
+        <button type="button">	
+		<a href="{% url 'inbox/create-thread' %}">
+			<img src="{% static 'app/images/message.png' %}"> Message 	
+		</a>	
+	</button>
         <br>
     </div>
 {% endblock %}

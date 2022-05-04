@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'jobs',
     'user',
     'messenger',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [

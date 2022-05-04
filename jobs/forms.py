@@ -32,30 +32,26 @@ class CreateJobForm(forms.ModelForm):
                 widget=forms.TextInput(attrs={'class':'form-control jobs', 'placeholder':'Job Title'})
                 )
 
-    company = forms.CharField(
-                max_length=100,
-                required=True,
-                widget=forms.TextInput(attrs={'class':'form-control jobs', 'placeholder':'Company Name'})
-                )
-
     location = forms.CharField(
                 max_length=200,
-                required=True,
+                required=False,
                 widget=forms.TextInput(attrs={'class':'form-control jobs', 'placeholder':'Location'})
                 )
 
     salary = forms.CharField(
                 max_length=100,
-                required=True,
+                required=False,
                 widget=forms.TextInput(attrs={'class':'form-control jobs', 'placeholder':'Salary'})
                 )
 
     type = forms.ChoiceField(
+                    required=False,
                     choices=TYPE_CHOICES,
                     widget=forms.Select(attrs={'class':'nice-select rounded'})
                     ) 
 
     experience = forms.ChoiceField(
+                    required=False,
                     choices=EXP_CHOICES,
                     widget=forms.Select(attrs={'class':'nice-select rounded'})
                     ) 
@@ -71,19 +67,18 @@ class CreateJobForm(forms.ModelForm):
                 )
 
     requirements = forms.CharField(
-                required=True,
+                required=False,
                 widget=forms.TextInput(attrs={'class':'form-control jobs', 'placeholder':'Requirements'})
                 )
-
-    logo = forms.ImageField(
+    
+    closing_date = forms.DateField(
                     required=False,
-                    widget=forms.FileInput(attrs={'class':'form-control'})
+                    widget=forms.DateInput(attrs={'class':'form-control', 'placeholder':'Stop Accepting Applications After: '})
                     )
     
     class Meta:
         model=Job
         fields = [
             'title', 'company', 'location', 'salary', 'type', 'experience', 'summary', 'description',
-            'requirements', 'logo'
+            'requirements', 'closing_date'
         ]
-

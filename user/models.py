@@ -5,7 +5,7 @@ from django.template.defaultfilters import slugify
 from django.utils import timezone
 from uuid import uuid4
 import random
-
+from jobs.models import Company
 
 class MyAccountManager(BaseUserManager):
     def create_user(self, email, username, role, first_name, last_name, password):
@@ -77,6 +77,8 @@ class Account(AbstractBaseUser):
     slug = models.SlugField(max_length=500, unique=True, blank=True, null=True)
     uniqueId = models.CharField(max_length=100, null=True, blank=True)
     role = models.CharField(max_length=10, choices=ROLE_CHOICES, default=APPLICANT)
+    # Applicants will never have a chance to add a company
+#    company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True, blank=True)
 
     # allowing users to login using email
     USERNAME_FIELD = 'email'

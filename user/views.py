@@ -7,6 +7,8 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic import DetailView
 from datetime import datetime
+import requests
+import math
 
 # Create your views here.
 
@@ -169,3 +171,42 @@ def public_profile(request, slug):
 # not working/finished
 def download(request, foldername, filename):
 	file_path = settings.MEDIA_ROOT + '/'+foldername+'/'+filename
+
+def base64_encode(message):
+        import base64
+        message_bytes = message.encode('ascii')
+        base64_bytes = base64.b64encode(message_bytes)
+        base64_message = base64_bytes.decode('ascii')
+        return base64_message
+
+@csrf_protect
+def zoom_callback(request):
+    code = request.POST.get("code", False)
+    data = requests.post(f"https://zoom.us/oauth/token?grant_type=authorization_code&code={code}&redirect_uri=http://159.203.182.153:8000/zoom/callback/", headers={
+        "Authorization": "Basic " + base64_encode("dh0v4C7XRJyO5CJDJs5yaw:olo5d6l6VRQmo7FKd9v3z7DRHk8YiH7L")
+                                                })
+    #print(data.text)
+    request.session["zoom_access_token"] = data.json()["access_token"]
+
+    return HttpResponseRedirect("/meetingCreation/")
+
+@csrf_protect
+def schedule_interview(request):
+    if request.method == "POST":
+        data = requests.post("https://api.zoom.us/v2/users/me/meetings", headers={                                                   'content-type': "application/json",
+              "authorization": f"Bearer {request.session['zoom_access_token']}"                                                          }, data = json.dumps({                                  
+                  "topic": f"LinkedIncognito Candidate Interview",                                                                         "type": 2, "start_time": request.POST["time"],                                                                                
+                  }))
+        #print(data.json()["join_url"], data.json()["start_url"])
+        # ChatMessage(from_id=request.user.id, to_id=candidate.id, application_id=app.id, 
+        #   message=f"Hello! Your interview been successfully created! Please join this 
+        #   <a href='{data.json()['join_url']}'>Zoom meeting</a> on {data.json()['start_time']} UTC. Good Luck!").save()
+        # ChatMessage(from_id=request.user.id, to_id=candidate.id, application_id=app.id, 
+        # message=f"This is only viewable to you, to start the Zoom meeting, click this 
+        # <a href='{data.json()['start_url']}'>link</a>.", public=False).save()
+
+        return HttpResponseRedirect(f"/meetingCreation/")
+
+    else:
+                                                                                                                                return render(request, "meetingCreation.html")
+

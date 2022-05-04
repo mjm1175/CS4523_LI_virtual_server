@@ -30,30 +30,11 @@
         {% endif %}
         
         <div class="form-inner">
-          <h1>Create Your Job Posting</h1>
-
-           <label>Upload Your Company's Logo: </label>
-            {{form.logo}}
-            {% if form.logo.errors %}
-                {% for error in form.logo.errors %}
-                <div class="alert alert-danger">
-                    <strong>{{ error|escape }}</strong>
-                </div>
-                {% endfor %}
-            {% endif %}             
+          <h1>Create Your Job Posting</h1>         
             
             {{form.title}}
             {% if form.title.errors %}
                 {% for error in form.title.errors %}
-                <div class="alert alert-danger">
-                    <strong>{{ error|escape }}</strong>
-                </div>
-                {% endfor %}
-            {% endif %} 
-
-            {{form.company}}
-            {% if form.company.errors %}
-                {% for error in form.company.errors %}
                 <div class="alert alert-danger">
                     <strong>{{ error|escape }}</strong>
                 </div>
@@ -130,7 +111,17 @@
                     <strong>{{ error|escape }}</strong>
                 </div>
                 {% endfor %}
-            {% endif %}             
+            {% endif %}      
+            
+            Date After You Wish to Stop Accepting Applications:
+            {{form.closing_date}}
+            {% if form.closing_date.errors %}
+                {% for error in form.closing_date.errors %}
+                <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+                {% endfor %}
+            {% endif %}               
           
           <button type="submit">Post</button>
         </div>

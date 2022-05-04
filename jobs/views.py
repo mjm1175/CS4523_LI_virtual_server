@@ -37,10 +37,12 @@ def job_post_creation(request):
 
 		if form.is_valid():
 			obj = form.save(commit=False)
-			#obj.owner = request.user
+			obj.owner = request.user
+			# might throw error
+			obj.company = request.user.company
 			obj.save()
 			messages.success(request, 'Job post created successfully.')
-			
+
 			return redirect('job_post', slug=obj.slug)
 
 		else:
@@ -50,3 +52,15 @@ def job_post_creation(request):
 
 	return render(request, 'job_post_creation.html', {})
 
+
+def company_detail(request, slug):
+    obj = Company.objects.get(slug=slug)
+    # getting all jobs whose company's slug matches this slug
+    # (all jobs in this company)
+    jobs = Job.objects.filter(company__slug=slug)
+
+    context = {}
+    context['company'] = obj
+    context['jobs'] = jobs
+
+    return render(request, 'company_detail.html', context)

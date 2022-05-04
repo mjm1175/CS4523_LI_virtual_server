@@ -1,4 +1,12 @@
-{% block content %}
+{% extends "layout1.html" %} <!--CHECK THE VIDEO FOR THIS-->
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}
+Messenger
+{% endblock title %}
+
+{% block body %}
 <div class="container">
     <div class="row">
         <div class="col-md-12 p-5">
@@ -16,7 +24,7 @@
             <form method="POST">
                 {% csrf_token %}
                 <p>Enter the username for the person you would like to talk to.</p>
-                {% form %}
+                {{ form | crispy }}
                 <div class="d-grid gap-2">
                     <button class="btn btn-success mt-3" type="submit">Continue</button>
                 </div>
@@ -24,4 +32,4 @@
         </div>
     </div>
 </div>
-{% endblock content %}
+{% endblock body %}
