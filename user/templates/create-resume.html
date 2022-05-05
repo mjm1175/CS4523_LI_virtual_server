@@ -8,10 +8,11 @@
 
 {% block body %}
 <div class="posting">
-<form method="POST" enctype="multipart/form-data">
+    <form method="POST" enctype="multipart/form-data">
     
     {% csrf_token %}
     <div class="form-inner">
+
         <h1>Update Profile</h1>
         
         {% if form.errors %}
@@ -45,38 +46,6 @@
         </div>
 
     <h3>Address:</h3>
-    <div class="col-md-6">
-        <div class="form-group app-label">
-            <label class="text-muted">Address Line 1 <span class="text-danger">*</span> :</label><br>
-            <div class = "fill-in">
-                {{form.address_line1}}
-                    </div>
-        </div>
-        {% if form.address_line1.errors %}
-            {% for error in form.address_line1.errors %}
-                <div class="alert alert-danger">
-                    <strong>{{ error|escape }}</strong>
-                </div>
-            {% endfor %}
-        {% endif %}              
-    </div>
-
-    <div class="col-md-6">
-        <div class="form-group app-label">
-            <label class="text-muted">Address Line 2 :</label><br>
-            <div class = "fill-in">
-                {{form.address_line2}}
-            </div>
-        </div>
-        {% if form.address_line2.errors %}
-            {% for error in form.address_line2.errors %}
-                <div class="alert alert-danger">
-                    <strong>{{ error|escape }}</strong>
-                </div>
-            {% endfor %}
-        {% endif %}              
-    </div>
-
     <div class="col-md-6">
         <div class="form-group app-label">
             <label class="text-muted">City <span class="text-danger">*</span> :</label><br>
@@ -137,24 +106,12 @@
         {% endif %}              
     </div>
 
-    <h3>Select Your Company: </h3>
-    <div class="col-md-6">
-        <div class="form-group app-label">
-            <label class="text-muted">Company (optional):</label><br>
-            {{form.company}}
-        </div>
-        {% if form.company.errors %}
-            {% for error in form.company.errors %}
-                <div class="alert alert-danger">
-                    <strong>{{ error|escape }}</strong>
-                </div>
-            {% endfor %}
-        {% endif %}   
-        <p><a href="company_creation.html">Don't see your company? Add it now.</a></p>           
     </div>
         <button type="submit" class="submitBtn btn btn-primary" value="Save Changes">Save Changes</button>
     </div>
-    </form>
+</form>
+
+
 </div>
 {% endblock %}
 

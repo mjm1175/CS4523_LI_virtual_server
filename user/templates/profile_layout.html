@@ -20,7 +20,7 @@ Profile
         <!--PFP and name-->
         <div class="pd-left">
             <div class="pd-row">
-                {% if object.username %}		
+                {% if object.resume %}		
                     <img src="{{object.resume.image.url}}">
                 {% else %}
                     <img src="{% static 'app/images/profile3.jpg' %}">

@@ -3,11 +3,25 @@
 
 {% block title %}Resume{% endblock %}
 
+
 {% block head %}
 <link rel="stylesheet" href="{% static 'app/css/job_post_creation.css' %}">
 {% endblock %}
 
 {% block body %}
+<!--Dropdown to confirm delete
+<div class="delete-menu">
+    <div class="delete-menu-inner">
+            <p>Are you Sure you want to delete?</p>
+            <div class="col">
+                <button class="btn btn-danger">Cancel</button>
+            </div>                                    
+            <div class="col">
+                <button class="btn btn-danger">Delete Qualification</button>
+            </div>
+    </div>
+</div>  -->
+
 <div class="posting">
     <section class="bg-half page-next-level">
         <div class="bg-overlay">
@@ -32,20 +46,13 @@
                     <div class="component-wrapper rounded shadow">
                         <div class="p-4 border-bottom bg-light">
                             <h3 class="text-dark">General Information:</h3>
+                            <td><a href="{% url 'create_resume' %}"><button class="btn btn-primary rounded-pill">Edit</button></a></td>
                         </div>
 
                         <div class="p-4">
                             <table class="table table-striped">
 
-                                <tbody>
-                                    <tr>
-                                        <td><strong>Address</strong></td>
-                                        <td>{{object.address_line1}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Address Line 2</strong></td>
-                                        <td>{{object.address_line2}}</td>
-                                    </tr>
+                                <tbody>                                
                                     <tr>
                                         <td><strong>State</strong></td>
                                         <td>{{object.state}}</td>
@@ -58,14 +65,18 @@
                                         <td><strong>Last Updated</strong></td>
                                         <td>{{object.last_updated}}</td>
                                     </tr>
+                                    {% if object.cover_letter %}
                                     <tr>
                                         <td><strong>Download Coverletter</strong></td>
                                         <td><button class="btn btn-primary rounded-pill">Download</button></td>
                                     </tr>
+                                    {% endif %}
+                                    {% if object.cv %}
                                     <tr>
                                         <td><strong>Download CV</strong></td>
                                         <td><button class="btn btn-primary rounded-pill">Download</button></td>
-                                    </tr>                                        
+                                    </tr>    
+                                    {% endif %}                                    
                                 </body>
 
                             </table>
@@ -83,50 +94,51 @@
                     <h3 class="text-dark">Education: <!--<button type="button" class="btn btn-secondary-outline" data-toggle="modal" data-target="#addEducation"><span class="mdi mdi-plus mdi-24px"></span>Add Education</button>--></h3>
                 </div>
             </div>
-                {% if educations %}
-                    {% for education in educations %}
-                        <div class="row">
-                        <div class="col-lg-12 mt-4 pt-2">
-                            <div class="component-wrapper rounded shadow">
-                                <div class="p-4 border-bottom bg-light">
-                                    <h4 class="title mb-0">{{education.institution}}</h4>
+            {% if educations %}
+                {% for education in educations %}
+                    <div class="row">
+                    <div class="col-lg-12 mt-4 pt-2">
+                        <div class="component-wrapper rounded shadow">
+                            <div class="p-4 border-bottom bg-light">
+                                <h4 class="title mb-0">{{education.institution}}</h4>
+                            </div>
+
+                            <div class="p-4">
+                                <div class="row">
+                                    <div class="col">
+                                        <p><strong>Degree Level: </strong> {{education.level}}</p>
+                                    </div>
                                 </div>
 
-                                <div class="p-4">
-                                    <div class="row">
-                                        <div class="col">
-                                            <p><strong>Qualification: </strong> {{education.qualification}}</p>
-                                        </div>
-                                        <div class="col">
-                                            <p><strong>Level of Qualification: </strong> {{education.level}}</p>
-                                        </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <p><strong>Start Date: </strong> {{education.start_date}}</p>
                                     </div>
+                                    <div class="col">
+                                        <p><strong>Graduated: </strong> {{education.graduated}}</p>
+                                    </div>                                                                                        
+                                </div>
 
-                                    <div class="row">
-                                        <div class="col">
-                                            <p><strong>Start Date: </strong> {{education.start_date}}</p>
-                                        </div>
-                                        <div class="col">
-                                            <p><strong>Graduated: </strong> {{education.graduated}}</p>
-                                        </div>                                                                                        
+                                <div class="row">
+                                    <div class="col">
+                                        <p><strong>Major: </strong> {{education.major_subject}}</p>
                                     </div>
-
-                                    <div class="row">
-                                        <div class="col">
-                                            <p><strong>Major: </strong> {{education.major_subject}}</p>
-                                        </div>
-                                        <div class="col">
-                                            <button class="btn btn-danger">Delete Qualification</button>
-                                        </div>                                                                                        
-                                    </div>
+                                    <div class="col">
+                                        <!--<button class="btn btn-danger" onclick="deleteMenuToggle()">Delete Qualification</button>-->
+                                        <form action="{% url 'delete_education' education.id %}" method="POST">
+                                            {% csrf_token %}
+                                            <button class="btn btn-danger" type="submit">Delete Education</button>
+                                        </form>
+                                    </div>                                                                                        
                                 </div>
                             </div>
                         </div>
-                        </div>
-                        <br>
-                        <br>                            
-                    {% endfor %}
-                {% endif %}
+                    </div>
+                    </div>                        
+                    <br>
+                    <br>                            
+                {% endfor %}
+            {% endif %}
 
             <div class="modal fade" id="addEducation" tabindex="-1" role="dialog" aria-labelledby="addEducationLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -155,21 +167,6 @@
                                             {% endfor %}
                                         {% endif %}
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="form-group position-relative">
-                                            <label>Degree Title <span class="text-danger">*</span></label>
-                                            {{edu_form.qualification}}
-                                        </div>
-                                        {% if edu_form.qualification.errors %}
-                                            {% for error in edu_form.qualification.errors %}
-                                                <div class="alert alert-danger">
-                                                    <strong>{{ error|escape }}</strong>
-                                                </div>
-                                            {% endfor %}
-                                        {% endif %}
-                                    </div>  
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-12">
@@ -278,13 +275,13 @@
 
                                     <div class="row">
                                         <div class="col">
-                                            <p><strong>Experience: </strong> {{experience.experience}}</p>
-                                        </div>
-                                        <div class="col">
                                             <p><strong>Skills: </strong> {{experience.skills}}</p>
                                         </div>                                        
                                         <div class="col">
-                                            <button class="btn btn-danger">Delete Experience</button>
+                                            <form action="{% url 'delete_experience' experience.id %}" method="POST">
+                                                {% csrf_token %}
+                                                <button class="btn btn-danger" type="submit">Delete Experience</button>
+                                            </form>
                                         </div>                                                                                        
                                     </div>
                                 </div>
@@ -323,6 +320,7 @@
                                             {% endfor %}
                                         {% endif %}
                                     </div>
+                                    <p><a href="company_creation.html">Can't find your company? Add it now.</a></p>
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-12">
@@ -338,21 +336,6 @@
                                             {% endfor %}
                                         {% endif %}
                                     </div>  
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="form-group position-relative">
-                                            <label>Experience <span class="text-danger">*</span></label>
-                                            {{exp_form.experience}}
-                                        </div>
-                                        {% if exp_form.experience.errors %}
-                                            {% for error in exp_form.experience.errors %}
-                                                <div class="alert alert-danger">
-                                                    <strong>{{ error|escape }}</strong>
-                                                </div>
-                                            {% endfor %}
-                                        {% endif %}
-                                    </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-12">

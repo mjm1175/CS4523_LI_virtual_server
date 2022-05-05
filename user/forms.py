@@ -81,7 +81,6 @@ class DateInput(forms.DateInput):
     input_type = 'date'
 
 class ResumeForm(forms.ModelForm):
-
     AK	= 'Alaska'
     AL	= 'Alabama'
     AR	= 'Arkansas'
@@ -214,13 +213,13 @@ class ResumeForm(forms.ModelForm):
                     required=False,
                     widget=forms.FileInput(attrs={'class':'form-control'})
                     )
+    company = forms.ModelChoiceField(queryset=Company.objects.all(), required=False)
 
-    company = forms.ModelChoiceField(queryset=Company.objects.all())
 
     class Meta:
         model = Resume
         fields = [
-            'image', 'city', 'state', 'phone_number', 'cover_letter', 'cv', 'company'
+            'image', 'city', 'state', 'cover_letter', 'cv', 'company'
         ]
 
 
@@ -253,10 +252,6 @@ class EducationForm(forms.ModelForm):
                     required=True,
                     widget=forms.TextInput(attrs={'class':'form-control resume', 'placeholder':'Name of Institution'})
                     )
-    qualification = forms.CharField(
-                    required=True,
-                    widget=forms.TextInput(attrs={'class':'form-control resume', 'placeholder':'Name of Qualification'})
-                    )
     level = forms.ChoiceField(
                     choices=LEVEL_CHOICES,
                     widget=forms.Select(attrs={'class':'nice-select rounded'})
@@ -277,7 +272,7 @@ class EducationForm(forms.ModelForm):
     class Meta:
         model=Education
         fields = [
-            'institution', 'qualification', 'level', 'start_date', 'graduated', 'major_subject'
+            'institution', 'level', 'start_date', 'graduated', 'major_subject'
         ]
 
 
@@ -285,10 +280,7 @@ class EducationForm(forms.ModelForm):
 
 
 class ExperienceForm(forms.ModelForm):
-    company = forms.CharField(
-                    required=True,
-                    widget=forms.TextInput(attrs={'class':'form-control resume', 'placeholder':'Company Worked For'})
-                    )
+    company = forms.ModelChoiceField(queryset=Company.objects.all())
     
     position = forms.CharField(
                     required=True,
@@ -305,11 +297,6 @@ class ExperienceForm(forms.ModelForm):
                     widget=DateInput(attrs={'class':'form-control', 'placeholder':'Enter a date: '})
                     )
 
-    experience = forms.CharField(
-                    required=False,
-                    widget=forms.Textarea(attrs={'class':'form-control', 'placeholder':'Enter experience'})
-                    )
-
     #skills = forms.CharField(
     #                required=False,
     #                widget=forms.TextInput(attrs={'class':'form-control resume', 'placeholder':'Enter skills'})
@@ -321,5 +308,5 @@ class ExperienceForm(forms.ModelForm):
     class Meta:
         model=Experience
         fields = [
-            'company', 'position', 'start_date', 'end_date', 'experience', 'skills'
+            'company', 'position', 'start_date', 'end_date', 'skills'
         ]

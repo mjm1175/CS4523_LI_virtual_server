@@ -77,8 +77,6 @@ class Account(AbstractBaseUser):
     slug = models.SlugField(max_length=500, unique=True, blank=True, null=True)
     uniqueId = models.CharField(max_length=100, null=True, blank=True)
     role = models.CharField(max_length=10, choices=ROLE_CHOICES, default=APPLICANT)
-    # Applicants will never have a chance to add a company
-    company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True, blank=True)
 
     # allowing users to login using email
     USERNAME_FIELD = 'email'
@@ -229,7 +227,7 @@ class Resume(models.Model):
 
     user = models.OneToOneField(Account, on_delete=models.CASCADE)
     uniqueId = models.CharField(max_length=100, null=True, blank=True)
-    image = models.ImageField(default='default.png', upload_to='profile_images')
+    image = models.ImageField(default='default-job.png', upload_to='profile_images')
     email_confirmed = models.BooleanField(default=False)
     city = models.CharField(max_length=100, null=True, blank=True)
     state = models.CharField(max_length=100, choices=STATE_CHOICES, default=NY) # choice
@@ -238,6 +236,8 @@ class Resume(models.Model):
     last_updated = models.DateTimeField(null=True, blank=True)
     cover_letter = models.FileField(upload_to='resumes', null=True, blank=True)
     cv = models.FileField(upload_to='resumes', null=True, blank=True)
+    # Applicants won't be able to add a company
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return '{} {} {}'.format(self.user.first_name, self.user.last_name, self.uniqueId)
@@ -253,7 +253,7 @@ class Resume(models.Model):
         self.slug = slugify('{} {} {}'.format(self.user.first_name, self.user.last_name, self.user.uniqueId))
 
         # assign a default profile image
-        if self.image is None:
+        if self.image == 'default-job.png':
             self.image = random.choice(self.IMAGES)
 
         super(Resume, self).save(*args, **kwargs)
@@ -287,7 +287,6 @@ class Education(models.Model):
 
 
     institution = models.CharField(null=True, blank=True, max_length=200)
-    qualification = models.CharField(null=True, blank=True, max_length=200)
     level = models.CharField(choices=LEVEL_CHOICES, default=LEVEL5A, max_length=200)
     start_date = models.DateField(null=True, blank=True)
     graduated = models.DateField(blank=True, null=True)
@@ -295,14 +294,13 @@ class Education(models.Model):
     date_created = models.DateTimeField(default=timezone.now)
     resume = models.ForeignKey(Resume, on_delete=models.CASCADE)
     def __str__(self):
-        return '{} for {} {}'.format(self.qualification, self.resume.user.first_name, self.resume.user.last_name)
+        return '{} for {} {}'.format(self.institution, self.resume.user.first_name, self.resume.user.last_name)
        
 class Experience(models.Model):
-    company = models.CharField(null=True, blank=True, max_length=200)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True, blank=True)
     position = models.CharField(null=True, blank=True, max_length=200)
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
-    experience = models.TextField(null=True, blank=True)
     skills = ArrayField(models.CharField(max_length=100, null=True, blank=True), default=list)
     date_created = models.DateTimeField(default=timezone.now)
     resume = models.ForeignKey(Resume, on_delete=models.CASCADE)

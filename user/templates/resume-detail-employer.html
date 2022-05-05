@@ -1,0 +1,72 @@
+{% extends "layout1.html" %}
+{% load static %}
+
+{% block title %}Resume{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'app/css/job_post_creation.css' %}">
+{% endblock %}
+
+{% block body %}
+<div class="posting">
+    <section class="bg-half page-next-level">
+        <div class="bg-overlay">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="candidates-profile-details text-center">
+                            <img src="{{object.image.url}}" height="150" alt="{{object.user.first_name}} {{object.user.last_name}}" class="d-block mx-auto shadow rounded-pill mb-4">
+                            <h5 class="text-white mb-2">{{object.user.first_name}} {{object.user.last_name}}</h5>
+                            <p class="text-white-50 h6 mb-2">@{{object.user.username}} | {{object.user.email}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-16 col-md-6 mt-4 pt-5">
+                    <div class="component-wrapper rounded shadow">
+                        <div class="p-4 border-bottom bg-light">
+                            <h3 class="text-dark">General Information:</h3>
+                            <td><a href="{% url 'create_resume' %}"><button class="btn btn-primary rounded-pill">Edit</button></a></td>
+                        </div>
+
+                        <div class="p-4">
+                            <table class="table table-striped">
+
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Company Affiliation</strong></td>
+                                        <td>{{object.company}}</td>
+                                    </tr>                                    
+                                    <tr>
+                                        <td><strong>State</strong></td>
+                                        <td>{{object.state}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>City</strong></td>
+                                        <td>{{object.city}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Last Updated</strong></td>
+                                        <td>{{object.last_updated}}</td>
+                                    </tr>   
+                                </body>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+
+{% block source %}
+    <script src="{% static 'app/js/script.js' %}"></script>
+{% endblock %}

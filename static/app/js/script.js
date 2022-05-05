@@ -6,6 +6,12 @@ function settingsMenuToggle() {
 
 }
 
+var deleteMenu = document.querySelector(".delete-menu");
+
+function deleteMenuToggle() {
+    deleteMenu.classList.toggle("delete-menu-height");
+}
+
 
 darkBtn.onclick = function(){
     darkBtn.classList.toggle("dark-btn-on");
@@ -34,3 +40,4 @@ else {
     localStorage.setItem("theme", "light");
     localStorage.getItem("theme");
 }
+

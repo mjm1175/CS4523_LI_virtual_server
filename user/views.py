@@ -58,12 +58,12 @@ def profile(request):
 
 	return render(request, 'profile.html', context)
 
-
 @login_required
 def create_resume(request):
 	if request.method == 'POST':
 		# request.FILES bc files upload option in form
 		form = ResumeForm(request.POST, request.FILES)
+
 		if form.is_valid():
 			obj = form.save(commit=False)
 
@@ -77,14 +77,23 @@ def create_resume(request):
 		else:
 			messages.error(request, 'Error processing your request')
 			context = {'form': form}
-			return render(request, 'create-resume.html', context)
+			if request.user.role == "Employer":
+				return render(request, 'create-resume-employer.html', context)
+			else:
+				return render(request, 'create-resume.html', context)
 
 	if request.method == 'GET':
 		form = ResumeForm()
 		context = {'form': form}
-		return render(request, 'create-resume.html', context)
+		if request.user.role == "Employer":
+			return render(request, 'create-resume-employer.html', context)
+		else:
+			return render(request, 'create-resume.html', context)
 
-	return render(request, 'create-resume.html', {})
+	if request.user.role == "Employer":
+		return render(request, 'create-resume-employer.html', {})
+	else:
+		return render(request, 'create-resume.html', {})
 
 
 # not used anymore
@@ -129,17 +138,47 @@ def resume_detail(request, slug):
 			messages.error(request, 'Error processing your request')
 			context['edu_form'] = edu_form
 			context['exp_form'] = exp_form
-			return render(request, 'resume-detail.html', context)
+			if request.user.role == "Employer":
+				return render(request, 'resume-detail-employer.html', context)
+			else:
+				return render(request, 'resume-detail.html', context)
 
 	if request.method == 'GET':
 		edu_form = EducationForm()
 		exp_form = ExperienceForm()
 		context['edu_form'] = edu_form
 		context['exp_form'] = exp_form
+		if request.user.role == "Employer":
+			return render(request, 'resume-detail-employer.html', context)
+		else:
+			return render(request, 'resume-detail.html', context)
+
+	if request.user.role == "Employer":
+		return render(request, 'resume-detail-employer.html', context)
+	else:
 		return render(request, 'resume-detail.html', context)
 
-	return render(request, 'resume-detail.html', context)
+def delete_experience(request, pk):
+    exp = Experience.objects.get(pk=pk)  
 
+    if request.method == 'POST':        
+        exp.delete()                   
+        messages.success(request, 'Experience deleted successfully')
+        slug = request.user.resume.slug                         
+        return redirect('resume_detail', slug=slug)            
+
+    return render(request, 'resume_detail.html', {'exp': exp})
+
+def delete_education(request, pk):
+    edu = Education.objects.get(pk=pk)
+
+    if request.method == 'POST':
+        edu.delete()
+        messages.success(request, 'Education deleted successfully')
+        slug = request.user.resume.slug
+        return redirect('resume_detail', slug=slug)
+
+    return render(request, 'resume_detail.html', {'edu': edu})
 
 def home_profiles(request):
 	#	can change to filter for search

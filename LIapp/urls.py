@@ -34,6 +34,8 @@ urlpatterns = [
     path('profile/', users_views.profile, name='profile'),
     path('users/create/', users_views.create_resume, name='create_resume'),
     path('users/view/<slug:slug>/', users_views.resume_detail, name='resume_detail'),
+    path('users/delete/experience/<int:pk>/', users_views.delete_experience, name='delete_experience'),
+    path('users/delete/education/<int:pk>/', users_views.delete_education, name='delete_education'),
     path('users/public-profile/<slug:slug>/', users_views.public_profile, name='public_profile'),
     path('all-users/', users_views.home_profiles, name='all_users'),
     path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
