@@ -125,7 +125,7 @@
     <h3>Attach Your Resume:</h3>
     <div class="col-md-6">
         <div class="form-group app-label">
-            <label class="text-muted">CV :</label><br>
+            <label class="text-muted">Resume :</label><br>
             {{form.cv}}
         </div>
         {% if form.cv.errors %}
@@ -135,6 +135,22 @@
                 </div>
             {% endfor %}
         {% endif %}              
+    </div>
+
+    <h3>Select Your Company: </h3>
+    <div class="col-md-6">
+        <div class="form-group app-label">
+            <label class="text-muted">Company (optional):</label><br>
+            {{form.company}}
+        </div>
+        {% if form.company.errors %}
+            {% for error in form.company.errors %}
+                <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+        {% endif %}   
+        <p><a href="company_creation.html">Don't see your company? Add it now.</a></p>           
     </div>
         <button type="submit" class="submitBtn btn btn-primary" value="Save Changes">Save Changes</button>
     </div>

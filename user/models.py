@@ -8,14 +8,13 @@ import random
 from jobs.models import Company
 
 class MyAccountManager(BaseUserManager):
-#    def create_user(self, email, username, role, first_name, last_name, password):
-    def create_user(self, email, username, first_name, last_name, password):
+    def create_user(self, email, username, role, first_name, last_name, password):
         if not email:
             raise ValueError("Users must have email address.")
         if not username:
             raise ValueError("Users must have username.")
-        #if not role:
-        #    raise ValueError("Users must have role.")
+        if not role:
+            raise ValueError("Users must have role.")
         if not first_name:
             raise ValueError("Users must enter first name.")
         if not last_name:
@@ -27,7 +26,7 @@ class MyAccountManager(BaseUserManager):
             email = self.normalize_email(email),
             password=password,
             username = username,  
-#            role = role,
+            role = role,
             first_name = first_name,
             last_name = last_name
         )
@@ -36,13 +35,12 @@ class MyAccountManager(BaseUserManager):
         user.save(using=self._db)
         return user    
 
- #   def create_superuser(self, email, username, role, first_name, last_name, password):
-    def create_superuser(self, email, username, first_name, last_name, password):
+    def create_superuser(self, email, username, role, first_name, last_name, password):
         user = self.create_user(
             email = self.normalize_email(email),
             password=password,
             username = username,  
-#            role = role,
+            role = role,
             first_name = first_name,
             last_name = last_name       
         )
@@ -78,14 +76,13 @@ class Account(AbstractBaseUser):
     last_name = models.CharField(max_length=100, default = "Owner")
     slug = models.SlugField(max_length=500, unique=True, blank=True, null=True)
     uniqueId = models.CharField(max_length=100, null=True, blank=True)
-    #role = models.CharField(max_length=10, choices=ROLE_CHOICES, default=APPLICANT)
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default=APPLICANT)
     # Applicants will never have a chance to add a company
-#    company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True, blank=True)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True, blank=True)
 
     # allowing users to login using email
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username', 'role', 'first_name', 'last_name']
-    #REQUIRED_FIELDS = ['username']
 
 
     objects = MyAccountManager()
@@ -115,17 +112,7 @@ class Account(AbstractBaseUser):
         super(Account, self).save(*args, **kwargs)
 
 
-
 class Resume(models.Model):
-    # seems like we wont be using these LMFAO
-    MALE = 'Male'
-    FEMALE = 'Female'
-    NONBINARY = 'Nonbinary'
-    OTHER = 'Other'
-    MARRIED = 'Married'
-    SINGLE = 'Single'
-    WIDOWED = 'Widowed'
-    DIVORCED = 'Divorced'
 
     AK	= 'Alaska'
     AL	= 'Alabama'
@@ -179,20 +166,6 @@ class Resume(models.Model):
     WI	= 'Wisconsin'
     WV	= 'West Virginia'
     WY = 'Wyoming'
-
-    SEX_CHOICES = [
-        (MALE, 'Male'),
-        (FEMALE, 'Female'),
-        (NONBINARY, 'Nonbinary'),
-        (OTHER, 'Other'),
-    ]
-
-    MARITAL_CHOICES = [
-        (MARRIED, 'Married'),
-        (SINGLE, 'Single'),
-        (WIDOWED, 'Widowed'),
-        (DIVORCED, 'Divorced'),
-    ]
 
     STATE_CHOICES = [
         (AK,'Alaska'),
@@ -256,13 +229,10 @@ class Resume(models.Model):
 
     user = models.OneToOneField(Account, on_delete=models.CASCADE)
     uniqueId = models.CharField(max_length=100, null=True, blank=True)
-    # maybe remove upload_to??
     image = models.ImageField(default='default.png', upload_to='profile_images')
     email_confirmed = models.BooleanField(default=False)
-    address_line1 = models.CharField(max_length=100, null=True, blank=True)
-    address_line2 = models.CharField(max_length=100, null=True, blank=True)
     city = models.CharField(max_length=100, null=True, blank=True)
-    state = models.CharField(max_length=100, choices=STATE_CHOICES, default=NY)
+    state = models.CharField(max_length=100, choices=STATE_CHOICES, default=NY) # choice
     slug = models.SlugField(max_length=500, unique=True, blank=True, null=True)
     date_created = models.DateTimeField(default=timezone.now)
     last_updated = models.DateTimeField(null=True, blank=True)
@@ -280,13 +250,14 @@ class Resume(models.Model):
         if self.uniqueId is None:
             self.uniqueId = str(uuid4()).split('-')[0]
         
-        self.slug = slugify('{} {} {}'.format(self.user.first_name, self.user.last_name, self.uniqueId))
+        self.slug = slugify('{} {} {}'.format(self.user.first_name, self.user.last_name, self.user.uniqueId))
 
         # assign a default profile image
         if self.image is None:
             self.image = random.choice(self.IMAGES)
 
         super(Resume, self).save(*args, **kwargs)
+
     
 class Education(models.Model):
     # theres more

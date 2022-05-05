@@ -74,23 +74,13 @@ class RegisterForm(UserCreationForm):
         model = Account
 
         fields = [
-            'username', 'email', 'first_name', 'last_name', 'password1', 'password2', 'role'
+	    'username', 'email', 'first_name', 'last_name', 'password1', 'password2', 'role'
         ]
-
 
 class DateInput(forms.DateInput):
     input_type = 'date'
 
 class ResumeForm(forms.ModelForm):
-    # seems like we wont be using these LMFAO
-    MALE = 'Male'
-    FEMALE = 'Female'
-    NONBINARY = 'Nonbinary'
-    OTHER = 'Other'
-    MARRIED = 'Married'
-    SINGLE = 'Single'
-    WIDOWED = 'Widowed'
-    DIVORCED = 'Divorced'
 
     AK	= 'Alaska'
     AL	= 'Alabama'
@@ -144,20 +134,6 @@ class ResumeForm(forms.ModelForm):
     WI	= 'Wisconsin'
     WV	= 'West Virginia'
     WY = 'Wyoming'
-
-    SEX_CHOICES = [
-        (MALE, 'Male'),
-        (FEMALE, 'Female'),
-        (NONBINARY, 'Nonbinary'),
-        (OTHER, 'Other'),
-    ]
-
-    MARITAL_CHOICES = [
-        (MARRIED, 'Married'),
-        (SINGLE, 'Single'),
-        (WIDOWED, 'Widowed'),
-        (DIVORCED, 'Divorced'),
-    ]
 
     STATE_CHOICES = [
         (AK,'Alaska'),
@@ -218,16 +194,6 @@ class ResumeForm(forms.ModelForm):
                     required=False,
                     widget=forms.FileInput(attrs={'class':'form-control'}),
                     )
-
-    address_line1 = forms.CharField(
-                    required=True,
-                    widget=forms.TextInput(attrs={'class':'form-control resume', 'placeholder':'Enter Address Line 1'}),
-                    )
-    
-    address_line2 = forms.CharField(
-                    required=False,
-                    widget=forms.TextInput(attrs={'class':'form-control resume', 'placeholder':'Enter Address Line 2'})
-                    )
     
     city = forms.CharField(
                     required=True,
@@ -238,7 +204,7 @@ class ResumeForm(forms.ModelForm):
                     choices = STATE_CHOICES,
                     widget=forms.Select(attrs={'class': 'nice-select round'})
                     )
-    
+
     cover_letter = forms.FileField(
                     required=False,
                     widget=forms.FileInput(attrs={'class':'form-control'})
@@ -249,14 +215,13 @@ class ResumeForm(forms.ModelForm):
                     widget=forms.FileInput(attrs={'class':'form-control'})
                     )
 
+    company = forms.ModelChoiceField(queryset=Company.objects.all())
+
     class Meta:
         model = Resume
         fields = [
-            'image', 'address_line1', 'address_line2',
-            'city', 'state', 'cover_letter', 'cv',
+            'image', 'city', 'state', 'phone_number', 'cover_letter', 'cv', 'company'
         ]
-
-
 
 
 class EducationForm(forms.ModelForm):

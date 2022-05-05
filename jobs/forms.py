@@ -3,20 +3,22 @@ from .models import *
 
 class CreateJobForm(forms.ModelForm):
     # these values are what will actually be stored in the database
-    FULL_TIME = 'FT'
-    PART_TIME = 'PT'
-    REMOTE = 'RT'
-    TIER1 = 't1'
-    TIER2 = 't2'
-    TIER3 = 't3'
-    TIER4 = 't4'
-    TIER5 = 't5'
+    FULL_TIME = 'Full Time'
+    PART_TIME = 'Part Time'
+    REMOTE = 'Remote'
+    NOT_PROVIDED = 'N/A'
+    TIER1 = 'Less than 2yrs'
+    TIER2 = '2yrs - 5yrs'
+    TIER3 = '5yrs - 10yrs'
+    TIER4 = '10yrs - 15yrs'
+    TIER5 = 'More than 15yrs'
     
     # Pairing backend values with front end displays
     TYPE_CHOICES = [
         (FULL_TIME, 'Full Time'),
         (PART_TIME, 'Part Time'),
         (REMOTE, 'Remote'),
+        (NOT_PROVIDED, 'N/A')
     ]
     EXP_CHOICES = [
         (TIER1, 'Less than 2yrs'),
@@ -24,8 +26,8 @@ class CreateJobForm(forms.ModelForm):
         (TIER3, '5yrs - 10yrs'),
         (TIER4, '10yrs - 15yrs'),
         (TIER5, 'More than 15yrs'),
+        (NOT_PROVIDED, 'N/A')
     ]
-
     title = forms.CharField(
                 max_length=150,
                 required=True,
@@ -73,7 +75,9 @@ class CreateJobForm(forms.ModelForm):
     
     closing_date = forms.DateField(
                     required=False,
-                    widget=forms.DateInput(attrs={'class':'form-control', 'placeholder':'Stop Accepting Applications After: '})
+		    widget=forms.DateInput(format=('%d-%m-%Y'), 
+                                             attrs={'class': 'datepicker', 'placeholder': 'Select a date', 
+					    'type': 'date', 'placeholder':'Select a date'})
                     )
     
     class Meta:

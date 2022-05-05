@@ -39,7 +39,7 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
     path('logout/', auth_views.logout_then_login, name='logout'),
     path('download/<str:foldername>/<str:filename>/', users_views.download, name='download'),
-    # this one might be redundant
+    # this one might be useless now?
     path('messenger/', msg_views.messenger, name='messenger'),
     path('inbox/', msg_views.ListThreads.as_view(), name='inbox'),
     path('inbox/create-thread', msg_views.CreateThread.as_view(), name='create-thread'),

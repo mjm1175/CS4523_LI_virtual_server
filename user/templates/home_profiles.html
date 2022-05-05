@@ -1,52 +1,10 @@
 {% extends "layout1.html" %}
 {% load static %}
 
-{% block title %}
-Home
-{% endblock %}   
-
-{% block head %}
-<link rel="stylesheet" href="{% static 'app/css/calendar_and_home.css' %}">
-<script src="https://kit.fontawesome.com/98fd1b3455.js" crossorigin="anonymous"></script>
-{% endblock %}
-
-{% block body %}
-<div class="container">
-    <!--------------LEFT SIDEBAR--------------->
-    <div class="left-sidebar">
-        <div class="imp-links">
-            <a href="#"><img src="{% static 'app/images/news.png' %}"> Latest Jobs </a>
-            <a href="#"><img src="{% static 'app/images/friends.png' %}"> Connections </a>
-        </div>
-    </div>
+{% block homemain %}
     <!--------------MAIN CONTENT--------------->
     <div class="main-content">
-        <!--<div class="write-post-container">
-            <div class="user-profile">
-                {% if user.resume %}		
-                    <img src="{{user.resume.image.url}}">
-                {% else %}
-                    <img src="{% static 'app/images/profile3.jpg' %}">
-                {% endif %}
-                <div>
-                {% if user.is_authenticated %}
-                    <p>@{{user.username}}</p>
-                {% else %}
-                                <p>@user1</p>
-                {% endif %}
-                    <small>Public</small>
-                </div>
-            </div>
-            <div class="post-input-container">
-                <textarea rows="3" placeholder="Enter post here"></textarea>
-                <div class="add-post-links">
-                    <a href="#"><img src="{% static 'app/images/live-video.png' %}">Live Video</a>
-                    <a href="#"><img src="{% static 'app/images/photo.png' %}">Photo/Video</a>
-                    <a href="#"><img src="{% static 'app/images/feeling.png' %}">Status</a>
-                </div>
-            </div>
-        </div>-->
-
+        <h2>All Users</h2>        
         <!-- Populating from database information -->
 
         <!-- This means we must send variable 'jobs' from backend -->
@@ -68,85 +26,9 @@ Home
                 </div>
             </div>
             <p class="post-text">{{user.email}}</p>
-            <!--<div class="job-preview">
-                <div class="job-preview-elem">
-                    <p>{{user.location}}</p>
-                </div>
-                <div class="job-preview-elem">
-                    <P>{{user.type}}</P>
-                </div>
-                 Could add experience, salary, etc. 
-            </div>
-            <p>{{user.summary}}</p>
-            <br>
-             LINK TO JOB POST PAGE 
-            <a href="job_post.html" class="viewMore">View More</a>-->
             
         </div>
         {% endfor %}
     </div>
 
-    <!--------------RIGHT SIDEBAR--------------->
-    <div class="right-sidebar">
-        <div class="sidebar-title">
-            <h4>Upcoming Meetings</h4>
-            <a href="#">See All</a>
-        </div>
-        <div class="event">
-            <div class="left-event">
-                <h3>18</h3>
-                <span>March</span>
-            </div>
-            <div class="right-event">
-                <h4>Social Media</h4>
-                <p><i class="fa-solid fa-location-arrow"></i> Willson Tech Park</p>
-                <a href="#">More Info</a>
-            </div>
-        </div>
-        <div class="event">
-            <div class="left-event">
-                <h3>22</h3>
-                <span>June</span>
-            </div>
-            <div class="right-event">
-                <h4>Mobile Marketing</h4>
-                <p><i class="fa-solid fa-location-arrow"></i> Willson Tech Park</p>
-                <a href="#">More Info</a>
-            </div>
-        </div>
-        <div class="sidebar-title">
-            <h4>Advertisement</h4>
-            <a href="#">Close</a>
-        </div>
-        <img src="{% static 'app/images/advertisement.png' %}" class="sidebar-ads">
-        <div class="sidebar-title">
-            <h4>Conversation</h4>
-    <!-- LINK TO MESSENGER PAGE -->
-            <a href="#">View Chat</a>
-        </div>
-        <div class="online-list">
-            <div class="online">
-                <img src="{% static 'app/images/profile2.jpg' %}">
-            </div>
-            <p>@a.osborn</p>
-        </div>
-        <div class="online-list">
-            <div class="online">
-                <img src="{% static 'app/images/profile3.jpg' %}">
-            </div>
-            <p>@m.morejon</p>
-        </div>
-        <div class="online-list">
-            <div class="online">
-                <img src="{% static 'app/images/profile4.jpg' %}">
-            </div>
-            <p>@t.trusty</p>
-        </div>
-    </div>
-</div>
-
-{% endblock %}
-
-{% block source %}
-    <script src="{% static 'app/js/script.js' %}"></script>
 {% endblock %}

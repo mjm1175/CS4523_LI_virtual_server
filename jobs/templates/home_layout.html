@@ -1,0 +1,91 @@
+{% extends "layout1.html" %}
+{% load static %}
+
+{% block title %}
+Home
+{% endblock %}   
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'app/css/calendar_and_home.css' %}">
+<script src="https://kit.fontawesome.com/98fd1b3455.js" crossorigin="anonymous"></script>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <!--------------LEFT SIDEBAR--------------->
+    <div class="left-sidebar">
+        <div class="imp-links">
+            <a href="#"><img src="{% static 'app/images/news.png' %}"> Latest Jobs </a>
+            <a href="#"><img src="{% static 'app/images/friends.png' %}"> Connections </a>
+        </div>
+        <div class="imp-links">
+            <a href="{% url 'job_post_creation' %}"><button>Add New Job Posting</button></a>
+        </div>        
+    </div>
+    <!--------------MAIN CONTENT--------------->
+    {% block homemain %}
+    {% endblock %}
+    <!--------------RIGHT SIDEBAR--------------->
+    <div class="right-sidebar">
+        <div class="sidebar-title">
+            <h4>Upcoming Meetings</h4>
+            <a href="#">See All</a>
+        </div>
+        <div class="event">
+            <div class="left-event">
+                <h3>18</h3>
+                <span>March</span>
+            </div>
+            <div class="right-event">
+                <h4>Social Media</h4>
+                <p><i class="fa-solid fa-location-arrow"></i> Willson Tech Park</p>
+                <a href="#">More Info</a>
+            </div>
+        </div>
+        <div class="event">
+            <div class="left-event">
+                <h3>22</h3>
+                <span>June</span>
+            </div>
+            <div class="right-event">
+                <h4>Mobile Marketing</h4>
+                <p><i class="fa-solid fa-location-arrow"></i> Willson Tech Park</p>
+                <a href="#">More Info</a>
+            </div>
+        </div>
+        <div class="sidebar-title">
+            <h4>Advertisement</h4>
+            <a href="#">Close</a>
+        </div>
+        <img src="{% static 'app/images/advertisement.png' %}" class="sidebar-ads">
+        <div class="sidebar-title">
+            <h4>Conversation</h4>
+    <!-- LINK TO MESSENGER PAGE -->
+            <a href="#">View Chat</a>
+        </div>
+        <div class="online-list">
+            <div class="online">
+                <img src="{% static 'app/images/profile2.jpg' %}">
+            </div>
+            <p>@a.osborn</p>
+        </div>
+        <div class="online-list">
+            <div class="online">
+                <img src="{% static 'app/images/profile3.jpg' %}">
+            </div>
+            <p>@m.morejon</p>
+        </div>
+        <div class="online-list">
+            <div class="online">
+                <img src="{% static 'app/images/profile4.jpg' %}">
+            </div>
+            <p>@t.trusty</p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block source %}
+    <script src="{% static 'app/js/script.js' %}"></script>
+{% endblock %}
