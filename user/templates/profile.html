@@ -6,7 +6,7 @@
     <div class="pd-right">
         {% if user.resume %}
             {% if user.resume.company %}
-            <a href="#"><button type="button"> <img src="{% static 'app/images/friends.png' %}"> Edit Company </button></a>
+            <a href="{% url 'company_creation' user.resume.company.id %}"><button type="button"> <img src="{% static 'app/images/friends.png' %}"> Edit Company </button></a>
             {% endif %}
             <a href="{% url 'resume_detail' user.resume.slug %}"><button type="button"> <img src="{% static 'app/images/edit.png' %}"> Edit Resume </button></a>
         {% else %}

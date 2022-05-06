@@ -31,7 +31,7 @@
             <p>{{job.summary}}</p>
             <br>
             <!-- LINK TO JOB POST PAGE -->
-            <a href="job_post.html" class="viewMore">View More</a>
+            <a href="{% url 'job_post' job.slug %}" class="viewMore">View More</a>
             
         </div>
         {% endfor %}

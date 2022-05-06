@@ -31,6 +31,7 @@ urlpatterns = [
     path('create-job/', jobs_views.job_post_creation, name='job_post_creation'),
     path('jobs/company/<slug:slug>', jobs_views.company_detail, name='company_detail'),
     path('create-company/', jobs_views.company_creation, name='company_creation'),
+    path('create-company/<int:comp_id>', jobs_views.company_creation, name='company_creation'),
     path('register/', users_views.register, name='register'),
     path('profile/', users_views.profile, name='profile'),
     path('users/create/', users_views.create_resume, name='create_resume'),
