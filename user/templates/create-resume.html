@@ -31,19 +31,6 @@
         {% endif %}
 
         <h3>General Information:</h3>
-        <div class="col-md-12">
-            <div class="form-group app-label">
-                <label class="text-muted">Profile Image:</label><br>
-                {{form.image}}
-            </div>
-            {% if form.image.errors %}
-                {% for error in form.image.errors %}
-                    <div class="alert alert-danger">
-                        <strong>{{ error|escape }}</strong>
-                    </div>
-                {% endfor %}
-            {% endif %}
-        </div>
 
     <h3>Address:</h3>
     <div class="col-md-6">
@@ -105,8 +92,22 @@
             {% endfor %}
         {% endif %}              
     </div>
+    <!--<form method="POST" enctype="multipart/form-data">-->
 
-    </div>
+        {% if comp_form.errors %}
+            {% for field in comp_form %}
+                {% for error in field.errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+                {% for error in comp_form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>           
+                {% endfor %} 
+            {% endfor %}            
+        {% endif %}
         <button type="submit" class="submitBtn btn btn-primary" value="Save Changes">Save Changes</button>
     </div>
 </form>

@@ -14,13 +14,12 @@ Home
 <div class="container">
     <!--------------LEFT SIDEBAR--------------->
     <div class="left-sidebar">
+        {% if user.role == 'Employer' %}
         <div class="imp-links">
-            <a href="#"><img src="{% static 'app/images/news.png' %}"> Latest Jobs </a>
-            <a href="#"><img src="{% static 'app/images/friends.png' %}"> Connections </a>
-        </div>
-        <div class="imp-links">
-            <a href="{% url 'job_post_creation' %}"><button>Add New Job Posting</button></a>
-        </div>        
+            <a href="{% url 'job_post_creation' %}"><img src="{% static 'app/images/news.png' %}"> Add New Job Posting </a>
+            <a href="{% url 'company_creation' %}"><img src="{% static 'app/images/friends.png' %}"> Add New Company </a>
+        </div>  
+        {% endif %}   
     </div>
     <!--------------MAIN CONTENT--------------->
     {% block homemain %}

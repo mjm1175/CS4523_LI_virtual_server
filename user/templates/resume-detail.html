@@ -46,7 +46,7 @@
                     <div class="component-wrapper rounded shadow">
                         <div class="p-4 border-bottom bg-light">
                             <h3 class="text-dark">General Information:</h3>
-                            <td><a href="{% url 'create_resume' %}"><button class="btn btn-primary rounded-pill">Edit</button></a></td>
+                            <td><a href="{% url 'create_resume' object.id %}"><button class="btn btn-primary rounded-pill">Edit</button></a></td>
                         </div>
 
                         <div class="p-4">
@@ -68,13 +68,13 @@
                                     {% if object.cover_letter %}
                                     <tr>
                                         <td><strong>Download Coverletter</strong></td>
-                                        <td><button class="btn btn-primary rounded-pill">Download</button></td>
+                                        <td><a href="{% url 'download' attrib_name='cover_letter' id=object.id %}"><button class="btn btn-primary rounded-pill">Download</button></a></td>
                                     </tr>
                                     {% endif %}
                                     {% if object.cv %}
                                     <tr>
                                         <td><strong>Download CV</strong></td>
-                                        <td><button class="btn btn-primary rounded-pill">Download</button></td>
+                                        <td><a href="{% url 'download' attrib_name='cv' id=object.id %}"><button class="btn btn-primary rounded-pill">Download</button></a></td>
                                     </tr>    
                                     {% endif %}                                    
                                 </body>
@@ -320,7 +320,7 @@
                                             {% endfor %}
                                         {% endif %}
                                     </div>
-                                    <p><a href="company_creation.html">Can't find your company? Add it now.</a></p>
+                                    <p><a href="{% url 'company_creation' %}">Can't find your company? Add it now.</a></p>
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-12">

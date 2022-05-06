@@ -86,3 +86,25 @@ class CreateJobForm(forms.ModelForm):
             'title', 'company', 'location', 'salary', 'type', 'experience', 'summary', 'description',
             'requirements', 'closing_date'
         ]
+
+
+class CreateCompanyForm(forms.ModelForm):
+    name = forms.CharField(
+                max_length=150,
+                required=True,
+                widget=forms.TextInput(attrs={'class':'form-control company', 'placeholder':'Company Name'})
+                )    
+    description = forms.CharField(
+                required=False,
+                widget=forms.Textarea(attrs={'class':'form-control jobs', 'placeholder':'Company Bio'})
+                )    
+    companyLogo = forms.ImageField(
+                    required=False,
+                    widget=forms.FileInput(attrs={'class':'form-control'}),
+                    )     
+
+    class Meta:
+        model=Company
+        fields = [
+            'name', 'description', 'companyLogo'
+        ]           

@@ -64,3 +64,26 @@ def company_detail(request, slug):
     context['jobs'] = jobs
 
     return render(request, 'company_detail.html', context)
+
+
+def company_creation(request):
+	if request.method == 'GET':
+		form = CreateCompanyForm()
+		context = {'form' : form}
+		return render(request, 'company_creation.html', context)
+
+	if request.method == 'POST':
+		form = CreateCompanyForm(request.POST)
+
+		if form.is_valid():
+			obj = form.save()
+			messages.success(request, 'Successfully added new company.')
+
+			return redirect('home_page')
+
+		else:
+			messages.error(request, 'Error processing your request')
+			context = {'form': form}
+			return render(request, 'company_creation.html', context)
+
+	return render(request, 'company_creation.html', {})

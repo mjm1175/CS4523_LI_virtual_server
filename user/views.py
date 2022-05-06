@@ -7,8 +7,14 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic import DetailView
 from datetime import datetime
+from django.http import HttpResponseRedirect, HttpResponse, Http404, FileResponse
+from django.http.response import JsonResponse
+from django.conf import settings
+import os
 import requests
 import math
+import json
+import mimetypes
 
 # Create your views here.
 
@@ -58,42 +64,51 @@ def profile(request):
 
 	return render(request, 'profile.html', context)
 
+
 @login_required
-def create_resume(request):
-	if request.method == 'POST':
-		# request.FILES bc files upload option in form
-		form = ResumeForm(request.POST, request.FILES)
+def create_resume(request, res_id=None):
+    if request.method == 'POST':
+        if res_id:
+            res = Resume.objects.get(pk=res_id)
+            form = ResumeForm(request.POST, request.FILES, instance=res)
+        else:
+            # request.FILES bc files upload option in form
+            form = ResumeForm(request.POST, request.FILES)
 
-		if form.is_valid():
-			obj = form.save(commit=False)
+        if form.is_valid():
+            obj = form.save(commit=False)
 
-			# setting 1:1 attribute
-			obj.user = request.user
+            # setting 1:1 attribute
+            obj.user = request.user
 
-			obj.save()
+            obj.save()
 
-			messages.success(request, 'Resume created successfully.')
-			return redirect('profile')
-		else:
-			messages.error(request, 'Error processing your request')
-			context = {'form': form}
-			if request.user.role == "Employer":
-				return render(request, 'create-resume-employer.html', context)
-			else:
-				return render(request, 'create-resume.html', context)
+            messages.success(request, 'Resume created successfully.')
+            return redirect('profile')
+        else:
+            messages.error(request, 'Error processing your request')
+            context = {'form': form}
+            if request.user.role == "Employer":
+                return render(request, 'create-resume-employer.html', context)
+            else:
+                return render(request, 'create-resume.html', context)
 
-	if request.method == 'GET':
-		form = ResumeForm()
-		context = {'form': form}
-		if request.user.role == "Employer":
-			return render(request, 'create-resume-employer.html', context)
-		else:
-			return render(request, 'create-resume.html', context)
+    if request.method == 'GET':
+        if res_id:
+            res = Resume.objects.get(pk=res_id)
+            form = ResumeForm(instance=res)
+        else:
+            form = ResumeForm()
+        context = {'form': form}
+        if request.user.role == "Employer":
+            return render(request, 'create-resume-employer.html', context)
+        else:
+            return render(request, 'create-resume.html', context)
 
-	if request.user.role == "Employer":
-		return render(request, 'create-resume-employer.html', {})
-	else:
-		return render(request, 'create-resume.html', {})
+    if request.user.role == "Employer":
+        return render(request, 'create-resume-employer.html', {})
+    else:
+        return render(request, 'create-resume.html', {})
 
 
 # not used anymore
@@ -206,10 +221,14 @@ def public_profile(request, slug):
 
 	return render(request, 'public_profile.html', context)
 
-
-# not working/finished
-def download(request, foldername, filename):
-	file_path = settings.MEDIA_ROOT + '/'+foldername+'/'+filename
+def download(request, id, attrib_name):
+    obj = Resume.objects.get(pk=id)
+    if attrib_name == 'cover_letter':
+        filename = obj.cover_letter.path
+    elif attrib_name == 'cv':
+        filename = obj.cv.path
+    response = FileResponse(open(filename, 'rb'))
+    return response 
 
 def base64_encode(message):
         import base64
@@ -221,21 +240,30 @@ def base64_encode(message):
 @csrf_protect
 def zoom_callback(request):
     code = request.POST.get("code", False)
-    data = requests.post(f"https://zoom.us/oauth/token?grant_type=authorization_code&code={code}&redirect_uri=http://159.203.182.153:8000/zoom/callback/", headers={
-        "Authorization": "Basic " + base64_encode("dh0v4C7XRJyO5CJDJs5yaw:olo5d6l6VRQmo7FKd9v3z7DRHk8YiH7L")
-                                                })
-    #print(data.text)
-    request.session["zoom_access_token"] = data.json()["access_token"]
+    data = requests.post("https://zoom.us/oauth/token?grant_type=authorization_code&code={code}&redirect_uri=http://159.203.182.153:8000/zoom/callback/", 
+            headers={
+                "Authorization": "Basic " + base64_encode("5n2avPtKTHOYVTJPBjpPnQ:qTgX53isldok737P2DCkzL7lrfSre0TX"),
+                "Content-Type": "application/x-www-form-urlencoded"
+        })
+    print(data.text)
+    dataRequest = data.json()
+    request.session["zoom_access_token"] = dataRequest["access_token"]
 
     return HttpResponseRedirect("/meetingCreation/")
 
 @csrf_protect
 def schedule_interview(request):
     if request.method == "POST":
-        data = requests.post("https://api.zoom.us/v2/users/me/meetings", headers={                                                   'content-type': "application/json",
-              "authorization": f"Bearer {request.session['zoom_access_token']}"                                                          }, data = json.dumps({                                  
-                  "topic": f"LinkedIncognito Candidate Interview",                                                                         "type": 2, "start_time": request.POST["time"],                                                                                
+        data = requests.post("https://api.zoom.us/v2/users/me/meetings", 
+                headers={
+                    'content-type': "application/json",
+                    "authorization": "Bearer {request.session['zoom_access_token']}"
+                    }, 
+                data = json.dumps({                                  
+                  "topic": "LinkedIncognito Candidate Interview","type": 2, 
+                  "start_time": request.POST["time"],                                                                   
                   }))
+        
         #print(data.json()["join_url"], data.json()["start_url"])
         # ChatMessage(from_id=request.user.id, to_id=candidate.id, application_id=app.id, 
         #   message=f"Hello! Your interview been successfully created! Please join this 
