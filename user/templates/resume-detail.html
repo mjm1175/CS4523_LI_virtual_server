@@ -25,7 +25,7 @@
 <div class="posting">
     <section class="bg-half page-next-level">
         <div class="bg-overlay">
-            <div class="container">
+            <div class="w3-container">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="candidates-profile-details text-center">
@@ -40,7 +40,7 @@
     </section>
 
     <section class="section">
-        <div class="container">
+        <div class="w3-container">
             <div class="row">
                 <div class="col-lg-16 col-md-6 mt-4 pt-5">
                     <div class="component-wrapper rounded shadow">
@@ -91,52 +91,52 @@
             <!--tried to make this a modal (popup), not working though-->
             <div class="row">
                 <div class="col-lg-12 mt-4 pt-2">
-                    <h3 class="text-dark">Education: <!--<button type="button" class="btn btn-secondary-outline" data-toggle="modal" data-target="#addEducation"><span class="mdi mdi-plus mdi-24px"></span>Add Education</button>--></h3>
+	                    <h3 class="text-dark">Education: <!--<button type="button" class="btn btn-secondary-outline" data-toggle="modal" data-target="#addEducation"><span class="mdi mdi-plus mdi-24px"></span>Add Education</button>--></h3>
                 </div>
             </div>
             {% if educations %}
                 {% for education in educations %}
-                    <div class="row">
-                    <div class="col-lg-12 mt-4 pt-2">
-                        <div class="component-wrapper rounded shadow">
-                            <div class="p-4 border-bottom bg-light">
-                                <h4 class="title mb-0">{{education.institution}}</h4>
+            <div class="row">
+                <div class="col-lg-12 mt-4 pt-2">
+                    <div class="component-wrapper rounded shadow">
+                        <div class="p-4 border-bottom bg-light">
+                            <h4 class="title mb-0">{{education.institution}}</h4>
+                        </div>
+
+                        <div class="p-4">
+                            <div class="row">
+                                <div class="col">
+                                    <p><strong>Degree Level: </strong> {{education.level}}</p>
+                                </div>
                             </div>
 
-                            <div class="p-4">
-                                <div class="row">
-                                    <div class="col">
-                                        <p><strong>Degree Level: </strong> {{education.level}}</p>
-                                    </div>
+                            <div class="row">
+                                <div class="col">
+                                    <p><strong>Start Date: </strong> {{education.start_date}}</p>
                                 </div>
+                                <div class="col">
+                                    <p><strong>Graduated: </strong> {{education.graduated}}</p>
+                                </div>                                                                                        
+                            </div>
 
-                                <div class="row">
-                                    <div class="col">
-                                        <p><strong>Start Date: </strong> {{education.start_date}}</p>
-                                    </div>
-                                    <div class="col">
-                                        <p><strong>Graduated: </strong> {{education.graduated}}</p>
-                                    </div>                                                                                        
+                            <div class="row">
+                                <div class="col">
+                                    <p><strong>Major: </strong> {{education.major_subject}}</p>
                                 </div>
-
-                                <div class="row">
-                                    <div class="col">
-                                        <p><strong>Major: </strong> {{education.major_subject}}</p>
-                                    </div>
-                                    <div class="col">
-                                        <!--<button class="btn btn-danger" onclick="deleteMenuToggle()">Delete Qualification</button>-->
-                                        <form action="{% url 'delete_education' education.id %}" method="POST">
-                                            {% csrf_token %}
-                                            <button class="btn btn-danger" type="submit">Delete Education</button>
-                                        </form>
-                                    </div>                                                                                        
-                                </div>
+                                <div class="col">
+                                    <!--<button class="btn btn-danger" onclick="deleteMenuToggle()">Delete Qualification</button>-->
+                                    <form action="{% url 'delete_education' education.id %}" method="POST">
+                                        {% csrf_token %}
+                                        <button class="btn btn-danger" type="submit">Delete Education</button>
+                                    </form>
+                                </div>                                                                                        
                             </div>
                         </div>
                     </div>
-                    </div>                        
-                    <br>
-                    <br>                            
+                </div>
+            </div>                        
+            <br>
+            <br>                            
                 {% endfor %}
             {% endif %}
 

@@ -21,13 +21,19 @@ Profile
         <div class="pd-left">
             <div class="pd-row">
                 {% if object.resume %}		
-                    <img src="{{object.resume.image.url}}">
+                    <img src="{{object.resume.image.url}}" class="pd-image">
                 {% else %}
-                    <img src="{% static 'app/images/profile3.jpg' %}">
+                    <img src="{% static 'app/images/profile3.jpg' %}" class="pd-image">
                 {% endif %}
                 <div>
+                    {% if object.role == 'Employer' %}
                     <h3>{{object.first_name}} {{object.last_name}}</h3>
-                    <p>Contact: {{object.email}}</p>
+                    {% if object.resume.company %}
+                    <p>Works at {{object.resume.company}}</p>
+                    {% endif %}
+                    {% else %}
+                    <h3>@{{object.username}}</h3>
+                    {% endif %}
                 </div>
             </div>
         </div>        
@@ -37,8 +43,7 @@ Profile
     </div>
 
     <div class="profile-info">
-        <div class="info-col">
-            <!--Intro: Bio, location, etc.-->
+        <!--<div class="info-col">
             <div class="profile-intro">
                 <h3>Intro</h3>
                 <p class="intro-text">Believe in yourself and you can do anything. <img src="{% static 'app/images/feeling.png' %}"></p>
@@ -51,7 +56,7 @@ Profile
                     <li> <img src="{% static 'app/images/profile-location.png' %}"> From Bangalore, India</li>
                 </ul>
             </div>
-        </div>
+        </div>-->
 
         <div class="post-col">
             {% if experiences %}
@@ -71,12 +76,8 @@ Profile
                     </div>     
                     <div>
                         {% if experience.skills %}
-                            <p>Relevant Skills:</p>
-                            {% for skill in experience.skills %}
-                            <div>
-                                {{skill}}
-                            </div>
-                            {% endfor %}
+                        <br>
+                            <p>Relevant Skills: {% for skill in experience.skills %} {{skill}}, {% endfor %}</p>
                         {% endif %}
                     </div>
                     <br>

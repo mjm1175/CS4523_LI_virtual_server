@@ -1,4 +1,4 @@
-{% extends "layout1.html" %}
+{% extends "home_layout.html" %}
 {% load static %}
 
 {% block homemain %}
@@ -7,7 +7,6 @@
         <h2>All Users</h2>        
         <!-- Populating from database information -->
 
-        <!-- This means we must send variable 'jobs' from backend -->
         {% for user in users %}
 
         <div class="post-container">

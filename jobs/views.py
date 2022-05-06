@@ -87,3 +87,8 @@ def company_creation(request):
 			return render(request, 'company_creation.html', context)
 
 	return render(request, 'company_creation.html', {})
+
+def home_companies(request):
+	#	can change to filter for search
+	comp_list = Company.objects.all()
+	return render(request, 'home_companies.html', {'companies' : comp_list})

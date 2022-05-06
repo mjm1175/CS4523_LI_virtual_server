@@ -60,7 +60,7 @@ def profile(request):
 			context['educations'] = educations
 			context['experiences'] = experiences
 	except Account.resume.RelatedObjectDoesNotExist:
-		context = {}
+		pass
 
 	return render(request, 'profile.html', context)
 

@@ -4,12 +4,9 @@
 {% block profhead %}
     <!--Action buttons-->
     <div class="pd-right">
-        <button type="button"> <img src="{% static 'app/images/add-friends.png' %}"> Friend</button>
-        <button type="button">	
-		<a href="{% url 'inbox/create-thread' %}">
-			<img src="{% static 'app/images/message.png' %}"> Message 	
-		</a>	
-	</button>
+	<a href="{% url 'create-thread' %}">
+            <button type="button"><img src="{% static 'app/images/message.png' %}"> Message </button>
+    	</a>
         <br>
     </div>
 {% endblock %}

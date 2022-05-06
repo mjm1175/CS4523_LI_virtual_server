@@ -4,13 +4,14 @@
 {% block profhead %}
     <!--Action buttons-->
     <div class="pd-right">
-        <button type="button"> <img src="{% static 'app/images/add-friends.png' %}"> Friend</button>
-        <button type="button"> <img src="{% static 'app/images/message.png' %}"> Message</button>
-        <br>
         {% if user.resume %}
-            <a href="{% url 'resume_detail' user.resume.slug %}"><img src="{% static 'app/images/setting2.png' %}"></a>
+            {% if user.resume.company %}
+            <a href="#"><button type="button"> <img src="{% static 'app/images/friends.png' %}"> Edit Company </button></a>
+            {% endif %}
+            <a href="{% url 'resume_detail' user.resume.slug %}"><button type="button"> <img src="{% static 'app/images/edit.png' %}"> Edit Resume </button></a>
         {% else %}
-            <a href="{% url 'create_resume' %}"><img src="{% static 'app/images/setting2.png' %}"></a>
+        <a href="{% url 'create_resume' %}"><button type="button"> <img src="{% static 'app/images/add.png' %}"> Add Resume </button></a>
         {% endif %}
+        <br>
     </div>
 {% endblock %}

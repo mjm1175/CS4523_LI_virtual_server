@@ -14,12 +14,19 @@ Home
 <div class="container">
     <!--------------LEFT SIDEBAR--------------->
     <div class="left-sidebar">
-        {% if user.role == 'Employer' %}
         <div class="imp-links">
-            <a href="{% url 'job_post_creation' %}"><img src="{% static 'app/images/news.png' %}"> Add New Job Posting </a>
-            <a href="{% url 'company_creation' %}"><img src="{% static 'app/images/friends.png' %}"> Add New Company </a>
+            <a href="{% url 'home_page' %}"><img src="{% static 'app/images/news.png' %}"> View Job Postings </a>
+            <a href="{% url 'all_companies' %}"><img src="{% static 'app/images/friends.png' %}"> View Companies </a>
+        {% if user.role == 'Employer' %}
+            <a href="{% url 'all_users' %}"><img src="{% static 'app/images/group.png' %}"> View Users </a>
+        </div>         
+        <div class="imp-links">
+            <a href="{% url 'job_post_creation' %}"><img src="{% static 'app/images/add.png' %}"> Add New Job Posting </a>
+            <a href="{% url 'company_creation' %}"><img src="{% static 'app/images/add-friends.png' %}"> Add New Company </a>
         </div>  
-        {% endif %}   
+        {% else %}
+        </div>         
+        {% endif %}    
     </div>
     <!--------------MAIN CONTENT--------------->
     {% block homemain %}

@@ -1,0 +1,28 @@
+{% extends "home_layout.html" %}
+{% load static %}
+
+{% block homemain %}
+    <!--------------MAIN CONTENT--------------->
+    <div class="main-content">
+        <h2>All Companies</h2>        
+        <!-- Populating from database information -->
+
+        <!-- This means we must send variable 'jobs' from backend -->
+        {% for company in companies %}
+
+        <div class="post-container">
+            <div class="user-profile">
+
+                <a href="{% url 'company_detail' company.slug %}"><img src="{{company.companyLogo.url}}"></a>             
+                
+                <div>
+                    <p>{{company.name}}</p>
+                </div>
+            </div>
+            <br>
+            <p>{{company.description}}</p>            
+        </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}
