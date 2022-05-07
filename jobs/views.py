@@ -215,7 +215,7 @@ def apply(request, slug):
         print(job.title)
 
     if request.method == 'POST':
-        form = ApplicationForm(request.POST)
+        form = ApplicationForm(request.POST, request.FILES)
 
         if form.is_valid():
             obj = form.save(commit=False)
@@ -229,14 +229,9 @@ def apply(request, slug):
             # if this works we can change upload_resume to be resume
             if form.cleaned_data.get('use_profile_resume') == 'Yes':
                 obj.resume = request.user.resume.cv
-            else:
-                obj.resume = form.cleaned_data.get('upload_resume')
             
             if form.cleaned_data.get('use_profile_cover_letter') == 'Yes':
-                obj.resume = request.user.resume.cover_letter
-            else:
-                obj.resume = form.cleaned_data.get('upload_cover_letter')
-
+                obj.cover_letter = request.user.resume.cover_letter
 
             obj.save()
             messages.success(request, 'Application submitted successfully.')

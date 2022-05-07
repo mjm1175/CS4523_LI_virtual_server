@@ -139,11 +139,11 @@ class ApplicationForm(forms.ModelForm):
                     widget=forms.RadioSelect(attrs={'class':'form-control', 'id':'prof-cover'}))
 
     # this shows up if ^^ is No or if user doesnt have a resume
-    upload_resume = forms.FileField(
+    resume = forms.FileField(
                     required=False,
                     widget=forms.FileInput(attrs={'class':'form-control', 'id':'upload-resume'})
                     )
-    upload_cover_letter = forms.FileField(
+    cover_letter = forms.FileField(
                     required=False,
                     widget=forms.FileInput(attrs={'class':'form-control', 'id':'upload-cover'})
                     )   
@@ -153,6 +153,6 @@ class ApplicationForm(forms.ModelForm):
     class Meta:
         model = Application
         fields = [
-            'use_profile_resume', 'use_profile_cover_letter', 'upload_resume',
-            'upload_cover_letter', 'location_type_ok'
+            'use_profile_resume', 'use_profile_cover_letter', 'resume',
+            'cover_letter', 'location_type_ok'
         ]    

@@ -13,7 +13,7 @@
     <h1>Apply to {{ job.title }} at {{ job.company }}</h1>
     <br>
     <!--Disclaim that this is more of an interest form than a formal application?-->
-    <form accept-charset="UTF-8" method="POST">
+    <form accept-charset="UTF-8" method="POST" enctype="multipart/form-data">
       {% csrf_token %}
       <div class="form-group">
         {% if user.resume %}
@@ -25,7 +25,7 @@
         
         <div id="upload-resume-direct">
           <label for="upload-resume">Upload a resume (optional): </label>
-          {{form.upload_resume}}            
+          {{form.resume}}            
         </div>
       </div>
       <br>
@@ -43,7 +43,7 @@
 
           <div id="upload-cover-direct">
             <label for="upload-cover">Upload a Cover Letter (optional): </label>
-            {{form.upload_cover_letter}}
+            {{form.cover_letter}}
           </div>
         </div>
 
