@@ -88,14 +88,22 @@
 
         <!-- body of the page -->
 	        {% block body %}
-	<a href = "https://zoom.us/oauth/authorize?client_id=5n2avPtKTHOYVTJPBjpPnQ&response_type=code&redirect_uri=http%3A%2F%2F159.203.182.153%3A8000%2Fzoom%2Fcallback%2F">Authenticate Your Zoom Account</a>
+	
         <form method="POST">
 		{% csrf_token %}
+
+		<p> Topic: </p>
+		<div id = "topic">
+			<input type = "text" name="topic">
+		</div>
+
 		 <div id="time">		
 			 <input type="datetime-local" class="form-control" name="time">
 	           </div>
-			 												               <button type="submit" class="btn btn-primary">Submit</button>
+	 												               <button type="submit" class="btn btn-primary">Submit</button>
 															         </form>
+																 <p>Zoom Start Link: <a href = {{start_url}}>{{start_url}}</a></p>
+																 <p>Zoom Join Link: <a href = {{join_url}}>{{join_url}}</a></p>
 
         {% endblock %}
 

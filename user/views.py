@@ -15,9 +15,10 @@ from django.http import HttpResponseRedirect, HttpResponse, Http404, FileRespons
 from django.http.response import JsonResponse
 from django.conf import settings
 import os
+import jwt
 import requests
-import math
 import json
+from time import time
 
 # Create your views here.
 
@@ -286,50 +287,61 @@ def download(request, id, attrib_name):
     response = FileResponse(open(filename, 'rb'))
     return response 
 
-def base64_encode(message):
-        import base64
-        message_bytes = message.encode('ascii')
-        base64_bytes = base64.b64encode(message_bytes)
-        base64_message = base64_bytes.decode('ascii')
-        return base64_message
+def generateToken():
+        API_KEY = 'yzOzjta3QuWlUY_hnXTP0w'
+        API_SEC = 'vv4fId3KePvtmiRQipYicxGUIwbede4vudT7'
+
+        token = jwt.encode(
+            # Create a payload of the token containing API Key & expiration time
+            {'iss': API_KEY, 'exp': time() + 5000},
+            # Secret used to generate token signature
+            API_SEC,
+            # Specify the hashing alg
+            algorithm='HS256'
+            # Convert token to utf-8
+            )
+        return token
+            # send a request with headers including a token
+
+def getUsers():
+    headers = {'authorization': 'Bearer %s' % generateToken(),
+                               'content-type': 'application/json'}
+    r = requests.get('https://api.zoom.us/v2/users/', headers=headers)
+    print("\n fetching zoom meeting info now of the user ... \n")
+    print(r.text)
 
 @csrf_protect
-def zoom_callback(request):
-    code = request.POST.get("code", False)
-    data = requests.post("https://zoom.us/oauth/token?grant_type=authorization_code&code={code}&redirect_uri=http://159.203.182.153:8000/zoom/callback/", 
-            headers={
-                "Authorization": "Basic " + base64_encode("5n2avPtKTHOYVTJPBjpPnQ:qTgX53isldok737P2DCkzL7lrfSre0TX"),
-                "Content-Type": "application/x-www-form-urlencoded"
-        })
-    print(data.text)
-    dataRequest = data.json()
-    request.session["zoom_access_token"] = dataRequest["access_token"]
-
-    return HttpResponseRedirect("/meetingCreation/")
-
-@csrf_protect
-def schedule_interview(request):
+def createMeeting(request):
     if request.method == "POST":
-        data = requests.post("https://api.zoom.us/v2/users/me/meetings", 
-                headers={
-                    'content-type': "application/json",
-                    "authorization": "Bearer {request.session['zoom_access_token']}"
-                    }, 
-                data = json.dumps({                                  
-                  "topic": "LinkedIncognito Candidate Interview","type": 2, 
-                  "start_time": request.POST["time"],                                                                   
-                  }))
-        
-        #print(data.json()["join_url"], data.json()["start_url"])
-        # ChatMessage(from_id=request.user.id, to_id=candidate.id, application_id=app.id, 
-        #   message=f"Hello! Your interview been successfully created! Please join this 
-        #   <a href='{data.json()['join_url']}'>Zoom meeting</a> on {data.json()['start_time']} UTC. Good Luck!").save()
-        # ChatMessage(from_id=request.user.id, to_id=candidate.id, application_id=app.id, 
-        # message=f"This is only viewable to you, to start the Zoom meeting, click this 
-        # <a href='{data.json()['start_url']}'>link</a>.", public=False).save()
 
-        return HttpResponseRedirect(f"/meetingCreation/")
+        meetingdetails = {"topic": request.POST["topic"],
+                          "type": 2,
 
+                          "start_time": request.POST["time"],
+                          "duration": "60",
+                          "timezone": "Eastern Time",
+                          "agenda": "LinkedIncognito Interview",
+                          "recurrence": {"type": 1,
+                                         "repeat_interval": 1
+                                        }, 
+                          "settings": {"host_video": "true",
+                                       "participant_video": "true",
+                                       "join_before_host": "False",
+                                       "mute_upon_entry": "False",
+                                       "watermark": "true",
+                                       "audio": "voip",
+                                       "auto_recording": "cloud",
+                                       "meeting_authentication": "False"
+                                      }
+                         }
+        headers = {'authorization': 'Bearer %s' % generateToken(),
+                'content-type': 'application/json'}
+        # replace 'me' with {userId}
+        r = requests.post(
+                        f'https://api.zoom.us/v2/users/me/meetings', headers=headers, data=json.dumps(meetingdetails))
+  
+       
+        #return HttpResponseRedirect("/meetingCreation/")
+        return render(request, "meetingCreation.html", r.json())
     else:
-                                                                                                                                return render(request, "meetingCreation.html")
-
+        return render(request, "meetingCreation.html")

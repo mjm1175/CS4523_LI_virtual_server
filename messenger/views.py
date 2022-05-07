@@ -68,7 +68,7 @@ class ThreadView(View):
             'message_list': message_list
         }
 
-        return render(request, 'create_thread.html', context)
+        return render(request, 'thread.html', context)
 
 class CreateMessage(View):
     def post(self, request, pk, *args, **kwargs):

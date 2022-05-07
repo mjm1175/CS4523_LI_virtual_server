@@ -32,6 +32,7 @@ urlpatterns = [
     path('jobs/company/<slug:slug>', jobs_views.company_detail, name='company_detail'),
     path('create-company/', jobs_views.company_creation, name='company_creation'),
     path('create-company/<int:comp_id>', jobs_views.company_creation, name='company_creation'),
+    path('apply/<slug:slug>', jobs_views.apply, name='apply'),
     path('register/', users_views.register, name='register'),
     path('profile/', users_views.profile, name='profile'),
     path('users/create/', users_views.create_resume, name='create_resume'),
@@ -53,8 +54,7 @@ urlpatterns = [
 
     path('inbox/<int:pk>/create-message', msg_views.CreateMessage.as_view(), name='create-message'),
     
-    path('zoom/callback/', users_views.zoom_callback, name='zoom_callback'),
-    path('meetingCreation/', users_views.schedule_interview, name='schedule_interview'),
+    path('meetingCreation/', users_views.createMeeting, name='createMeeting'),
 ]
 
 if settings.DEBUG:

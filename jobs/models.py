@@ -91,3 +91,16 @@ class Job(models.Model):
         self.slug = slugify('{} {} {}'.format(self.title, self.location, self.uniqueId))
 
         super(Job, self).save(*args, **kwargs)
+
+
+class Application(models.Model):
+    applicant = models.ForeignKey(Account, on_delete=models.CASCADE, null=True, blank=True)
+    # say something liek if resume else add a resume to your profile to submit more info
+    #choice to include resume from profile or add new one (will not replace profile resume)
+    resume = models.FileField(upload_to='resumes', null=True, blank=True)
+    cover_letter = models.FileField(upload_to='resumes', null=True, blank=True)
+    job = models.ForeignKey(Job, on_delete=models.CASCADE, null=True, blank=True)
+
+    def __str__(self):
+        return "{}'s application to {}".format(self.applicant.username, self.job.title)    
+

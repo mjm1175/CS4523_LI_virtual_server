@@ -205,3 +205,52 @@ def home_companies(request):
 	comp_list = Company.objects.all()
 	context['companies'] = comp_list
 	return render(request, 'home_companies.html', context)
+
+def apply(request, slug):
+    job = Job.objects.get(slug=slug)
+    context = {}
+    context['job'] = job
+
+    if job is not None:
+        print(job.title)
+
+    if request.method == 'POST':
+        form = ApplicationForm(request.POST)
+
+        if form.is_valid():
+            obj = form.save(commit=False)
+
+            # setting foreign keys
+            obj.applicant = request.user
+            obj.job = job
+
+            # setting upload fields
+            # could also check for if upload_resume is None
+            # if this works we can change upload_resume to be resume
+            if form.cleaned_data.get('use_profile_resume') == 'Yes':
+                obj.resume = request.user.resume.cv
+            else:
+                obj.resume = form.cleaned_data.get('upload_resume')
+            
+            if form.cleaned_data.get('use_profile_cover_letter') == 'Yes':
+                obj.resume = request.user.resume.cover_letter
+            else:
+                obj.resume = form.cleaned_data.get('upload_cover_letter')
+
+
+            obj.save()
+            messages.success(request, 'Application submitted successfully.')
+
+            return redirect('home_page')
+
+        else:
+            messages.error(request, 'Error processing your request')
+            context = {'form': form}
+            return render(request, 'job_application.html', context)    
+
+    if request.method == 'GET':
+        form = ApplicationForm()
+        context['form'] = form
+        return render(request, 'job_application.html', context)
+
+    return render(request, 'job_application.html', context)

@@ -1,0 +1,73 @@
+{% extends "layout1.html" %}
+{% load static %}
+
+{% block head %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="{% static 'app/js/app_script.js' %}"></script>
+{% endblock %}
+
+
+{% block body %}
+<div class="job-app">
+    <br>
+    <h1>Apply to {{ job.title }} at {{ job.company }}</h1>
+    <br>
+    <!--Disclaim that this is more of an interest form than a formal application?-->
+    <form accept-charset="UTF-8" method="POST">
+      {% csrf_token %}
+      <div class="form-group">
+        {% if user.resume %}
+          <div id="prof-resume">
+          <label for="prof-resume">Submit the resume from your profile? </label>
+          {{form.use_profile_resume}}
+          </div>
+        {% endif %}
+        
+        <div id="upload-resume-direct">
+          <label for="upload-resume">Upload a resume (optional): </label>
+          {{form.upload_resume}}            
+        </div>
+      </div>
+      <br>
+      <div class="form-row">
+
+
+
+        <div class="form-group col-md-6">
+          {% if user.resume %}
+            <div id="prof-cover">
+              <label for="prof-cover">Submit the cover letter from your profile? </label>
+              {{form.use_profile_cover_letter}}              
+            </div>
+          {% endif %}
+
+          <div id="upload-cover-direct">
+            <label for="upload-cover">Upload a Cover Letter (optional): </label>
+            {{form.upload_cover_letter}}
+          </div>
+        </div>
+
+
+
+
+        <br>
+        {% if job.type == 'Remote' %}
+          <label >This job is a Remote position : </label>
+        {% elif job.location %}
+          <label>This job is a {{job.type}} position in {{job.location}} : </label>
+        {% else %}
+          <label>This job is a {{job.type}} position : </label>
+        {% endif %}
+        <div class="form-group col-md-2">
+          <p>Please confirm that you are willing to apply to a job with this format/location</p>
+          {{form.location_type_ok}}
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+{% endblock %}
+
+{% block source %}
+    <script src="{% static 'app/js/script.js' %}"></script>
+{% endblock %}

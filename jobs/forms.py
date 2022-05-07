@@ -118,3 +118,41 @@ class SearchJobsForm(forms.ModelForm):
     class Meta:
         model = Job
         fields = ['title']
+
+class ApplicationForm(forms.ModelForm):
+    YES = 'Yes'
+    NO = 'No'
+
+    USE_RESUME_CHOICES = [
+        (YES, 'Yes'),
+        (NO, 'No'),
+    ]
+
+    # won't show if the user doesn't have a resume
+    use_profile_resume = forms.ChoiceField(
+                    initial=NO,
+                    choices=USE_RESUME_CHOICES,
+                    widget=forms.RadioSelect(attrs={'class':'form-control', 'id':'prof-resume'}))
+    use_profile_cover_letter = forms.ChoiceField(
+                    initial=NO,
+                    choices=USE_RESUME_CHOICES,
+                    widget=forms.RadioSelect(attrs={'class':'form-control', 'id':'prof-cover'}))
+
+    # this shows up if ^^ is No or if user doesnt have a resume
+    upload_resume = forms.FileField(
+                    required=False,
+                    widget=forms.FileInput(attrs={'class':'form-control', 'id':'upload-resume'})
+                    )
+    upload_cover_letter = forms.FileField(
+                    required=False,
+                    widget=forms.FileInput(attrs={'class':'form-control', 'id':'upload-cover'})
+                    )   
+
+    location_type_ok = forms.BooleanField(required=True)
+    
+    class Meta:
+        model = Application
+        fields = [
+            'use_profile_resume', 'use_profile_cover_letter', 'upload_resume',
+            'upload_cover_letter', 'location_type_ok'
+        ]    

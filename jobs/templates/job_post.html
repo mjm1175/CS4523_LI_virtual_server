@@ -29,7 +29,7 @@
             {{job.description}}
         </p>
 
-        <a href = "job_application.html">Apply Now!</a>
+        <a href = "{% url 'apply' job.slug %}">Apply Now!</a>
     </div>
 {% endblock %}
 
