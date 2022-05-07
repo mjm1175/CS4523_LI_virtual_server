@@ -1,11 +1,15 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from jobs.views import search
+from jobs.forms import SearchJobsForm
+from jobs.models import Job
 from .forms import *
 from .models import *
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic import DetailView
+from django.utils import timezone
 from datetime import datetime
 from django.http import HttpResponseRedirect, HttpResponse, Http404, FileResponse
 from django.http.response import JsonResponse
@@ -14,7 +18,6 @@ import os
 import requests
 import math
 import json
-import mimetypes
 
 # Create your views here.
 
@@ -48,9 +51,21 @@ def register(request):
 
 @login_required
 def profile(request):
-	usr = request.user
+	# search
+	job_search_form = SearchJobsForm()
 
 	context = {}
+	context['job_search_form'] = job_search_form
+
+	search_request = search(request)
+	if search_request is not None:
+		return search_request
+	else:
+		print("getting none")
+	# end search
+
+	usr = request.user
+
 	context['object'] = request.user
 
 	try:
@@ -67,7 +82,15 @@ def profile(request):
 
 @login_required
 def create_resume(request, res_id=None):
+    # search
+    job_search_form = SearchJobsForm()
+
+    context = {}
+    context['job_search_form'] = job_search_form
+
     if request.method == 'POST':
+        search_request = search(request)
+
         if res_id:
             res = Resume.objects.get(pk=res_id)
             form = ResumeForm(request.POST, request.FILES, instance=res)
@@ -80,14 +103,17 @@ def create_resume(request, res_id=None):
 
             # setting 1:1 attribute
             obj.user = request.user
+            obj.last_updated = datetime.now
 
             obj.save()
 
             messages.success(request, 'Resume created successfully.')
             return redirect('profile')
+        elif search_request is not None:
+            return search_request
         else:
             messages.error(request, 'Error processing your request')
-            context = {'form': form}
+            context['form'] = form
             if request.user.role == "Employer":
                 return render(request, 'create-resume-employer.html', context)
             else:
@@ -99,16 +125,16 @@ def create_resume(request, res_id=None):
             form = ResumeForm(instance=res)
         else:
             form = ResumeForm()
-        context = {'form': form}
+        context['form'] = form
         if request.user.role == "Employer":
             return render(request, 'create-resume-employer.html', context)
         else:
             return render(request, 'create-resume.html', context)
 
     if request.user.role == "Employer":
-        return render(request, 'create-resume-employer.html', {})
+        return render(request, 'create-resume-employer.html', context)
     else:
-        return render(request, 'create-resume.html', {})
+        return render(request, 'create-resume.html', context)
 
 
 # not used anymore
@@ -118,17 +144,24 @@ class ResumeDetailView(DetailView):
 
 @csrf_protect
 def resume_detail(request, slug):
+	# search
+	job_search_form = SearchJobsForm()
+
+	context = {}
+	context['job_search_form'] = job_search_form
+
 	obj = Resume.objects.get(slug=slug)
 
 	# get all Educations & Experiences with the same resume attached
 	educations = Education.objects.filter(resume=obj)
 	experiences = Experience.objects.filter(resume=obj)
-	context = {}
 	context['object'] = obj
 	context['educations'] = educations
 	context['experiences'] = experiences
 
 	if request.method == 'POST':
+		search_request = search(request)
+
 		edu_form = EducationForm(request.POST)
 		exp_form = ExperienceForm(request.POST)
 		if edu_form.is_valid():
@@ -147,6 +180,8 @@ def resume_detail(request, slug):
 
 			messages.success(request, 'Resume (experience) updated successfully')
 			return redirect('resume_detail', slug=slug)
+		elif search_request is not None:
+			return search_request
 		else:
 			print(exp_form.errors)
 			print(exp_form.skills)
@@ -196,15 +231,36 @@ def delete_education(request, pk):
     return render(request, 'resume_detail.html', {'edu': edu})
 
 def home_profiles(request):
+	# search
+	job_search_form = SearchJobsForm()
+
+	context = {}
+	context['job_search_form'] = job_search_form
+
+	search_request = search(request)
+	if search_request is not None:
+		return search_request
+	# end search
+
 	#	can change to filter for search
 	users_list = Account.objects.all()
-	return render(request, 'home_profiles.html', {'users' : users_list})
+	context['users'] = users_list
+	return render(request, 'home_profiles.html', context)
 
 @csrf_protect
 def public_profile(request, slug):
-	obj = Account.objects.get(slug=slug)
+	# search
+	job_search_form = SearchJobsForm()
 
 	context = {}
+	context['job_search_form'] = job_search_form
+
+	search_request = search(request)
+	if search_request is not None:
+		return search_request
+	# end search
+
+	obj = Account.objects.get(slug=slug)
 
 	try:
 		if obj.resume:

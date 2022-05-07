@@ -9,8 +9,7 @@
 
 {% block body %}
     <div class="posting">
-    <form id ="create-company" method='POST' class ="input-group">
-
+    <form id ="create-company" method='POST' class ="input-group" enctype="multipart/form-data">
         {% csrf_token %}
 
         {% if form.errors %}

@@ -108,3 +108,13 @@ class CreateCompanyForm(forms.ModelForm):
         fields = [
             'name', 'description', 'companyLogo'
         ]           
+
+class SearchJobsForm(forms.ModelForm):
+    title = forms.CharField(
+                        required=True,
+                        widget=forms.TextInput(attrs={'class':'form-control rounded search-box', 'placeholder':'Search'})
+    )
+
+    class Meta:
+        model = Job
+        fields = ['title']

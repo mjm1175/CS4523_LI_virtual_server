@@ -73,7 +73,7 @@
                                     {% endif %}
                                     {% if object.cv %}
                                     <tr>
-                                        <td><strong>Download CV</strong></td>
+                                        <td><strong>Download Resume</strong></td>
                                         <td><a href="{% url 'download' attrib_name='cv' id=object.id %}"><button class="btn btn-primary rounded-pill">Download</button></a></td>
                                     </tr>    
                                     {% endif %}                                    
@@ -86,12 +86,17 @@
             </div>
             <br>
             <br>
-            
+        </div>
+    </section>
+    <section class="section">
+        <div class="w3-container">
             <!-- START EDUCATION -->
             <!--tried to make this a modal (popup), not working though-->
             <div class="row">
                 <div class="col-lg-12 mt-4 pt-2">
-	                    <h3 class="text-dark">Education: <!--<button type="button" class="btn btn-secondary-outline" data-toggle="modal" data-target="#addEducation"><span class="mdi mdi-plus mdi-24px"></span>Add Education</button>--></h3>
+                    <div class="modal-content">
+                        <h3 class="text-dark">Education: <!--<button type="button" class="btn btn-secondary-outline" data-toggle="modal" data-target="#addEducation"><span class="mdi mdi-plus mdi-24px"></span>Add Education</button>--></h3>
+                    </div>
                 </div>
             </div>
             {% if educations %}

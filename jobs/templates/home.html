@@ -4,7 +4,12 @@
 {% block homemain %}
     <!--------------MAIN CONTENT--------------->
     <div class="main-content">
+        {% if title %}
+        <h2>Results for: "{{title}}" Jobs</h2>                
+        {% else %}
         <h2>All Jobs</h2>                
+        {% endif %}
+
         <!-- Populating from database information -->
 
         <!-- This means we must send variable 'jobs' from backend -->
@@ -30,7 +35,6 @@
             </div>
             <p>{{job.summary}}</p>
             <br>
-            <!-- LINK TO JOB POST PAGE -->
             <a href="{% url 'job_post' job.slug %}" class="viewMore">View More</a>
             
         </div>

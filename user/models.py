@@ -233,7 +233,7 @@ class Resume(models.Model):
     state = models.CharField(max_length=100, choices=STATE_CHOICES, default=NY) # choice
     slug = models.SlugField(max_length=500, unique=True, blank=True, null=True)
     date_created = models.DateTimeField(default=timezone.now)
-    last_updated = models.DateTimeField(null=True, blank=True)
+    last_updated = models.DateTimeField(null=True, blank=True, auto_now=True)
     cover_letter = models.FileField(upload_to='resumes', null=True, blank=True)
     cv = models.FileField(upload_to='resumes', null=True, blank=True)
     # Applicants won't be able to add a company
