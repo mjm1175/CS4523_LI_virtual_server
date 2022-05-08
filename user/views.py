@@ -253,33 +253,38 @@ def home_profiles(request):
 
 @csrf_protect
 def public_profile(request, slug):
-	# search
-	job_search_form = SearchJobsForm()
+    # search
+    job_search_form = SearchJobsForm()
 
-	context = {}
-	context['job_search_form'] = job_search_form
+    context = {}
+    context['job_search_form'] = job_search_form
 
-	search_request = search(request)
-	if search_request is not None:
-		return search_request
-	# end search
+    search_request = search(request)
+    if search_request is not None:
+        return search_request
+    # end search
 
-	obj = Account.objects.get(slug=slug)
+    obj = Account.objects.get(slug=slug)
 
-	try:
-		if obj.resume:
-			educations = Education.objects.filter(resume=obj.resume)
-			experiences = Experience.objects.filter(resume=obj.resume)
+    try:
+        if obj.resume:
+            educations = Education.objects.filter(resume=obj.resume)
+            experiences = Experience.objects.filter(resume=obj.resume)
 
-			context['educations'] = educations
-			context['experiences'] = experiences    
-	except Account.resume.RelatedObjectDoesNotExist:
-		context = {}
+            # essentially only true if theyre an employer and have this set up
+            if obj.resume.company is not None:
+                jobs = Job.objects.filter(company=obj.resume.company)
+                context['postings'] = jobs
+
+            context['educations'] = educations
+            context['experiences'] = experiences    
+    except Account.resume.RelatedObjectDoesNotExist:
+        pass
 
 
-	context['object'] = obj
+    context['object'] = obj
 
-	return render(request, 'public_profile.html', context)
+    return render(request, 'public_profile.html', context)
 
 def download(request, id, attrib_name):
     obj = Resume.objects.get(pk=id)

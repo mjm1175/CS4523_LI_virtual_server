@@ -107,6 +107,39 @@ Profile
                 </div>                
                 {% endfor %}
             {% endif %}
+
+            {% if postings %}
+                {% for post in postings %}
+                <div class="post-container">
+                    <div class="user-profile">
+                        <a href="{% url 'company_detail' post.company.slug %}"><img src="{{post.company.companyLogo.url}}"></a>
+                        <div>
+                            <p>{{post.title}} at {{post.company}}</p>
+                            <span>{{post.date_created}}</span>
+                        </div>
+                    </div>     
+                    <p class="post-text">{{post.summary}}</p>
+                    <div class="job-preview">
+                        <div class="job-preview-elem">
+                            <p>{{post.location}}</p>
+                        </div>
+                        <div class="job-preview-elem">
+                            <P>{{post.type}}</P>
+                        </div>
+                    </div>
+                    <div style="white-space: nowrap;">
+                        {% if user.resume.company == post.company %}
+                        <div style="text-align: right; justify-content: right; white-space: nowrap;">
+                            <a href="{% url 'view_applications' post.slug %}" class="viewMore">View Applications</a>
+                        </div>
+                        {% endif %}
+                        <div style="text-align: left; justify-content: left; white-space: nowrap;">
+                            <a href="{% url 'job_post' post.slug %}" class="viewMore">View More</a>
+                        </div>
+                    </div>
+                </div>     
+                {% endfor %}
+            {% endif %}
         </div>
 </div>
 

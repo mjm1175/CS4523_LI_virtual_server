@@ -4,6 +4,7 @@ from .forms import *
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_protect
+from django.http import FileResponse
 
 # Create your views here.
 
@@ -89,41 +90,50 @@ def job_post(request, slug):
 	return render(request, 'job_post.html', context)
 
 
-def job_post_creation(request):
-	# search
-	job_search_form = SearchJobsForm()
+def job_post_creation(request, job_id=None):
+    # search
+    job_search_form = SearchJobsForm()
 
-	context = {}
-	context['job_search_form'] = job_search_form
+    context = {}
+    context['job_search_form'] = job_search_form
 
-	if request.method == 'GET':
-		form = CreateJobForm()
-		context['form'] = form
-		return render(request, 'job_post_creation.html', context)
+    if request.method == 'GET':
+        if job_id:
+            job = Job.objects.get(pk=job_id)
+            form = CreateJobForm(instance=job)
+        else:
+            form = CreateJobForm()
 
-	if request.method == 'POST':
-		form = CreateJobForm(request.POST)
-		search_request = search(request)
+        context['form'] = form
+        return render(request, 'job_post_creation.html', context)
 
-		if form.is_valid():
-			obj = form.save(commit=False)
-			obj.owner = request.user
-			# might throw error
-#			if request.user.resume: (check for this some better way)
-			obj.company = request.user.resume.company
-			obj.save()
-			messages.success(request, 'Job post created successfully.')
+    if request.method == 'POST':
+        if job_id:
+            job = Job.objects.get(pk=job_id)
+            form = CreateJobForm(request.POST, instance=job)
+        else:
+            form = CreateJobForm(request.POST)
 
-			return redirect('job_post', slug=obj.slug)
-		elif search_request is not None:
-			return search_request
-		else:
-			messages.error(request, 'Error processing your request')
-			context['form'] = form
-			return render(request, 'job_post_creation.html', context)
+        search_request = search(request)
 
-	return render(request, 'job_post_creation.html', context)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.owner = request.user
+            # might throw error
+    #			if request.user.resume: (check for this some better way)
+            obj.company = request.user.resume.company
+            obj.save()
+            messages.success(request, 'Job post created successfully.')
 
+            return redirect('job_post', slug=obj.slug)
+        elif search_request is not None:
+            return search_request
+        else:
+            messages.error(request, 'Error processing your request')
+            context['form'] = form
+            return render(request, 'job_post_creation.html', context)
+
+    return render(request, 'job_post_creation.html', context)
 
 def company_detail(request, slug):
     # search
@@ -206,16 +216,18 @@ def home_companies(request):
 	context['companies'] = comp_list
 	return render(request, 'home_companies.html', context)
 
-def apply(request, slug):
+
+def apply(request, slug, app_id=None):
     job = Job.objects.get(slug=slug)
     context = {}
     context['job'] = job
 
-    if job is not None:
-        print(job.title)
-
     if request.method == 'POST':
-        form = ApplicationForm(request.POST, request.FILES)
+        if app_id:
+            app = Application.objects.get(pk=app_id)
+            form = ApplicationForm(request.POST, request.FILES, instance=app)
+        else:
+            form = ApplicationForm(request.POST, request.FILES)
 
         if form.is_valid():
             obj = form.save(commit=False)
@@ -240,12 +252,68 @@ def apply(request, slug):
 
         else:
             messages.error(request, 'Error processing your request')
-            context = {'form': form}
+            context['form'] = form
             return render(request, 'job_application.html', context)    
 
     if request.method == 'GET':
-        form = ApplicationForm()
+        if app_id:
+            app = Application.objects.get(pk=app_id)
+            form = ApplicationForm(instance=app)
+        else:
+            form = ApplicationForm()
+
         context['form'] = form
         return render(request, 'job_application.html', context)
 
     return render(request, 'job_application.html', context)
+
+
+def view_applications(request, slug):
+    # passing slug of the job posting
+    job = Job.objects.get(slug=slug)
+    apps = Application.objects.filter(job=job)
+
+    context = {}
+    context['job'] = job
+    context['apps'] = apps
+
+    return render(request, 'view_applications.html', context)
+
+def delete_job(request, pk):
+    job = Job.objects.get(pk=pk)  
+
+    if request.method == 'POST':        
+        job.delete()                   
+        messages.success(request, 'Job post deleted successfully')
+        return redirect('profile')            
+
+    return render(request, 'view_applications.html', {'job': job})
+
+def download_from_application(request, id, attrib_name):
+    obj = Application.objects.get(pk=id)
+    if attrib_name == 'cover_letter':
+        filename = obj.cover_letter.path
+    elif attrib_name == 'resume':
+        filename = obj.resume.path
+    response = FileResponse(open(filename, 'rb'))
+    return response 
+
+
+def delete_application(request, pk):
+    app = Application.objects.get(pk=pk)  
+
+    if request.method == 'POST':        
+        app.delete()                   
+        messages.success(request, 'Application deleted successfully')
+        return redirect('profile')            
+
+    return render(request, 'my_applications.html', {'app': app})
+
+
+def my_applications(request):
+    apps = Application.objects.filter(applicant=request.user)
+
+    context = {}
+    context['apps'] = apps
+
+    return render(request, 'my_applications.html', context)    

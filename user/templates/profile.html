@@ -7,6 +7,8 @@
         {% if user.resume %}
             {% if user.resume.company %}
             <a href="{% url 'company_creation' user.resume.company.id %}"><button type="button"> <img src="{% static 'app/images/friends.png' %}"> Edit Company </button></a>
+            {% elif user.role == 'Applicant' %}
+            <a href="{% url 'my_applications' %}"><button type="button"> <img src="{% static 'app/images/arrow-down.png' %}"> View My Applications </button></a>
             {% endif %}
             <a href="{% url 'resume_detail' user.resume.slug %}"><button type="button"> <img src="{% static 'app/images/edit.png' %}"> Edit Resume </button></a>
         {% else %}
