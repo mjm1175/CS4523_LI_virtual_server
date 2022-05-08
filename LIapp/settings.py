@@ -146,3 +146,11 @@ MEDIA_URL = '/uploads/'
 LOGIN_REDIRECT_URL = 'profile'		# change to home_page if you would rather redirect there
 LOGIN_URL = 'login'
 LOGOUT_REDIRECT_URL = 'login'
+
+# Email Settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'incognitolinked@gmail.com'
+EMAIL_HOST_PASSWORD = 'Ziggy1234'

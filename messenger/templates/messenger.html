@@ -96,9 +96,15 @@
                 </div>
             </div>
             <div class="messenger-user-search-name">
+                {% for thread in model %}
+                {% if thread.user == user.username or thread.receiver == user.username %}
                 <div class="messenger-user-search-name-inside">
                     <!--CHANGE TO RECIPIENT USERNAME && PROFILE-->
-                    <a href="{% url 'profile' %}"> <b>@{{user.username}}</b> </a>
+                    {% if thread.user == user.username %}
+                    <a href="{% url 'profile' %}"> <b>@{{thread.receiver.username}}</b> </a>
+                    {% elif thread.receiver == user.username %}
+                    <a href="{% url 'profile' %}"> <b>@{{thread.user.username}}</b> </a>
+                    {% endif %}
                 </div>
                 <div class="messenger-user-last-seen">
                     <div class="messenger-last-seen-message">
@@ -108,6 +114,8 @@
                         <a href="#">date</a>
                     </div>
                 </div>
+                {% endif %}
+                {% endfor %}
             </div>
         </div>
 
@@ -156,18 +164,19 @@
             </div>                                   
         </div>
 
-
         <!--Actual Messages-->
         <div class="messenger-message-container">
             <div class="messenger-message-left">
                 <div class="messenger-chat-container">
                     <div class="messenger-chat-box">
+                        {% for message in message_list %}
+                        {% if message.sender_user == request.user %}
                         <div class="messenger-chat-box-right">
                             <div class="messenger-chat-right">
                                 <div class="messenger-chat-right-inside">
                                     <div class="messenger-chat-right-inside-text">
                                         <div class="messenger-chat-right-text-display">
-                                            <p>Hi</p>
+                                            <p>{{ message.body }}</p>
                                         </div>
                                     </div>
                                     <div class="messenger-chat-right-icon">
@@ -178,6 +187,7 @@
                                 </div>
                             </div>
                         </div>
+                        {% else %}
                         <div class="messenger-chat-box-left">
                             <div class="messenger-chat-left">
                                 <div class="messenger-chat-left-inside">
@@ -188,34 +198,26 @@
                                     </div>                                            
                                     <div class="messenger-chat-left-inside-text">
                                         <div class="messenger-chat-left-text-display">
-                                            <p>Hello</p>
+                                            <p>{{ message.body }}</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        {% endif %}
+                        {% endfor %}
                     </div>
                 </div>
                 <div class="messenger-chat-bottom">
-                    <div class="messenger-chat-bottom-icon">
-                        <div class="messenger-chat-bottom-icon-inside">
-                            <img src="{% static 'app/images/add.png' %}">
-                        </div>
-                        <div class="messenger-chat-bottom-icon-inside">
-                            <img src="{% static 'app/images/gif.png' %}">
-                        </div>
-                        <div class="messenger-chat-bottom-icon-inside">
-                            <img src="{% static 'app/images/sticker.png' %}">
-                        </div>
-                        <div class="messenger-chat-bottom-icon-inside">
-                            <img src="{% static 'app/images/file.png' %}">
-                        </div>                                                                                                                                
-                    </div>
                     <div class="messenger-chat-bottom-input">
                         <div class="messenger-chat-bottom-input-inside">
+                            <form action="{% url 'create-message' thread.pk %}" method="POST">
+                            {% csrf_token %}
                             <div class="messenger-chat-bottom-input-type">
-                                <input type="text" placeholder="Type a message...">
+                                <input type="text" placeholder="Type a message..." name="message">
+                                <button class="btn btn-light" type="submit">Send Message</button>
                             </div>
+                            </form>
                             <div class="messenger-chat-bottom-input-emoji">
                                 <div class="messenger-chat-bottom-input-emoji-image">
                                     <img src="{% static 'app/images/smile.png' %}">

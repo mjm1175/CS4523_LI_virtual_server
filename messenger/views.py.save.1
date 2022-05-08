@@ -28,8 +28,16 @@ class ListThreads(View):
         return render(request, 'inbox.html', context)
 
 class CreateThread(View):
-    def post(self, request, username, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
+        form = ThreadForm()
+        context = {
+            'form': form
+        }
+        return render(request, 'create_thread.html', context)
+    def post(self, request, *args, **kwargs):
         form = ThreadForm(request.POST)
+        username = request.POST.get('username')
+
         try:
             receiver = Account.objects.get(username=username)
             if ThreadModel.objects.filter(user=request.user, receiver=receiver).exists():
@@ -52,17 +60,14 @@ class CreateThread(View):
 class ThreadView(View):
     def get(self, request, pk, *args, **kwargs):
         form = MessageForm()
-        model = ThreadForm()
         thread = ThreadModel.objects.get(pk=pk)
-        message_list = Messages.objects.filter(thread__pk__contains=pk)
-        context = {
+        message_list = Messages.objects.filter(thread__pk__contains=pk)        context = {
             'thread': thread,
             'form': form,
-            'model': model,
             'message_list': message_list
         }
 
-        return render(request, 'messenger.html', context)
+        return render(request, 'thread.html', context)
 
 class CreateMessage(View):
     def post(self, request, pk, *args, **kwargs):

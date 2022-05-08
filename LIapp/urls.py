@@ -49,7 +49,7 @@ urlpatterns = [
     # this one might be useless now?
     path('messenger/', msg_views.messenger, name='messenger'),
     path('inbox/', msg_views.ListThreads.as_view(), name='inbox'),
-    path('inbox/create-thread', msg_views.CreateThread.as_view(), name='create-thread'),
+    path('inbox/create-thread/<str:username>', msg_views.CreateThread.as_view(), name='create-thread'),
     path('inbox/<int:pk>/', msg_views.ThreadView.as_view(), name='thread'),
 
     path('inbox/<int:pk>/create-message', msg_views.CreateMessage.as_view(), name='create-message'),

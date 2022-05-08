@@ -4,9 +4,12 @@
 {% block profhead %}
     <!--Action buttons-->
     <div class="pd-right">
-	<a href="{% url 'create-thread' %}">
-            <button type="button"><img src="{% static 'app/images/message.png' %}"> Message </button>
-    	</a>
+        <form method="POST" action = "{% url 'create-thread' object.username %}">
+            {% csrf_token %}
+            <input type="text" name="username" value="{{ object.username }}" style="visibility: hidden;" >
+	    <button type="submit"><img src="{% static 'app/images/message.png' %}"> Start Message </button>
+  
+	</form>
         <br>
     </div>
 {% endblock %}

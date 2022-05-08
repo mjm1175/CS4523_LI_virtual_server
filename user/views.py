@@ -19,6 +19,9 @@ import jwt
 import requests
 import json
 from time import time
+from django.conf import settings
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import get_template
 
 # Create your views here.
 
@@ -303,12 +306,33 @@ def generateToken():
         return token
             # send a request with headers including a token
 
-def getUsers():
-    headers = {'authorization': 'Bearer %s' % generateToken(),
-                               'content-type': 'application/json'}
-    r = requests.get('https://api.zoom.us/v2/users/', headers=headers)
-    print("\n fetching zoom meeting info now of the user ... \n")
-    print(r.text)
+def sendInvite(request,response):
+     email = {}
+     email['title'] = 'Hey There!'
+     email['subtitle'] = 'You have successfully scheduled your interview.'
+     email['message'] = 'Here is the link to start your meeting ' + response['start_url'] + ' at ' + response['start_time'] 
+
+     subject = 'Interview Scheduled'
+     from_email = settings.EMAIL_HOST_USER
+     to_email = [request.user.email]
+     text_content = """
+             {}
+             {}
+             {}          
+
+             Best,
+                  The LinkedIncognito Team
+                                                     
+                     """.format(email['title'], email['subtitle'], email['message'])
+
+     html_c = get_template('email.html')
+     d = {'email':email}
+     html_content = html_c.render(d)
+
+     msg = EmailMultiAlternatives(subject, text_content, from_email, to_email)
+     msg.attach_alternative(html_content, 'text/html')
+     msg.send()
+
 
 @csrf_protect
 def createMeeting(request):
@@ -336,12 +360,12 @@ def createMeeting(request):
                          }
         headers = {'authorization': 'Bearer %s' % generateToken(),
                 'content-type': 'application/json'}
-        # replace 'me' with {userId}
+        
         r = requests.post(
                         f'https://api.zoom.us/v2/users/me/meetings', headers=headers, data=json.dumps(meetingdetails))
   
        
-        #return HttpResponseRedirect("/meetingCreation/")
+        sendInvite(request,r.json())
         return render(request, "meetingCreation.html", r.json())
     else:
         return render(request, "meetingCreation.html")
