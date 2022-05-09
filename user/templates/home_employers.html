@@ -1,0 +1,35 @@
+{% extends "home_layout.html" %}
+{% load static %}
+
+{% block homemain %}
+    <!--------------MAIN CONTENT--------------->
+    <div class="main-content">
+        <h2>All Employers</h2>        
+        <!-- Populating from database information -->
+
+        <!-- This means we must send variable 'jobs' from backend -->
+        {% for user in users %}
+
+        <div class="post-container">
+            <div class="user-profile">
+                <!-- LINK TO that user's profile PAGE (does that still exist) -->
+
+                {% if user.resume %}		
+                <a href="{% url 'public_profile' user.slug %}"><img src="{{user.resume.image.url}}"></a>
+                {% else %}
+                <a href="{% url 'public_profile' user.slug %}"><img src="{% static 'app/images/profile3.jpg' %}"></a>
+                {% endif %}                
+                
+                <div>
+                    <p>{{user.first_name}} {{user.last_name}}</p>
+                    <span><a href="{% url 'public_profile' user.slug %}">@{{user.username}}</a></span>
+                </div>
+            </div>
+            {% if user.resume and user.resume.company %}
+            <p class="post-text">Works at <a href="{% url 'company_detail' user.resume.company.slug %}">{{user.resume.company}}</a></p>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}

@@ -49,6 +49,8 @@ urlpatterns = [
     path('users/delete/experience/<int:pk>/', users_views.delete_experience, name='delete_experience'),
     path('users/delete/education/<int:pk>/', users_views.delete_education, name='delete_education'),
     path('users/public-profile/<slug:slug>/', users_views.public_profile, name='public_profile'),
+    path('applicants/', users_views.home_applicants, name='app_users'),
+    path('employers/', users_views.home_employers, name='emp_users'),
     path('all-users/', users_views.home_profiles, name='all_users'),
     path('all-companies/', jobs_views.home_companies, name='all_companies'),
     path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
@@ -59,7 +61,7 @@ urlpatterns = [
     path('inbox/', msg_views.ListThreads.as_view(), name='inbox'),
     path('inbox/create-thread/<str:username>', msg_views.CreateThread.as_view(), name='create-thread'),
     path('inbox/<int:pk>/', msg_views.ThreadView.as_view(), name='thread'),
-
+    path('calendar/', users_views.calendar, name='calendar'),
     path('inbox/<int:pk>/create-message', msg_views.CreateMessage.as_view(), name='create-message'),
     path('uploadProjectImplicitResults', users_views.project_upload, name='implicit'),
     path('meetingCreation/', users_views.createMeeting, name='createMeeting'),

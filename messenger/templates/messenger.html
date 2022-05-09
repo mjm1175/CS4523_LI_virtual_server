@@ -89,14 +89,18 @@
         <div class="messenger-user-search-container">
             <div class="messenger-user-search-icon">
                 <div class="messenger-user-search-image">
-                    {% if user.resume %}	
-                    {% if thread.user == user %}	
-                    <img src="{{thread.receiver.resume.image.url}}">
+                    {% if thread.user == user %}
+                        {% if thread.receiver.resume %}	
+                        <img src="{{thread.receiver.resume.image.url}}">
+                        {% else %}
+                        <img src="{% static 'app/images/profile3.jpg' %}">
+                        {%  endif %}
                     {% elif thread.receiver == user %}
-                    <img src="{{thread.user.resume.image.url}}">
-                    {% endif %}
-                    {% else %}
-                    <img src="{% static 'app/images/profile3.jpg' %}">
+                        {% if thread.user.resume %}	
+                        <img src="{{thread.user.resume.image.url}}">
+                        {% else %}
+                        <img src="{% static 'app/images/profile3.jpg' %}">
+                        {% endif %}
                     {% endif %}
                 </div>
             </div>

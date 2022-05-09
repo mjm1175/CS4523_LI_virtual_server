@@ -135,6 +135,7 @@ class ResumeForm(forms.ModelForm):
     WI	= 'Wisconsin'
     WV	= 'West Virginia'
     WY = 'Wyoming'
+    NOT_PROVIDED = 'N/A'
 
     STATE_CHOICES = [
         (AK,'Alaska'),
@@ -189,6 +190,7 @@ class ResumeForm(forms.ModelForm):
         (WI,'Wisconsin'),
         (WV,'West Virginia'),
         (WY,'Wyoming'),
+        (NOT_PROVIDED,'N/A'),
     ]
 
     image = forms.ImageField(
@@ -224,6 +226,8 @@ class ResumeForm(forms.ModelForm):
             'image', 'city', 'state', 'cover_letter', 'cv', 'company'
         ]
 
+class AnonForm(forms.Form):
+    confirm_anon = forms.BooleanField(required=True)
 
 class EducationForm(forms.ModelForm):
     LEVEL5A = 'Some High School Education'
@@ -319,3 +323,23 @@ class VerifyEmailForm(forms.Form):
                 widget=forms.TextInput(attrs={'class':'form-control company', 'placeholder':'Enter the verification code we sent to your email'})
                 )     
 
+class FilterApplicantsForm(forms.Form):
+    NOT_PROVIDED = 'N/A'
+
+    # QUALIFICATION MATCH; tell them to separate w commas
+    qualifications = SimpleArrayField(forms.CharField(max_length=100, required=False), required=False)
+
+    state = forms.ChoiceField(
+                    required=False,
+                    initial=NOT_PROVIDED,
+                    choices=ResumeForm.STATE_CHOICES,
+                    widget=forms.Select(attrs={'class':'nice-select rounded', 'name':'app-location'})
+                    )
+
+class ZoomMeetingForm(forms.Form):
+    invitee = forms.CharField(
+                    max_length=200,
+                    required = False
+                    )
+    time = forms.DateTimeField(required=True)
+    duration = forms.IntegerField()

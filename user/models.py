@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.contrib.postgres.fields import ArrayField
 from django.template.defaultfilters import slugify
 from django.utils import timezone
+from django.core.validators import FileExtensionValidator
 from uuid import uuid4
 import random
 from jobs.models import Company
@@ -236,8 +237,8 @@ class Resume(models.Model):
     slug = models.SlugField(max_length=500, unique=True, blank=True, null=True)
     date_created = models.DateTimeField(default=timezone.now)
     last_updated = models.DateTimeField(null=True, blank=True, auto_now=True)
-    cover_letter = models.FileField(upload_to='resumes', null=True, blank=True)
-    cv = models.FileField(upload_to='resumes', null=True, blank=True)
+    cover_letter = models.FileField(upload_to='resumes', null=True, blank=True, validators=[FileExtensionValidator(allowed_extensions=['pdf'])])
+    cv = models.FileField(upload_to='resumes', null=True, blank=True, validators=[FileExtensionValidator(allowed_extensions=['pdf'])])
     # Applicants won't be able to add a company
     company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True, blank=True)
 
@@ -313,3 +314,9 @@ class Experience(models.Model):
 class ProjectImplicit(models.Model):
     user = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='+')
     project_implicit = models.FileField(upload_to='project-implicit', null=True, blank=True)
+
+class MeetingZoom(models.Model):
+    user = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='+')
+    interviewer = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
+    meeting_date = models.DateTimeField(default=timezone.now)
+    duration = models.IntegerField()

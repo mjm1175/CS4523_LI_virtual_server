@@ -156,6 +156,7 @@ class CreateJobForm(forms.ModelForm):
         (WI,'Wisconsin'),
         (WV,'West Virginia'),
         (WY,'Wyoming'),
+        (NOT_PROVIDED,'N/A'),
     ]
 
     title = forms.CharField(
@@ -246,15 +247,48 @@ class CreateCompanyForm(forms.ModelForm):
             'name', 'description', 'companyLogo'
         ]           
 
-class SearchJobsForm(forms.ModelForm):
-    title = forms.CharField(
-                        required=True,
-                        widget=forms.TextInput(attrs={'class':'form-control rounded search-box', 'placeholder':'Search'})
-    )
 
+class SearchJobsForm(forms.Form):
+    NOT_PROVIDED = 'N/A'
+
+    title = forms.CharField(
+                    required=False,
+                    widget=forms.TextInput(attrs={'class':'form-control rounded search-box', 'placeholder':'Search'})
+                    )
+
+    category = forms.ChoiceField(
+                    initial=NOT_PROVIDED,
+                    required=False,
+                    choices=CreateJobForm.CAT_CHOICES,
+                    widget=forms.Select(attrs={'class':'nice-select rounded', 'name':'job-category'})
+                    )
+
+    location = forms.ChoiceField(
+                    initial=NOT_PROVIDED,
+                    required=False,
+                    choices=CreateJobForm.STATE_CHOICES,
+                    widget=forms.Select(attrs={'class':'nice-select rounded', 'name':'job-location'})
+                    )   
+
+
+class FilterJobsForm(forms.ModelForm):
+    NOT_PROVIDED = 'N/A'
+
+    category = forms.ChoiceField(
+                    initial=NOT_PROVIDED,
+                    required=False,
+                    choices=CreateJobForm.CAT_CHOICES,
+                    widget=forms.Select(attrs={'class':'nice-select rounded', 'name':'job-category'})
+                    )
+    location = forms.ChoiceField(
+                    initial=NOT_PROVIDED,
+                    required=False,
+                    choices=CreateJobForm.STATE_CHOICES,
+                    widget=forms.Select(attrs={'class':'nice-select rounded', 'name':'job-location'})
+                    )
     class Meta:
         model = Job
-        fields = ['title']
+        fields = ['category', 'location']
 
 class ApplicationForm(forms.ModelForm):
     YES = 'Yes'
@@ -267,10 +301,12 @@ class ApplicationForm(forms.ModelForm):
 
     # won't show if the user doesn't have a resume
     use_profile_resume = forms.ChoiceField(
+                    required=False,
                     initial=NO,
                     choices=USE_RESUME_CHOICES,
                     widget=forms.RadioSelect(attrs={'class':'form-control', 'id':'prof-resume'}))
     use_profile_cover_letter = forms.ChoiceField(
+                    required=False,
                     initial=NO,
                     choices=USE_RESUME_CHOICES,
                     widget=forms.RadioSelect(attrs={'class':'form-control', 'id':'prof-cover'}))

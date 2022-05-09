@@ -19,7 +19,11 @@ def search(request):
 
     if request.method == 'POST':
         job_search_form = SearchJobsForm(request.POST)
+        context['job_search_form'] = job_search_form
+
         if job_search_form.is_valid():
+            # might need to check if not None  
+
             search = job_search_form.cleaned_data.get('title')
             jobs = []
             if len(search.split()) > 1:
@@ -34,24 +38,26 @@ def search(request):
             else:
                 jobs = Job.objects.filter(title__icontains=search)
 
+            category = job_search_form.cleaned_data.get('category')
+            location = job_search_form.cleaned_data.get('location')
+
+            if category is not None and category != '' and category != 'N/A':
+                jobs = jobs.filter(category=category)
+            if location is not None and location != '' and location != 'N/A':
+                jobs = jobs.filter(state=location)
+
             context['jobs'] = jobs
             context['title'] = search
 
             # only sending jobs that fit the search
             return render(request, 'home.html', context)
     
-        else:
-            messages.error(request, 'Error processing your request')
-            context['job_search_form'] = job_search_form
-            return render(request, 'home.html', context)
-    
     return None
-
-
 
 from user.views import is_email_verified
 
 # home page; smart search
+
 @login_required()
 def home(request):
 	if not request.user.email_confirmed:
@@ -71,20 +77,13 @@ def home(request):
 	context['jobs'] = job_list
 
 	return render(request, 'home.html', context)
-    
+
+
 
 @csrf_protect
 def job_post(request, slug):
-	# search
-	job_search_form = SearchJobsForm()
 
 	context = {}
-	context['job_search_form'] = job_search_form
-
-	search_request = search(request)
-	if search_request is not None:
-		return search_request
-	# end search
 
 	try:
 		obj = Job.objects.get(slug=slug)
@@ -96,11 +95,8 @@ def job_post(request, slug):
 
 
 def job_post_creation(request, job_id=None):
-    # search
-    job_search_form = SearchJobsForm()
 
     context = {}
-    context['job_search_form'] = job_search_form
 
     if request.method == 'GET':
         if job_id:
@@ -119,7 +115,6 @@ def job_post_creation(request, job_id=None):
         else:
             form = CreateJobForm(request.POST)
 
-        search_request = search(request)
 
         if form.is_valid():
             obj = form.save(commit=False)
@@ -131,8 +126,6 @@ def job_post_creation(request, job_id=None):
             messages.success(request, 'Job post created successfully.')
 
             return redirect('job_post', slug=obj.slug)
-        elif search_request is not None:
-            return search_request
         else:
             messages.error(request, 'Error processing your request')
             context['form'] = form
@@ -141,16 +134,8 @@ def job_post_creation(request, job_id=None):
     return render(request, 'job_post_creation.html', context)
 
 def company_detail(request, slug):
-    # search
-    job_search_form = SearchJobsForm()
 
     context = {}
-    context['job_search_form'] = job_search_form
-
-    search_request = search(request)
-    if search_request is not None:
-        return search_request
-    # end search
 
     obj = Company.objects.get(slug=slug)
     # getting all jobs whose company's slug matches this slug
@@ -165,11 +150,8 @@ def company_detail(request, slug):
 @login_required
 @user_passes_test(is_email_verified, 'verify_email', None)
 def company_creation(request, comp_id=None):
-    # search
-    job_search_form = SearchJobsForm()
 
     context = {}
-    context['job_search_form'] = job_search_form
 
     if request.method == 'POST':
         search_request = search(request)
@@ -186,8 +168,6 @@ def company_creation(request, comp_id=None):
             messages.success(request, 'Company profile updated successfully.')
 
             return redirect('profile')
-        elif search_request is not None:
-            return search_request
         else:
             messages.error(request, 'Error processing your request')
             context['form'] = form
@@ -207,17 +187,8 @@ def company_creation(request, comp_id=None):
 @login_required
 @user_passes_test(is_email_verified, 'verify_email', None)
 def home_companies(request):
-	# search
-	job_search_form = SearchJobsForm()
 
 	context = {}
-	context['job_search_form'] = job_search_form
-
-	search_request = search(request)
-	if search_request is not None:
-		return search_request
-	# end search
-
 
 	#	can change to filter for search
 	comp_list = Company.objects.all()

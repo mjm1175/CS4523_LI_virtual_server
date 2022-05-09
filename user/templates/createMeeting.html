@@ -1,18 +1,41 @@
+{% extends "layout1.html" %}
 {% load static %}
+        {% block body %}
+	<div class="schedule">
+		<form method="POST" action="{% url 'createMeeting' %}">
+			{% csrf_token %}
+			<p> Applicant's Username: </p>
+			<div id="invitee">
+				<input type="text" name="invitee">
+			</div>
 
-<!DOCTYPE html>
-<html lang="en"> 
-	<head>
-		{% block head %}	
-		<meta charset="UTF-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="stylesheet" href="{% static 'app/css/profile.css' %}">
-		<title>{% block title %} {% endblock %} - LinkedIncognito</title>
-		{% endblock %}
-	</head>
-	<body>
+			<p> Topic: </p>
+			<div id="topic">
+				<input type="text" name="topic">
+			</div>
+			<p>Start Time:</p>
+			<div id="time">
+				<input type="datetime-local" class="form-control" name="time">
+			</div>
 
-		<nav>
-			<!--Top Bar-->
-			<a
+			<p>Duration(in minutes): </p>
+			<div id="duration">
+				<input type="number" min="1" name="duration">
+			</div>
+
+			<button type="submit" class="btn btn-primary">Submit</button>
+		</form>
+		<p>Use this Zoom link to start your meeting: <a href={{start_url}}>{{start_url}}</a>. You will also receive an
+			email with the Zoom link and meeting time.</p>
+		<p>Share this Zoom link with your interviewee: <a href={{join_url}}>{{join_url}}</a></p>
+	</div>
+
+	{% endblock %}
+
+
+	<!--Copyright bottom text-->
+	<div class="footer">
+		<p>Copyright 2022 - LinkedIncognito</p>
+	</div>
+	{% block source %}
+	{% endblock %}

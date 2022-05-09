@@ -1,0 +1,23 @@
+{% extends "home_layout.html" %}
+{% load static %}
+
+{% block homemain %}
+    <!--------------MAIN CONTENT--------------->
+    <div class="main-content">
+        <h2>All Meetings</h2>        
+        <!-- Populating from database information -->
+
+        {% for meeting in meetings %}
+        {% if meeting.user == request.user %}
+        <div class="post-container">
+            <p>{{ meeting.meeting_date }}</p>
+            <p>{{ meeting.duration }} minutes </p>
+
+            
+        </div>
+        {% endif %} 
+        {% endfor %}
+    </div>
+
+{% endblock %}
+

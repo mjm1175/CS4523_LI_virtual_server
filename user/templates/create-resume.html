@@ -92,23 +92,30 @@
             {% endfor %}
         {% endif %}              
     </div>
-    <!--<form method="POST" enctype="multipart/form-data">-->
-
-        {% if comp_form.errors %}
-            {% for field in comp_form %}
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% if conf_form.errors %}
+            {% for field in conf_form %}
                 {% for error in field.errors %}
                     <div class="alert alert-danger">
                         <strong>{{ error|escape }}</strong>
                     </div>
                 {% endfor %}
-                {% for error in comp_form.non_field_errors %}
+                {% for error in conf_form.non_field_errors %}
                     <div class="alert alert-danger">
                         <strong>{{ error|escape }}</strong>
                     </div>           
                 {% endfor %} 
             {% endfor %}            
         {% endif %}
+        
+        <div>
+            <p>Please confirm that the files you have uploaded do not contain identifying information: </p>
+            {{conf_form.confirm_anon}}
+        </div>
+
         <button type="submit" class="submitBtn btn btn-primary" value="Save Changes">Save Changes</button>
+    </form>
     </div>
 </form>
 

@@ -4,6 +4,7 @@ from django.utils import timezone
 from uuid import uuid4
 from django.template.defaultfilters import slugify
 from django.contrib.postgres.fields import ArrayField
+from django.core.validators import FileExtensionValidator
 
 
 class Company(models.Model):
@@ -228,8 +229,8 @@ class Application(models.Model):
     applicant = models.ForeignKey(Account, on_delete=models.CASCADE, null=True, blank=True)
     # say something liek if resume else add a resume to your profile to submit more info
     #choice to include resume from profile or add new one (will not replace profile resume)
-    resume = models.FileField(upload_to='resumes', null=True, blank=True)
-    cover_letter = models.FileField(upload_to='resumes', null=True, blank=True)
+    resume = models.FileField(upload_to='resumes', null=True, blank=True, validators=[FileExtensionValidator(allowed_extensions=['pdf'])])
+    cover_letter = models.FileField(upload_to='resumes', null=True, blank=True, validators=[FileExtensionValidator(allowed_extensions=['pdf'])])
     job = models.ForeignKey(Job, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):

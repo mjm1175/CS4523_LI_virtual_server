@@ -9,13 +9,14 @@
             <a href="{% url 'company_creation' user.resume.company.id %}"><button type="button"> <img src="{% static 'app/images/friends.png' %}"> Edit Company </button></a>
             {% elif user.role == 'Applicant' %}
             <a href="{% url 'my_applications' %}"><button type="button"> <img src="{% static 'app/images/arrow-down.png' %}"> View My Applications </button></a>-->
-            {% elif user.role == 'Employer' %}
-            <a href="{% url 'implicit' %}"><button type="button"> Upload Implicit Bias Results </button></a>
             {% endif %}
             <!--<a href="{% url 'implicit' %}"><button type="button">Implicit</button></a>-->
             <a href="{% url 'resume_detail' user.resume.slug %}"><button type="button"> <img src="{% static 'app/images/edit.png' %}"> Edit Resume </button></a>
         {% else %}
         <a href="{% url 'create_resume' %}"><button type="button"> <img src="{% static 'app/images/add.png' %}"> Add Resume </button></a>
+        {% endif %}
+        {% if user.role == 'Employer' %}
+            <a href="{% url 'implicit' %}"><button type="button"> Upload Implicit Bias Results </button></a>
         {% endif %}
         <br>
     </div>

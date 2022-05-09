@@ -3,12 +3,33 @@
 
 {% block homemain %}
     <!--------------MAIN CONTENT--------------->
-    <div class="main-content">    
-        {% if title %}
-        <h2>Results for: "{{title}}" Jobs</h2>                
-        {% else %}
-        <h2>All Jobs</h2>                
-        {% endif %}
+    <div class="main-content">  
+        <div class="container col-md-12" style="flex: 100%;">
+            <div class="row" style="display: flex;">
+                <div class="col-md-6" style="flex: 100%;">
+                    {% if title %}
+                    <h2>Results for: "{{title}}" Jobs</h2>                
+                    {% else %}
+                    <h2>All Jobs</h2>                
+                    {% endif %}                        
+                </div>
+                <form method="POST">
+                    {% csrf_token %}
+                    {{job_search_form.title}}
+                    <div class="form-group col-md-3" style="flex: 100%;">
+                        <label for="category">Category</label>
+                        {{job_search_form.category}}                          
+                    </div>
+                    <div class="form-group col-md-3" style="flex: 100%;">
+                        <label for="location">Location</label>
+                        {{job_search_form.location}}                                                      
+                    </div>     
+                    <button type="submit" class="btn btn-primary">Search</button>               
+                </form>
+            </div>
+        </div>
+
+
         <!-- Populating from database information -->
 
         <!-- This means we must send variable 'jobs' from backend -->
@@ -18,8 +39,8 @@
             <div class="user-profile">
                 <a href="{% url 'company_detail' job.company.slug %}"><img src="{{job.company.companyLogo.url}}"></a>
                 <div>
-                    <p>{{job.company}}</p>
-                    <span>{{job.date_created}}</span>
+                    <p><a href="{% url 'company_detail' job.company.slug %}">{{job.company}}</a></p>
+                    <span>Posted on: {{job.date_created}}</span>
                 </div>
             </div>
             <p class="post-text">{{job.title}}</p>
@@ -34,8 +55,17 @@
             </div>
             <p>{{job.summary}}</p>
             <br>
-            <a href="{% url 'job_post' job.slug %}" class="viewMore">View More</a>
-            
+            <div class="post-row">
+                <div class="activity-icons">
+                    <!--<div><img src="images/like.png"> 120</div>
+                    <div><img src="images/comments.png"> 45</div>
+                    <div><img src="images/share.png"> 20</div>-->
+                    <a href="{% url 'job_post' job.slug %}" class="viewMore">View More</a>
+                </div>
+                <div class="post-profile-icon">
+                    <p>Posted by: {{job.owner.first_name}} {{job.owner.last_name}} <a href="{% url 'public_profile' job.owner.slug %}">@{{job.owner.username}}</a></p><img href="{% url 'public_profile' job.owner.slug %}" src="{{job.owner.resume.image.url}}">
+                </div>
+            </div>
         </div>
         {% endfor %}
     </div>

@@ -85,46 +85,43 @@ def register(request):
 @login_required
 @user_passes_test(is_email_verified, 'verify_email', None)
 def profile(request):
-	# search
-	job_search_form = SearchJobsForm()
-	model = ProjectImplicit.objects.all()
-	context = {}
-	context['job_search_form'] = job_search_form
-	context['model'] = model
-	search_request = search(request)
-	if search_request is not None:
-		return search_request
-	else:
-		print("getting none")
-        # end search
 
-	usr = request.user
+    context = {}
+    context['model'] = model    
 
-	context['object'] = request.user
+    usr = request.user
 
-	try:
-		if usr.resume:
-			educations = Education.objects.filter(resume=usr.resume)
-			experiences = Experience.objects.filter(resume=usr.resume)
-			context['educations'] = educations
-			context['experiences'] = experiences
-	except Account.resume.RelatedObjectDoesNotExist:
-		pass
+    context['object'] = request.user
 
-	return render(request, 'profile.html', context)
+    try:
+        if usr.resume:
+            educations = Education.objects.filter(resume=usr.resume)
+            experiences = Experience.objects.filter(resume=usr.resume)
+            context['educations'] = educations
+            context['experiences'] = experiences
+
+            if usr.resume.company:
+                jobs = Job.objects.filter(company=usr.resume.company)
+                context['postings'] = jobs             
+    except:
+        pass
+
+    return render(request, 'profile.html', context)
 
 
 @login_required
 @user_passes_test(is_email_verified, 'verify_email', None)
 def create_resume(request, res_id=None):
-    # search
-    job_search_form = SearchJobsForm()
 
     context = {}
-    context['job_search_form'] = job_search_form
+
+    # applicants must verify their information
+    if request.user.role == 'Applicant':
+        need_conf = True
+    else:
+        need_conf = False
 
     if request.method == 'POST':
-        search_request = search(request)
 
         if res_id:
             res = Resume.objects.get(pk=res_id)
@@ -133,8 +130,22 @@ def create_resume(request, res_id=None):
             # request.FILES bc files upload option in form
             form = ResumeForm(request.POST, request.FILES)
 
+        if need_conf:
+            conf_form = AnonForm(request.POST)
+
         if form.is_valid():
+
+            if need_conf:
+                if not conf_form.is_valid():
+                    messages.error(request, 'Error processing your request')
+
+                    context['form'] = form
+                    context['conf_form'] = conf_form
+
+                    return render(request, 'create-resume.html', context)
+
             obj = form.save(commit=False)
+                
 
             # setting 1:1 attribute
             obj.user = request.user
@@ -144,15 +155,15 @@ def create_resume(request, res_id=None):
 
             messages.success(request, 'Resume created successfully.')
             return redirect('profile')
-        elif search_request is not None:
-            return search_request
         else:
             messages.error(request, 'Error processing your request')
             context['form'] = form
-            if request.user.role == "Employer":
-                return render(request, 'create-resume-employer.html', context)
-            else:
+            
+            if need_conf:
+                context['conf_form'] = conf_form
                 return render(request, 'create-resume.html', context)
+            else:
+                return render(request, 'create-resume-employer.html', context)
 
     if request.method == 'GET':
         if res_id:
@@ -160,11 +171,15 @@ def create_resume(request, res_id=None):
             form = ResumeForm(instance=res)
         else:
             form = ResumeForm()
+
         context['form'] = form
-        if request.user.role == "Employer":
-            return render(request, 'create-resume-employer.html', context)
-        else:
+
+        if need_conf:
+            conf_form = AnonForm(request.POST)
+            context['conf_form'] = conf_form
             return render(request, 'create-resume.html', context)
+        else:
+            return render(request, 'create-resume-employer.html', context)
 
     if request.user.role == "Employer":
         return render(request, 'create-resume-employer.html', context)
@@ -179,11 +194,8 @@ class ResumeDetailView(DetailView):
 
 @csrf_protect
 def resume_detail(request, slug):
-	# search
-	job_search_form = SearchJobsForm()
 
 	context = {}
-	context['job_search_form'] = job_search_form
 	obj = Resume.objects.get(slug=slug)
 
 	# get all Educations & Experiences with the same resume attached
@@ -214,8 +226,6 @@ def resume_detail(request, slug):
 
 			messages.success(request, 'Resume (experience) updated successfully')
 			return redirect('resume_detail', slug=slug)
-		elif search_request is not None:
-			return search_request
 		else:
 			print(exp_form.errors)
 			print(exp_form.skills)
@@ -267,16 +277,7 @@ def delete_education(request, pk):
 @login_required
 @user_passes_test(is_email_verified, 'verify_email', None)
 def home_profiles(request):
-	# search
-	job_search_form = SearchJobsForm()
-
 	context = {}
-	context['job_search_form'] = job_search_form
-
-	search_request = search(request)
-	if search_request is not None:
-		return search_request
-	# end search
 
 	#	can change to filter for search
 	users_list = Account.objects.all()
@@ -286,15 +287,9 @@ def home_profiles(request):
 @csrf_protect
 def public_profile(request, slug):
     # search
-    job_search_form = SearchJobsForm()
     model = ProjectImplicit.objects.all()
     context = {}
-    context['job_search_form'] = job_search_form
     context['model'] = model
-    search_request = search(request)
-    if search_request is not None:
-        return search_request
-    # end search
 
     obj = Account.objects.get(slug=slug)
 
@@ -401,7 +396,7 @@ def sendRejection(request):
 @csrf_protect
 def createMeeting(request):
     if request.method == "POST":
-
+        form = ZoomMeetingForm(request.POST)
         meetingdetails = {"topic": request.POST["topic"],
                           "type": 2,
 
@@ -429,10 +424,19 @@ def createMeeting(request):
         invitee = Account.objects.get(username=request.POST["invitee"])
         sendInvitation(invitee.email, request.user.first_name, r.json())
         sendConfirmation(request.user.email,r.json())
-
-        return render(request, "meetingCreation.html", r.json())
+        username = request.POST.get("invitee")
+        if form.is_valid():
+            meeting = MeetingZoom(
+                user = Account.objects.get(username=username),
+                meeting_date = request.POST.get("time"),
+                duration = request.POST.get("duration")
+            )
+            meeting.save()
+        return render(request, "createMeeting.html", r.json())
     else:
-        return render(request, "meetingCreation.html")
+        form = ZoomMeetingForm()
+        context = {'form': form}
+        return render(request, "createMeeting.html", context)
 
 def email_verify_code(request):
     if request.method == 'GET':
@@ -460,3 +464,68 @@ def email_verify_code(request):
             return render(request, 'verify_email.html', context)
 
     return render(request, 'verify_email.html', {})
+
+
+@login_required
+@user_passes_test(is_email_verified, 'verify_email', None)
+def home_applicants(request):
+    # search
+    applicant_form = FilterApplicantsForm()
+    applicant_list = Account.objects.filter(role='Applicant')
+
+    context = {}
+    context['applicant_form'] = applicant_form
+    context['users'] = applicant_list
+
+    if request.method == 'POST':
+        applicant_form = FilterApplicantsForm(request.POST)
+        context['applicant_form'] = applicant_form
+
+        if applicant_form.is_valid():
+            qualifications = applicant_form.cleaned_data.get('qualifications')
+            location = applicant_form.cleaned_data.get('state')
+
+            print(qualifications)
+
+            quali_list = []
+            loco_list = []
+
+            if qualifications is not None and qualifications != []:
+                quali_list = applicant_list.filter(resume__experience__skills__contains=qualifications)
+                
+
+            if location is not None and location != '' and location != 'N/A':
+                # errors???
+                loco_list = applicant_list.filter(resume__state=location)
+            
+            app_ls = []
+            [app_ls.append(x) for x in quali_list if x not in app_ls]
+            [app_ls.append(x) for x in loco_list if x not in app_ls]
+
+
+            context['users'] = app_ls
+
+            return render(request, 'home_applicants.html', context)
+
+    return render(request, 'home_applicants.html', context)    
+
+
+
+@login_required
+@user_passes_test(is_email_verified, 'verify_email', None)
+def home_employers(request):
+
+	context = {}
+
+	#	can change to filter for search
+	users_list = Account.objects.filter(role='Employer')
+	context['users'] = users_list
+	return render(request, 'home_employers.html', context) 
+
+def calendar(request):
+    if request.method == 'GET':
+        model = ZoomMeeting.objects.all()
+        context = {
+            'meetings': model
+        }
+        return render(request, 'calendar.html', context)
