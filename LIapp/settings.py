@@ -143,7 +143,7 @@ MEDIA_URL = '/uploads/'
 
 # Login and Login Redirect URL
 
-LOGIN_REDIRECT_URL = 'profile'		# change to home_page if you would rather redirect there
+LOGIN_REDIRECT_URL = 'home_page'		# change to home_page if you would rather redirect there
 LOGIN_URL = 'login'
 LOGOUT_REDIRECT_URL = 'login'
 

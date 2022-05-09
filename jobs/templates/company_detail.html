@@ -21,7 +21,7 @@
             <p class="post-text">{{job.title}}</p>
             <div class="job-preview">
                 <div class="job-preview-elem">
-                    <p>{{job.location}}</p>
+                    <p>{% if job.city %}{{job.city}}, {% endif %}{{job.state}}</p>
                 </div>
                 <div class="job-preview-elem">
                     <P>{{job.type}}</P>

@@ -12,7 +12,7 @@
     <div class="job-post">
         <h1 id="position">{{job.title}} at {{job.company}}</h1>
         <div class="heading-info">
-            <div id="location">Location: {{job.location}}</div>
+            <div id="location">Location: {% if job.city %}{{job.city}}, {% endif %}{{job.state}}</div>
             <div id="hours">{{job.type}}</div>
             <div id="date">Date Posted: {{job.date_created}}</div>
         </div>

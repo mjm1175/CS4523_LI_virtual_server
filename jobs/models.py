@@ -3,6 +3,7 @@ from django.db import models
 from django.utils import timezone
 from uuid import uuid4
 from django.template.defaultfilters import slugify
+from django.contrib.postgres.fields import ArrayField
 
 
 class Company(models.Model):
@@ -40,6 +41,15 @@ class Job(models.Model):
     TIER3 = '5yrs - 10yrs'
     TIER4 = '10yrs - 15yrs'
     TIER5 = 'More than 15yrs'
+
+    COMPUTER_SCIENCE = 'Computer Science'
+    DATABASE_MANAGEMENT = 'Database Management'
+    DATA_SCIENCE = 'Data Science'
+    INFORMATION_SYSTEMS = 'Information Systems'
+    NETWORK_SECURITY = 'Network Security'
+    SOFTWARE_ENGINEERING = 'Software Engineering'
+    WEB_DEVELOPMENT = 'Web Development'
+
     
     # Pairing backend values with front end displays
     TYPE_CHOICES = [
@@ -56,20 +66,141 @@ class Job(models.Model):
         (TIER5, 'More than 15yrs'),
         (NOT_PROVIDED, 'N/A')
     ]
+    CAT_CHOICES = [
+        (COMPUTER_SCIENCE, 'Computer Science'),
+        (DATABASE_MANAGEMENT, 'Database Management'),
+        (DATA_SCIENCE, 'Data Science'),
+        (INFORMATION_SYSTEMS, 'Information Systems'),
+        (NETWORK_SECURITY, 'Network Security'),
+        (SOFTWARE_ENGINEERING, 'Software Engineering'),
+        (WEB_DEVELOPMENT, 'Web Development'),
+        (NOT_PROVIDED, 'N/A'),
+    ]
+
+    AK	= 'Alaska'
+    AL	= 'Alabama'
+    AR	= 'Arkansas'
+    AZ	= 'Arizona'
+    CA	= 'California'
+    CO	= 'Colorado'
+    CT	= 'Connecticut'
+    DC	= 'District of Columbia'
+    DE	= 'Delaware'
+    FL	= 'Florida'
+    GA	= 'Georgia'
+    HI	= 'Hawaii'
+    IA	= 'Iowa'
+    ID	= 'Idaho'
+    IL	= 'Illinois'
+    IN	= 'Indiana'
+    KS	= 'Kansas'
+    KY	= 'Kentucky'
+    LA	= 'Louisiana'
+    MA	= 'Massachusetts'
+    MD	= 'Maryland'
+    ME	= 'Maine'
+    MI	= 'Michigan'
+    MN	= 'Minnesota'
+    MO	= 'Missouri'
+    MS	= 'Mississippi'
+    MT	= 'Montana'
+    NC	= 'North Carolina'
+    ND	= 'North Dakota'
+    NE	= 'Nebraska'
+    NH	= 'New Hampshire'
+    NJ	= 'New Jersey'
+    NM	= 'New Mexico'
+    NV	= 'Nevada'
+    NY	= 'New York'
+    OH	= 'Ohio'
+    OK	= 'Oklahoma'
+    OR	= 'Oregon'
+    PA	= 'Pennsylvania'
+    PR	= 'Puerto Rico'
+    RI	= 'Rhode Island'
+    SC	= 'South Carolina'
+    SD	= 'South Dakota'
+    TN	= 'Tennessee'
+    TX	= 'Texas'
+    UT	= 'Utah'
+    VA	= 'Virginia'
+    VT	= 'Vermont'
+    WA	= 'Washington'
+    WI	= 'Wisconsin'
+    WV	= 'West Virginia'
+    WY = 'Wyoming'
+
+    STATE_CHOICES = [
+        (AK,'Alaska'),
+        (AL,'Alabama'),
+        (AR,'Arkansas'),
+        (AZ,'Arizona'),
+        (CA,'California'),
+        (CO,'Colorado'),
+        (CT,'Connecticut'),
+        (DC,'District of Columbia'),
+        (DE,'Delaware'),
+        (FL,'Florida'),
+        (GA,'Georgia'),
+        (HI,'Hawaii'),
+        (IA,'Iowa'),
+        (ID,'Idaho'),
+        (IL,'Illinois'),
+        (IN,'Indiana'),
+        (KS,'Kansas'),
+        (KY,'Kentucky'),
+        (LA,'Louisiana'),
+        (MA,'Massachusetts'),
+        (MD,'Maryland'),
+        (ME,'Maine'),
+        (MI,'Michigan'),
+        (MN,'Minnesota'),
+        (MO,'Missouri'),
+        (MS,'Mississippi'),
+        (MT,'Montana'),
+        (NC,'North Carolina'),
+        (ND,'North Dakota'),
+        (NE,'Nebraska'),
+        (NH,'New Hampshire'),
+        (NJ,'New Jersey'),
+        (NM,'New Mexico'),
+        (NV,'Nevada'),
+        (NY,'New York'),
+        (OH,'Ohio'),
+        (OK,'Oklahoma'),
+        (OR,'Oregon'),
+        (PA,'Pennsylvania'),
+        (PR,'Puerto Rico'),
+        (RI,'Rhode Island'),
+        (SC,'South Carolina'),
+        (SD,'South Dakota'),
+        (TN,'Tennessee'),
+        (TX,'Texas'),
+        (UT,'Utah'),
+        (VA,'Virginia'),
+        (VT,'Vermont'),
+        (WA,'Washington'),
+        (WI,'Wisconsin'),
+        (WV,'West Virginia'),
+        (WY,'Wyoming'),
+    ]
 
     title = models.CharField(max_length=150, null=True, blank=True)
     company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True, blank=True)
-    #category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
-    location = models.CharField(max_length=200, null=True, blank=True) # choice
+    # new
+    category = models.CharField(max_length=100, choices=CAT_CHOICES, default=NOT_PROVIDED)
+    # new
+    state = models.CharField(max_length=100, choices=STATE_CHOICES, default=NY) # choice
+    # new
+    city = models.CharField(max_length=100, null=True, blank=True)
     salary = models.CharField(max_length=100, null=True, blank=True) # choice
     uniqueId = models.CharField(null=True, blank=True, max_length=100)
     type = models.CharField(max_length=100, choices=TYPE_CHOICES, default=NOT_PROVIDED) # choice
     experience = models.CharField(max_length=100, choices=EXP_CHOICES, default=NOT_PROVIDED)
     summary = models.TextField(null=True, blank=True)
     description = models.TextField(null=True, blank=True)
-    requirements = models.TextField(null=True, blank=True) # array???
-    #applications = models.TextField(null=True, blank=True)
-    closing_date = models.DateField(null=True, blank=True)
+    # new
+    skills = ArrayField(models.CharField(max_length=100, null=True, blank=True), default=list) # skills
     date_created = models.DateTimeField(default=timezone.now)
     owner = models.ForeignKey(Account, on_delete=models.CASCADE, blank=True, null=True)
     slug = models.SlugField(max_length=500, unique=True, blank=True, null=True)
@@ -88,7 +219,7 @@ class Job(models.Model):
             self.uniqueId = str(uuid4()).split('-')[0]
         
         # can i change location back to company?
-        self.slug = slugify('{} {} {}'.format(self.title, self.location, self.uniqueId))
+        self.slug = slugify('{} {}'.format(self.title, self.uniqueId))
 
         super(Job, self).save(*args, **kwargs)
 

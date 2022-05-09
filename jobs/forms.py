@@ -1,5 +1,7 @@
 from django import forms
 from .models import *
+from django.contrib.postgres.forms import SimpleArrayField
+
 
 class CreateJobForm(forms.ModelForm):
     # these values are what will actually be stored in the database
@@ -12,6 +14,15 @@ class CreateJobForm(forms.ModelForm):
     TIER3 = '5yrs - 10yrs'
     TIER4 = '10yrs - 15yrs'
     TIER5 = 'More than 15yrs'
+
+    COMPUTER_SCIENCE = 'Computer Science'
+    DATABASE_MANAGEMENT = 'Database Management'
+    DATA_SCIENCE = 'Data Science'
+    INFORMATION_SYSTEMS = 'Information Systems'
+    NETWORK_SECURITY = 'Network Security'
+    SOFTWARE_ENGINEERING = 'Software Engineering'
+    WEB_DEVELOPMENT = 'Web Development'
+
     
     # Pairing backend values with front end displays
     TYPE_CHOICES = [
@@ -28,22 +39,156 @@ class CreateJobForm(forms.ModelForm):
         (TIER5, 'More than 15yrs'),
         (NOT_PROVIDED, 'N/A')
     ]
+    CAT_CHOICES = [
+        (COMPUTER_SCIENCE, 'Computer Science'),
+        (DATABASE_MANAGEMENT, 'Database Management'),
+        (DATA_SCIENCE, 'Data Science'),
+        (INFORMATION_SYSTEMS, 'Information Systems'),
+        (NETWORK_SECURITY, 'Network Security'),
+        (SOFTWARE_ENGINEERING, 'Software Engineering'),
+        (WEB_DEVELOPMENT, 'Web Development'),
+        (NOT_PROVIDED, 'N/A'),
+    ]
+
+    AK	= 'Alaska'
+    AL	= 'Alabama'
+    AR	= 'Arkansas'
+    AZ	= 'Arizona'
+    CA	= 'California'
+    CO	= 'Colorado'
+    CT	= 'Connecticut'
+    DC	= 'District of Columbia'
+    DE	= 'Delaware'
+    FL	= 'Florida'
+    GA	= 'Georgia'
+    HI	= 'Hawaii'
+    IA	= 'Iowa'
+    ID	= 'Idaho'
+    IL	= 'Illinois'
+    IN	= 'Indiana'
+    KS	= 'Kansas'
+    KY	= 'Kentucky'
+    LA	= 'Louisiana'
+    MA	= 'Massachusetts'
+    MD	= 'Maryland'
+    ME	= 'Maine'
+    MI	= 'Michigan'
+    MN	= 'Minnesota'
+    MO	= 'Missouri'
+    MS	= 'Mississippi'
+    MT	= 'Montana'
+    NC	= 'North Carolina'
+    ND	= 'North Dakota'
+    NE	= 'Nebraska'
+    NH	= 'New Hampshire'
+    NJ	= 'New Jersey'
+    NM	= 'New Mexico'
+    NV	= 'Nevada'
+    NY	= 'New York'
+    OH	= 'Ohio'
+    OK	= 'Oklahoma'
+    OR	= 'Oregon'
+    PA	= 'Pennsylvania'
+    PR	= 'Puerto Rico'
+    RI	= 'Rhode Island'
+    SC	= 'South Carolina'
+    SD	= 'South Dakota'
+    TN	= 'Tennessee'
+    TX	= 'Texas'
+    UT	= 'Utah'
+    VA	= 'Virginia'
+    VT	= 'Vermont'
+    WA	= 'Washington'
+    WI	= 'Wisconsin'
+    WV	= 'West Virginia'
+    WY = 'Wyoming'
+
+    STATE_CHOICES = [
+        (AK,'Alaska'),
+        (AL,'Alabama'),
+        (AR,'Arkansas'),
+        (AZ,'Arizona'),
+        (CA,'California'),
+        (CO,'Colorado'),
+        (CT,'Connecticut'),
+        (DC,'District of Columbia'),
+        (DE,'Delaware'),
+        (FL,'Florida'),
+        (GA,'Georgia'),
+        (HI,'Hawaii'),
+        (IA,'Iowa'),
+        (ID,'Idaho'),
+        (IL,'Illinois'),
+        (IN,'Indiana'),
+        (KS,'Kansas'),
+        (KY,'Kentucky'),
+        (LA,'Louisiana'),
+        (MA,'Massachusetts'),
+        (MD,'Maryland'),
+        (ME,'Maine'),
+        (MI,'Michigan'),
+        (MN,'Minnesota'),
+        (MO,'Missouri'),
+        (MS,'Mississippi'),
+        (MT,'Montana'),
+        (NC,'North Carolina'),
+        (ND,'North Dakota'),
+        (NE,'Nebraska'),
+        (NH,'New Hampshire'),
+        (NJ,'New Jersey'),
+        (NM,'New Mexico'),
+        (NV,'Nevada'),
+        (NY,'New York'),
+        (OH,'Ohio'),
+        (OK,'Oklahoma'),
+        (OR,'Oregon'),
+        (PA,'Pennsylvania'),
+        (PR,'Puerto Rico'),
+        (RI,'Rhode Island'),
+        (SC,'South Carolina'),
+        (SD,'South Dakota'),
+        (TN,'Tennessee'),
+        (TX,'Texas'),
+        (UT,'Utah'),
+        (VA,'Virginia'),
+        (VT,'Vermont'),
+        (WA,'Washington'),
+        (WI,'Wisconsin'),
+        (WV,'West Virginia'),
+        (WY,'Wyoming'),
+    ]
+
     title = forms.CharField(
                 max_length=150,
                 required=True,
-                widget=forms.TextInput(attrs={'class':'form-control jobs', 'placeholder':'Job Title'})
+                widget=forms.TextInput(attrs={'class':'form-control jobs', 'placeholder':'Job Title*'})
                 )
 
-    location = forms.CharField(
-                max_length=200,
-                required=False,
-                widget=forms.TextInput(attrs={'class':'form-control jobs', 'placeholder':'Location'})
-                )
+    # new
+    category = forms.ChoiceField(
+                    required=False,
+                    choices=CAT_CHOICES,
+                    widget=forms.Select(attrs={'class':'nice-select rounded'})
+                    )
+
+    # new
+    state = forms.ChoiceField(
+                    required=False,
+                    choices=STATE_CHOICES,
+                    widget=forms.Select(attrs={'class':'nice-select rounded'})
+                    )
 
     salary = forms.CharField(
                 max_length=100,
                 required=False,
                 widget=forms.TextInput(attrs={'class':'form-control jobs', 'placeholder':'Salary'})
+                )
+    
+    # new
+    city = forms.CharField(
+                max_length=200,
+                required=False,
+                widget=forms.TextInput(attrs={'class':'form-control jobs', 'placeholder':'City'})
                 )
 
     type = forms.ChoiceField(
@@ -60,31 +205,23 @@ class CreateJobForm(forms.ModelForm):
 
     summary = forms.CharField(
                 required=True,
-                widget=forms.Textarea(attrs={'class':'form-control jobs', 'placeholder':'Summary'})
+                widget=forms.Textarea(attrs={'class':'form-control jobs', 'placeholder':'Summary*'})
                 )
 
     description = forms.CharField(
                 required=True,
-                widget=forms.Textarea(attrs={'class':'form-control jobs', 'placeholder':'Description'})
-                )
-
-    requirements = forms.CharField(
-                required=False,
-                widget=forms.TextInput(attrs={'class':'form-control jobs', 'placeholder':'Requirements'})
+                widget=forms.Textarea(attrs={'class':'form-control jobs', 'placeholder':'Description*'})
                 )
     
-    closing_date = forms.DateField(
-                    required=False,
-		    widget=forms.DateInput(format=('%d-%m-%Y'), 
-                                             attrs={'class': 'datepicker', 'placeholder': 'Select a date', 
-					    'type': 'date', 'placeholder':'Select a date'})
-                    )
+    # new
+    skills = SimpleArrayField(forms.CharField(max_length=100, required=False))
+
     
     class Meta:
         model=Job
         fields = [
-            'title', 'company', 'location', 'salary', 'type', 'experience', 'summary', 'description',
-            'requirements', 'closing_date'
+            'title', 'salary', 'type', 'experience', 'summary', 'description',
+            'skills', 'city', 'state', 'category'
         ]
 
 

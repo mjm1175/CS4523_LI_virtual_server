@@ -22,7 +22,7 @@
           {{form.use_profile_resume}}
           </div>
         {% endif %}
-        
+
         <div id="upload-resume-direct">
           <label for="upload-resume">Upload a resume (optional): </label>
           {{form.resume}}            
@@ -53,8 +53,10 @@
         <br>
         {% if job.type == 'Remote' %}
           <label >This job is a Remote position : </label>
-        {% elif job.location %}
-          <label>This job is a {{job.type}} position in {{job.location}} : </label>
+        {% elif job.city and job.state %}
+          <label>This job is a {{job.type}} position in {{job.city}}, {{job.state}} : </label>
+        {% elif job.state %}
+          <label>This job is a {{job.type}} position in {{job.state}} : </label>          
         {% else %}
           <label>This job is a {{job.type}} position : </label>
         {% endif %}

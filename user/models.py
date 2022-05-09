@@ -77,6 +77,7 @@ class Account(AbstractBaseUser):
     slug = models.SlugField(max_length=500, unique=True, blank=True, null=True)
     uniqueId = models.CharField(max_length=100, null=True, blank=True)
     role = models.CharField(max_length=10, choices=ROLE_CHOICES, default=APPLICANT)
+    email_confirmed = models.BooleanField(default=False)
 
     # allowing users to login using email
     USERNAME_FIELD = 'email'
@@ -228,7 +229,6 @@ class Resume(models.Model):
     user = models.OneToOneField(Account, on_delete=models.CASCADE)
     uniqueId = models.CharField(max_length=100, null=True, blank=True)
     image = models.ImageField(default='default-job.png', upload_to='profile_images')
-    email_confirmed = models.BooleanField(default=False)
     city = models.CharField(max_length=100, null=True, blank=True)
     state = models.CharField(max_length=100, choices=STATE_CHOICES, default=NY) # choice
     slug = models.SlugField(max_length=500, unique=True, blank=True, null=True)

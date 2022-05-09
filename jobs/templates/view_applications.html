@@ -21,11 +21,11 @@
                 <img src="{{job.company.companyLogo.url}}" class="pd-image">
                 <div>
                     <h3><a href="{% url 'job_post' job.slug %}">{{job.title}}</a> at <a href="{% url 'company_detail' job.company.slug %}">{{job.company}}</a></h3>
-                    {% if job.location and job.type %}
-                        <p>{{job.type}} in {{job.location}}</p>
-                    {% elif job.location %}
-                        <p>{{job.location}}</p>
-                    {% elif job.type %}
+                    {% if job.state and job.city %}
+                        <p>{{job.type}} in {{job.city}}, {{job.state}}</p>
+                    {% elif job.state %}
+                        <p>{{job.type}} in {{job.state}}</p>
+                    {% else %}
                         <p>{{job.type}}</p>
                     {% endif %}
 

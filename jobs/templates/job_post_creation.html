@@ -42,11 +42,16 @@
             {% endif %} 
 
             <div class = "row">
-                <div class = "col">{{form.location}}</div>
+                <div class = "col">
+                    <div class="dropdown">
+                        <label for="state">Work Format: </label>
+                        {{form.type}}
+                    </div>
+                </div>                
                 <div class = "col">{{form.salary}}</div>
 
-                {% if form.location.errors %}
-                    {% for error in form.location.errors %}
+                {% if form.type.errors %}
+                    {% for error in form.type.errors %}
                     <div class="alert alert-danger">
                         <strong>{{ error|escape }}</strong>
                     </div>
@@ -61,6 +66,32 @@
                     {% endfor %}
                 {% endif %}                 
             </div>
+
+            <div class = "row">
+                <div class = "col">
+                    <div class="dropdown">
+                        <label for="state">State: </label>
+                        {{form.state}}
+                    </div>
+                </div>
+                <div class = "col">{{form.city}}</div>
+
+                {% if form.state.errors %}
+                    {% for error in form.state.errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                    {% endfor %}
+                {% endif %} 
+
+                {% if form.city.errors %}
+                    {% for error in form.city.errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                    {% endfor %}
+                {% endif %}                 
+            </div> 
 
             {{form.summary}}
             {% if form.summary.errors %}
@@ -80,48 +111,47 @@
                 {% endfor %}
             {% endif %}         
 
-            <div class="dropdown">
-                <label for="experience">Required Experience: </label>
-                {{form.experience}}
-            </div>
-            {% if form.experience.errors %}
-                {% for error in form.experience.errors %}
-                <div class="alert alert-danger">
-                    <strong>{{ error|escape }}</strong>
+            <div class = "row">
+                <div class = "col">
+                    <div class="dropdown">
+                        <label for="experience">Required Experience: </label>
+                        {{form.experience}}
+                    </div>
                 </div>
-                {% endfor %}
-            {% endif %}       
-            
-            <div class="dropdown">
-                <label for="type">Work Format: </label>
-                {{form.type}}
-            </div>
-            {% if form.type.errors %}
-                {% for error in form.type.errors %}
-                <div class="alert alert-danger">
-                    <strong>{{ error|escape }}</strong>
+                <div class = "col">
+                    <div class="dropdown">
+                        <label for="category">Field of Work: </label>
+                        {{form.category}}
+                    </div>
                 </div>
-                {% endfor %}
-            {% endif %}              
 
-            {{form.requirements}}
-            {% if form.requirements.errors %}
-                {% for error in form.requirements.errors %}
+                {% if form.experience.errors %}
+                    {% for error in form.experience.errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                    {% endfor %}
+                {% endif %} 
+
+                {% if form.category.errors %}
+                    {% for error in form.category.errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                    {% endfor %}
+                {% endif %}                 
+            </div>                        
+            
+            <p>Enter relevant skills, separated by commas: </p>
+            {{form.skills}}
+            {% if form.skills.errors %}
+                {% for error in form.skills.errors %}
                 <div class="alert alert-danger">
                     <strong>{{ error|escape }}</strong>
                 </div>
                 {% endfor %}
             {% endif %}      
-            
-            Date After You Wish to Stop Accepting Applications:
-            {{form.closing_date}}
-            {% if form.closing_date.errors %}
-                {% for error in form.closing_date.errors %}
-                <div class="alert alert-danger">
-                    <strong>{{ error|escape }}</strong>
-                </div>
-                {% endfor %}
-            {% endif %}               
+                     
           
           <button type="submit">Post</button>
         </div>

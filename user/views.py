@@ -7,7 +7,7 @@ from .forms import *
 from .models import *
 from .functions import *
 from django.contrib.auth import login, authenticate
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic import DetailView
 from django.utils import timezone
@@ -25,6 +25,10 @@ from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
 
 # Create your views here.
+# helper func to check if email verification 
+def is_email_verified(user):
+    return user.email_confirmed
+
 
 def register(request):
     if request.method == 'GET':
@@ -58,6 +62,7 @@ def register(request):
             return render(request, 'register.html', context)
 
 @login_required
+@user_passes_test(is_email_verified, 'verify_email', None)
 def profile(request):
 	# search
 	job_search_form = SearchJobsForm()
@@ -89,6 +94,7 @@ def profile(request):
 
 
 @login_required
+@user_passes_test(is_email_verified, 'verify_email', None)
 def create_resume(request, res_id=None):
     # search
     job_search_form = SearchJobsForm()
@@ -238,6 +244,8 @@ def delete_education(request, pk):
 
     return render(request, 'resume_detail.html', {'edu': edu})
 
+@login_required
+@user_passes_test(is_email_verified, 'verify_email', None)
 def home_profiles(request):
 	# search
 	job_search_form = SearchJobsForm()
@@ -419,6 +427,8 @@ def email_verify_code(request):
             try:
                 usr = Account.objects.get(uniqueId=code)
                 messages.success(request, 'Email verified, please log in')
+                usr.email_confirmed = True
+                usr.save()
                 return redirect('login')
             except:
                 messages.error(request, 'Sorry, that code is incorrect.')

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Job
 from .forms import *
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_protect
 from django.http import FileResponse
@@ -48,9 +48,14 @@ def search(request):
     return None
 
 
+
+from user.views import is_email_verified
+
 # home page; smart search
-@login_required
+@login_required()
 def home(request):
+	if not request.user.email_confirmed:
+		return redirect('verify_email')
 	# search
 	job_search_form = SearchJobsForm()
 
@@ -158,6 +163,7 @@ def company_detail(request, slug):
     return render(request, 'company_detail.html', context)
 
 @login_required
+@user_passes_test(is_email_verified, 'verify_email', None)
 def company_creation(request, comp_id=None):
     # search
     job_search_form = SearchJobsForm()
@@ -198,6 +204,8 @@ def company_creation(request, comp_id=None):
 
     return render(request, 'company_creation.html', context)
 
+@login_required
+@user_passes_test(is_email_verified, 'verify_email', None)
 def home_companies(request):
 	# search
 	job_search_form = SearchJobsForm()
@@ -310,6 +318,8 @@ def delete_application(request, pk):
     return render(request, 'my_applications.html', {'app': app})
 
 
+@login_required
+@user_passes_test(is_email_verified, 'verify_email', None)
 def my_applications(request):
     apps = Application.objects.filter(applicant=request.user)
 

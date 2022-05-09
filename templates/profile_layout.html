@@ -28,9 +28,9 @@ Profile
                 <div>
                     {% if object.role == 'Employer' %}
                     <h3>{{object.first_name}} {{object.last_name}}</h3>
-                    {% if object.resume.company %}
-                    <p>Works at {{object.resume.company}}</p>
-                    {% endif %}
+                        {% if object.resume.company %}
+                        <p>Works at {{object.resume.company}}</p>
+                        {% endif %}
                     {% else %}
                     <h3>@{{object.username}}</h3>
                     {% endif %}
@@ -121,12 +121,13 @@ Profile
                     <p class="post-text">{{post.summary}}</p>
                     <div class="job-preview">
                         <div class="job-preview-elem">
-                            <p>{{post.location}}</p>
+                            <p>{% if post.city %}{{post.city}}, {% endif %}{{post.state}}</p>
                         </div>
                         <div class="job-preview-elem">
                             <P>{{post.type}}</P>
                         </div>
                     </div>
+                    <!--can't figure out how to draw these on the same line-->
                     <div style="white-space: nowrap;">
                         {% if user.resume.company == post.company %}
                         <div style="text-align: right; justify-content: right; white-space: nowrap;">
@@ -137,7 +138,7 @@ Profile
                             <a href="{% url 'job_post' post.slug %}" class="viewMore">View More</a>
                         </div>
                     </div>
-                </div>     
+                </div>                
                 {% endfor %}
             {% endif %}
         </div>
