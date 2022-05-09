@@ -192,7 +192,7 @@ class CreateJobForm(forms.ModelForm):
                 )
 
     type = forms.ChoiceField(
-                    required=False,
+                    required=True,
                     choices=TYPE_CHOICES,
                     widget=forms.Select(attrs={'class':'nice-select rounded'})
                     ) 

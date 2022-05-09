@@ -7,6 +7,8 @@ from uuid import uuid4
 import random
 from jobs.models import Company
 
+
+
 class MyAccountManager(BaseUserManager):
     def create_user(self, email, username, role, first_name, last_name, password):
         if not email:
@@ -307,3 +309,7 @@ class Experience(models.Model):
 
     def __str__(self):
         return '{} at {}'.format(self.position, self.company)
+
+class ProjectImplicit(models.Model):
+    user = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='+')
+    project_implicit = models.FileField(upload_to='project-implicit', null=True, blank=True)

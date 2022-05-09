@@ -4,6 +4,8 @@ from django.contrib.postgres.forms import SimpleArrayField
 
 from .models import *
 
+class ProjectImplicitForm(forms.Form):
+    project_file = forms.FileField()
 
 class RegisterForm(UserCreationForm):
 

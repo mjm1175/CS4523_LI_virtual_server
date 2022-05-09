@@ -141,6 +141,16 @@ Profile
                 </div>                
                 {% endfor %}
             {% endif %}
+
+            {% if model %}
+                {% for implicit in model %}
+                <div class="post-container">
+                    {% if implicit.user == request.user or implicit.user == object %}
+                    <img src="{% static 'app/images/results.png' %}" class="cover-img">
+                    {% endif %}
+                </div>     
+                {% endfor %}
+            {% endif %}
         </div>
 </div>
 

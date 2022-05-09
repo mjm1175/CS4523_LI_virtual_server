@@ -61,7 +61,7 @@ urlpatterns = [
     path('inbox/<int:pk>/', msg_views.ThreadView.as_view(), name='thread'),
 
     path('inbox/<int:pk>/create-message', msg_views.CreateMessage.as_view(), name='create-message'),
-    
+    path('uploadProjectImplicitResults', users_views.project_upload, name='implicit'),
     path('meetingCreation/', users_views.createMeeting, name='createMeeting'),
 ]
 

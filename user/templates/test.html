@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+    <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="implicit">
+        <button type="submit"> Submit </button>
+    </form>
+
+    {% for project in model %}
+        {% if project.user == request.user %}
+            <a href="{{ project.project_implicit }}">{{ project.project_implicit.name }}</p> <br>
+        {% endif %}
+
+
+    {% endfor %}
+</html>
+
+

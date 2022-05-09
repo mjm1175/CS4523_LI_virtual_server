@@ -24,6 +24,27 @@ from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
 
+def project_upload(request):
+    if request.method == 'GET':
+        form = ProjectImplicitForm()
+        model = ProjectImplicit.objects.all()
+        context = {
+            'form': form,
+            'model': model
+        }
+        return render(request, 'test.html', context)
+    if request.method == 'POST':
+        form = ProjectImplicitForm(request.POST)
+        uploaded_file = request.FILES['implicit']
+        print(uploaded_file.name)
+        print(uploaded_file.size)
+        implicit = ProjectImplicit(
+            user=request.user,
+            project_implicit=uploaded_file
+        )
+        implicit.save()
+        print(implicit.project_implicit.name)
+        return redirect('profile')
 # Create your views here.
 # helper func to check if email verification 
 def is_email_verified(user):
@@ -66,16 +87,16 @@ def register(request):
 def profile(request):
 	# search
 	job_search_form = SearchJobsForm()
-
+	model = ProjectImplicit.objects.all()
 	context = {}
 	context['job_search_form'] = job_search_form
-
+	context['model'] = model
 	search_request = search(request)
 	if search_request is not None:
 		return search_request
 	else:
 		print("getting none")
-	# end search
+        # end search
 
 	usr = request.user
 
@@ -163,7 +184,6 @@ def resume_detail(request, slug):
 
 	context = {}
 	context['job_search_form'] = job_search_form
-
 	obj = Resume.objects.get(slug=slug)
 
 	# get all Educations & Experiences with the same resume attached
@@ -267,10 +287,10 @@ def home_profiles(request):
 def public_profile(request, slug):
     # search
     job_search_form = SearchJobsForm()
-
+    model = ProjectImplicit.objects.all()
     context = {}
     context['job_search_form'] = job_search_form
-
+    context['model'] = model
     search_request = search(request)
     if search_request is not None:
         return search_request

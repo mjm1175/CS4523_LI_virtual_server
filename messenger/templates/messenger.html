@@ -126,8 +126,10 @@
             <!--Info-->
             <div class="messenger-right-top-nav-profile">
                 <div class="messenger-right-top-nav-image">
-                    {% if user.resume %}		
-                    <img src="{{user.resume.image.url}}">
+                    {% if thread.user == user %}		
+                    <img src="{{thread.receiver.resume.image.url}}">
+                    {% elif thread.receiver == user %}
+                    <img src="{{thread.user.resume.image.url}}">             
                     {% else %}
                     <img src="{% static 'app/images/profile3.jpg' %}">
                     {% endif %}
@@ -136,11 +138,12 @@
             <div class="messenger-right-top-nav-name">
                 <div class="messenger-right-top-nav-user-name">
                     <!--CHANGE TO RECIPIENT USERNAME && PROFILE-->
-                    <a href="{% url 'profile' %}"> <b>@{{user.username}}</b> </a>
-                </div>
-                <div class="messenger-right-top-nav-user-status">
-                    <a href="#"> Status </a>
-                </div>                        
+                    {% if thread.user == user %}
+                    <b>@{{thread.receiver.username}}</b>
+                    {% elif thread.receiver == user %}
+                    <b>@{{thread.user.username}}</b>
+                    {% endif %}
+                </div>               
             </div>
 
             <!--Icons-->
@@ -230,7 +233,7 @@
                     </div>
                 </div>
             </div>    
-            <div class="messenger-message-right">
+            <!--<div class="messenger-message-right">
                 <div class="messenger-right-user-profile">
                     <div class="messenger-right-user-image">
                         {% if user.resume %}		
@@ -241,7 +244,7 @@
                     </div>
                     <div class="messenger-right-user-name">
                         <!--CHANGE TO RECIPIENT USERNAME && PROFILE-->
-                        <a href="{% url 'profile' %}"> <b>@{{user.username}}</b> </a>
+                        <!--<a href="{% url 'profile' %}"> <b>@{{user.username}}</b> </a>
                     </div>
                     <div class="messenger-right-user-status">
                         <a href="#">Status</a>
@@ -249,7 +252,7 @@
                 </div>
 
                 <!--Actions Menu-->
-                <div class="messenger-setting-action">
+                <!--<div class="messenger-setting-action">
                     <div class="messenger-action">
                         <div class="messenger-action-text">
                             <div class="messenger-action-text-inside">
@@ -324,7 +327,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>-->
             </div>
         </div>
 
