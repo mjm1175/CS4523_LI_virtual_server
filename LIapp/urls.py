@@ -41,6 +41,7 @@ urlpatterns = [
     path('jobs/delete/<int:pk>', jobs_views.delete_job, name='delete_job'),
     path('application/delete/<int:pk>', jobs_views.delete_application, name='delete_application'),
     path('register/', users_views.register, name='register'),
+    path('verify-email/', users_views.email_verify_code, name='verify_email'),
     path('profile/', users_views.profile, name='profile'),
     path('users/create/', users_views.create_resume, name='create_resume'),
     path('users/create/<int:res_id>/', users_views.create_resume, name='create_resume'),

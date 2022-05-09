@@ -310,3 +310,10 @@ class ExperienceForm(forms.ModelForm):
         fields = [
             'company', 'position', 'start_date', 'end_date', 'skills'
         ]
+class VerifyEmailForm(forms.Form):
+    code = forms.CharField(
+                max_length=150,
+                required=True,
+                widget=forms.TextInput(attrs={'class':'form-control company', 'placeholder':'Enter the verification code we sent to your email'})
+                )     
+

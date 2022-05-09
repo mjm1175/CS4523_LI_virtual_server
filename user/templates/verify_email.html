@@ -1,0 +1,73 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkedIncognito</title>
+    <link rel="stylesheet" href="{% static 'app/css/company_and_login.css' %}">
+</head>
+<body>
+    <nav>
+        <div class="nav-left">
+            <img src="{% static 'app/images/Linkedin-Logo.png' %}" class="logo" alt="LinkedIncognito Logo">
+        </div>
+    </nav>
+    
+	<!--displaying messages from views if theyre there-->
+        {% if messages %}
+        {% for message in messages %}
+
+        {% if message.tags == 'error' %}
+        <div class="alert alert-danger">
+            {{message}}
+        </div>
+        {% else %}
+        <div class="alert alert-{{message.tags}}">
+            {{message}}
+        </div>
+        {% endif %}
+
+        {% endfor %}
+        {% endif %}
+
+    <div class="box">
+        <div class="loginbox">
+            <h1>Verify Your Email Address</h1>
+            <form id ="login" method="POST" class ="input-group">
+                {% csrf_token %}
+
+                {% if form.errors %}
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <div class="alert alert-danger">
+                                <strong>{{ error|escape }}</strong>
+<!--                                <strong>{{ field|escape }}</strong>-->
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}              
+
+                <p>Verification Code</p>
+                {{form.code}}
+
+                {% if form.code.errors %}
+                    {% for error in form.code.errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                    {% endfor %}
+                {% endif %}   
+            </form>
+       </div>
+    </div>
+
+</body>
+</html>                                    

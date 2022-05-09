@@ -5,6 +5,7 @@ from jobs.forms import SearchJobsForm
 from jobs.models import Job
 from .forms import *
 from .models import *
+from .functions import *
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
@@ -34,24 +35,27 @@ def register(request):
     if request.method == 'POST':
         form = RegisterForm(request.POST)
         if form.is_valid():
-            print('yes')
-            form.save()
+            obj = form.save()
+
+            # send validation email
+            to_email = form.cleaned_data.get('email')
+            welcome = WelcomeEmail(obj.uniqueId)
+            e_mail = welcome.email()
+            print(obj.uniqueId)
+            send_email(e_mail, welcome.subject, [to_email])
+
             user = form.cleaned_data.get('username')
-            email = form.cleaned_data.get('email')
-            raw_password = form.cleaned_data.get('password1')
-            account = authenticate(email=email, password=raw_password)
+            # i think this part is the auto login
+            #email = form.cleaned_data.get('email')
+            #raw_password = form.cleaned_data.get('password1')
+            #account = authenticate(email=email, password=raw_password)
             messages.success(request, 'Account was created for ' + user)
-            login(request, account)
-            return redirect('home_page')
+            #login(request, account)
+            return redirect('verify_email')
         else:
-            print('no')
-            print(form.errors)
             messages.error(request, 'Error processing your request')
             context = {'form': form}
             return render(request, 'register.html', context)
-
-    return render(request, 'register.html', {})
-
 
 @login_required
 def profile(request):
@@ -401,3 +405,28 @@ def createMeeting(request):
         return render(request, "meetingCreation.html", r.json())
     else:
         return render(request, "meetingCreation.html")
+
+def email_verify_code(request):
+    if request.method == 'GET':
+        form = VerifyEmailForm()
+        context = {'form' : form}
+        return render(request, 'verify_email.html', context)
+
+    if request.method == 'POST':
+        form = VerifyEmailForm(request.POST)
+        if form.is_valid():
+            code = form.cleaned_data.get('code')
+            try:
+                usr = Account.objects.get(uniqueId=code)
+                messages.success(request, 'Email verified, please log in')
+                return redirect('login')
+            except:
+                messages.error(request, 'Sorry, that code is incorrect.')
+                context = {'form': form}
+                return render(request, 'verify_email.html', context)
+        else:
+            messages.error(request, 'Error processing your request')
+            context = {'form': form}
+            return render(request, 'verify_email.html', context)
+
+    return render(request, 'verify_email.html', {})
