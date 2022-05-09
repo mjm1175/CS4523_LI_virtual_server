@@ -1,4 +1,4 @@
-{% extends "layout1.html" %}
+\{% extends "layout1.html" %}
 {% load static %}
 
 
@@ -84,44 +84,41 @@
                 </div>
             </div>
         </div>
-
+        {% for thread in model %}
+        {% if thread.user == user or thread.receiver == user %}
         <div class="messenger-user-search-container">
             <div class="messenger-user-search-icon">
                 <div class="messenger-user-search-image">
-                    {% if user.resume %}		
-                    <img src="{{user.resume.image.url}}">
+                    {% if user.resume %}	
+                    {% if thread.user == user %}	
+                    <img src="{{thread.receiver.resume.image.url}}">
+                    {% elif thread.receiver == user %}
+                    <img src="{{thread.user.resume.image.url}}">
+                    {% endif %}
                     {% else %}
                     <img src="{% static 'app/images/profile3.jpg' %}">
                     {% endif %}
                 </div>
             </div>
             <div class="messenger-user-search-name">
-                {% for thread in model %}
-                {% if thread.user == user.username or thread.receiver == user.username %}
+                {% if thread.user == user or thread.receiver == user %}
                 <div class="messenger-user-search-name-inside">
                     <!--CHANGE TO RECIPIENT USERNAME && PROFILE-->
-                    {% if thread.user == user.username %}
-                    <a href="{% url 'profile' %}"> <b>@{{thread.receiver.username}}</b> </a>
-                    {% elif thread.receiver == user.username %}
-                    <a href="{% url 'profile' %}"> <b>@{{thread.user.username}}</b> </a>
+                    {% if thread.user == user %}
+                    <a href="{% url 'thread' thread.pk %}"> <b>@{{thread.receiver.username}}</b> </a>
+                    {% elif thread.receiver == user %}
+                    <a href="{% url 'thread' thread.pk %}"> <b>@{{thread.user.username}}</b> </a>
                     {% endif %}
                 </div>
-                <div class="messenger-user-last-seen">
-                    <div class="messenger-last-seen-message">
-                        <a href="#">Last Seen Message</a>
-                    </div>
-                    <div class="messenger-last-seen-date">
-                        <a href="#">date</a>
-                    </div>
-                </div>
                 {% endif %}
-                {% endfor %}
+                
             </div>
         </div>
+        {% endif %}
+        {% endfor %}
 
     </div>
-
-
+    {% if message_list is not None %}
     <div class="messenger-right">
         
         <!--RHS Navigation bar-->
@@ -165,7 +162,7 @@
         </div>
 
         <!--Actual Messages-->
-        <div class="messenger-message-container">
+        <div class="messenger-message-container"> 
             <div class="messenger-message-left">
                 <div class="messenger-chat-container">
                     <div class="messenger-chat-box">
@@ -206,6 +203,7 @@
                         </div>
                         {% endif %}
                         {% endfor %}
+                        
                     </div>
                 </div>
                 <div class="messenger-chat-bottom">
@@ -231,7 +229,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>    
             <div class="messenger-message-right">
                 <div class="messenger-right-user-profile">
                     <div class="messenger-right-user-image">
@@ -331,6 +329,7 @@
         </div>
 
     </div>
+    {% endif %}
 </div>       
 {% endblock %}     
 

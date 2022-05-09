@@ -311,32 +311,59 @@ def generateToken():
         return token
             # send a request with headers including a token
 
-def sendInvite(request,response):
-     email = {}
-     email['title'] = 'Hey There!'
-     email['subtitle'] = 'You have successfully scheduled your interview.'
-     email['message'] = 'Here is the link to start your meeting ' + response['start_url'] + ' at ' + response['start_time'] 
+def sendEmail(emailAddr, emailDetails, subject):
+    from_email = settings.EMAIL_HOST_USER
+    to_email = [emailAddr]
+    text_content = """
+    {}
+    {}
+    {}
+    {}          
+        Best,
+            The LinkedIncognito Team
+                                                                                                    
+                                                                                                            """.format(emailDetails['title'], emailDetails['subtitle'], emailDetails['message'], emailDetails['link'])
+                                                                                                                                                                                 
+    html_c = get_template('email.html')
+    d = {'email': emailDetails}
+    html_content = html_c.render(d)
 
-     subject = 'Interview Scheduled'
-     from_email = settings.EMAIL_HOST_USER
-     to_email = [request.user.email]
-     text_content = """
-             {}
-             {}
-             {}          
+    msg = EmailMultiAlternatives(subject, text_content, from_email, to_email)
+    msg.attach_alternative(html_content, 'text/html')
+    msg.send()
 
-             Best,
-                  The LinkedIncognito Team
-                                                     
-                     """.format(email['title'], email['subtitle'], email['message'])
+def sendInvitation(invitee, employer, response):
+    content = {}
+    content['title'] = 'Hey There!'
+    content['subtitle'] = 'You have been invited to an interview with ' + employer + '.'
+    content['message'] = 'Here is the link to join your meeting ' + \
+            response['join_url'] + ' at ' + response['start_time'] + '. If this time does not work for you, click the button below to notify your employer.'
+    content['link'] = 'http://159.203.182.153:8000/sendRejection'
 
-     html_c = get_template('email.html')
-     d = {'email':email}
-     html_content = html_c.render(d)
+    subject = 'Interview Scheduled'
+    sendEmail(invitee, content, "Interview Invitation")
 
-     msg = EmailMultiAlternatives(subject, text_content, from_email, to_email)
-     msg.attach_alternative(html_content, 'text/html')
-     msg.send()
+def sendConfirmation(receiver, response):
+    content = {}
+    content['title'] = 'Hey There!'
+    content['subtitle'] = 'You have successfully scheduled your interview.'
+    content['message'] = 'Here is the link to start your meeting ' + \
+            response['start_url'] + ' at ' + response['start_time']
+    content['link'] = 'http://159.203.182.153:8000/'
+
+    sendEmail(receiver, content, "Interview Scheduled")
+
+@csrf_protect
+def sendRejection(request):
+        if request.method == "POST":
+            receiver = Accounts.objects.get(username=request.POST["employer"])
+            content = {}
+            content['title'] = 'Hey There!'
+            content['subtitle'] = request.user.username + ' has rejected your interview invitation.'
+            content['message'] = 'Here is the link to schedule a new meeting:'
+            content['link'] = 'http://159.203.182.153:8000/meetingCreation'
+
+            sendEmail(receiver.email, content, "Interview Rejected")
 
 
 @csrf_protect
@@ -347,12 +374,9 @@ def createMeeting(request):
                           "type": 2,
 
                           "start_time": request.POST["time"],
-                          "duration": "60",
+                          "duration": request.POST["duration"],
                           "timezone": "Eastern Time",
-                          "agenda": "LinkedIncognito Interview",
-                          "recurrence": {"type": 1,
-                                         "repeat_interval": 1
-                                        }, 
+                          "agenda": "LinkedIncognito Interview", 
                           "settings": {"host_video": "true",
                                        "participant_video": "true",
                                        "join_before_host": "False",
@@ -370,7 +394,10 @@ def createMeeting(request):
                         f'https://api.zoom.us/v2/users/me/meetings', headers=headers, data=json.dumps(meetingdetails))
   
        
-        sendInvite(request,r.json())
+        invitee = Account.objects.get(username=request.POST["invitee"])
+        sendInvitation(invitee.email, request.user.first_name, r.json())
+        sendConfirmation(request.user.email,r.json())
+
         return render(request, "meetingCreation.html", r.json())
     else:
         return render(request, "meetingCreation.html")

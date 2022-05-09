@@ -23,9 +23,9 @@ class ListThreads(View):
     def get(self, request, *args, **kwargs):
         threads = ThreadModel.objects.filter(Q(user=request.user) | Q(receiver=request.user))
         context = {
-            'threads': threads
+            'model': threads
         }
-        return render(request, 'inbox.html', context)
+        return render(request, 'messenger.html', context)
 
 class CreateThread(View):
     def post(self, request, username, *args, **kwargs):
@@ -52,7 +52,7 @@ class CreateThread(View):
 class ThreadView(View):
     def get(self, request, pk, *args, **kwargs):
         form = MessageForm()
-        model = ThreadForm()
+        model = ThreadModel.objects.all()
         thread = ThreadModel.objects.get(pk=pk)
         message_list = Messages.objects.filter(thread__pk__contains=pk)
         context = {
@@ -63,6 +63,16 @@ class ThreadView(View):
         }
 
         return render(request, 'messenger.html', context)
+class openMessenger(View):
+    def get(self, request, *args, **kwargs):
+        form = MessageForm()
+        model = ThreadModel.objects.all()
+        context = {
+            'form': form,
+            'model': model
+        }
+        return render(request, 'messenger.html', context)
+
 
 class CreateMessage(View):
     def post(self, request, pk, *args, **kwargs):
