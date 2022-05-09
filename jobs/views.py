@@ -154,7 +154,6 @@ def company_creation(request, comp_id=None):
     context = {}
 
     if request.method == 'POST':
-        search_request = search(request)
 
         if comp_id:
             comp = Company.objects.get(pk=comp_id)

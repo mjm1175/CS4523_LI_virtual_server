@@ -85,6 +85,7 @@ def register(request):
 @login_required
 @user_passes_test(is_email_verified, 'verify_email', None)
 def profile(request):
+    model = ProjectImplicit.objects.all()
 
     context = {}
     context['model'] = model    
@@ -429,7 +430,8 @@ def createMeeting(request):
             meeting = MeetingZoom(
                 user = Account.objects.get(username=username),
                 meeting_date = request.POST.get("time"),
-                duration = request.POST.get("duration")
+                duration = request.POST.get("duration"),
+		interviewer = request.user,
             )
             meeting.save()
         return render(request, "createMeeting.html", r.json())
@@ -524,7 +526,7 @@ def home_employers(request):
 
 def calendar(request):
     if request.method == 'GET':
-        model = ZoomMeeting.objects.all()
+        model = MeetingZoom.objects.all()
         context = {
             'meetings': model
         }

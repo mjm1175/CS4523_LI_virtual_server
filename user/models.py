@@ -320,3 +320,4 @@ class MeetingZoom(models.Model):
     interviewer = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
     meeting_date = models.DateTimeField(default=timezone.now)
     duration = models.IntegerField()
+    link = models.CharField(null=True, blank=True, max_length=300)
